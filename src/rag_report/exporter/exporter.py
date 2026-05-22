@@ -14,6 +14,7 @@ class HTMLExporter:
     def __init__(self, template_path: str = None) -> None:
         self.output_dir = settings.REPORT_OUTPUT_DIR
         os.makedirs(self.output_dir, exist_ok=True)
+        self.citations_map = {}
 
     def _convert_table(self, table_lines) -> str:
         if len(table_lines) < 2:
@@ -62,8 +63,60 @@ class HTMLExporter:
             
         return '\n'.join(new_lines)
 
+    def _sanitize_noise(self, text: str) -> str:
+        if not text:
+            return ""
+        # Remove LLM internal thought prompt residues / planning residues
+        # e.g., "Need calculate ratios."
+        text = re.sub(r'(?i)need\s+calculate\s+ratios\.?', '', text)
+        # Clean up double dots
+        text = text.replace("..", ".")
+        return text.strip()
+
+    def _convert_citations(self, html: str) -> str:
+        pattern = r'\[(BCTC\s*[^\]]+)\]'
+        
+        def repl(match):
+            cite_text = match.group(1).strip()
+            if cite_text not in self.citations_map:
+                self.citations_map[cite_text] = len(self.citations_map) + 1
+            num = self.citations_map[cite_text]
+            
+            # Hoverable tooltip
+            return (
+                f'<span class="cite-ref">{num}'
+                f'<span class="cite-tooltip">'
+                f'<span class="cite-tooltip-header">'
+                f'<span class="cite-tooltip-nav">&larr; &rarr;</span>'
+                f'<span class="cite-tooltip-title">'
+                f'<span class="cite-tooltip-icon">📄</span>BCTC A32</span>'
+                f'</span>'
+                f'<span class="cite-tooltip-body"><strong>Nguồn:</strong> {cite_text}</span>'
+                f'</span>'
+                f'</span>'
+            )
+            
+        return re.sub(pattern, repl, html)
+
+    def _highlight_keywords(self, html: str) -> str:
+        # Split by html tags to avoid highlighting text inside attribute values/tags
+        parts = re.split(r'(<[^>]+>)', html)
+        for i in range(len(parts)):
+            if i % 2 == 0:
+                text = parts[i]
+                # Highlighting percentages (e.g. 53.0% or 53%)
+                text = re.sub(r'\b(\d+(?:[.,]\d+)?\s*%)', r'<span class="kw-pct">\1</span>', text)
+                # Highlighting money values (e.g. 778,3 tỷ VND or 61,8 tỷ or 260.4 tỷ VND)
+                text = re.sub(r'\b(\d+(?:[.,]\d+)?\s*(?:tỷ|triệu|nghìn|đồng|VND)\b)', r'<span class="kw-money">\1</span>', text)
+                # Highlighting ratios (e.g. 1.43 lần or 1.1x)
+                text = re.sub(r'\b(\d+(?:[.,]\d+)?\s*(?:lần|x)\b)', r'<span class="kw-ratio">\1</span>', text)
+                parts[i] = text
+        return "".join(parts)
+
     def _markdown_to_html(self, md_text: str) -> str:
         """Simple and clean markdown parsing to HTML with support for markdown tables."""
+        md_text = self._sanitize_noise(md_text)
+        
         # Clean tables first
         html = self._parse_markdown_tables(md_text)
         
@@ -108,7 +161,10 @@ class HTMLExporter:
             else:
                 p_html.append(f'<p>{p_stripped}</p>')
                 
-        return '\n'.join(p_html)
+        html_out = '\n'.join(p_html)
+        html_out = self._convert_citations(html_out)
+        html_out = self._highlight_keywords(html_out)
+        return html_out
 
     def _split_text_and_takeaway(self, md_text: str) -> tuple[str, str]:
         """Split markdown into main body and chart takeaway based on headers."""
@@ -139,6 +195,8 @@ class HTMLExporter:
         output_filename: str = "A32_Financial_Report.html"
     ) -> str:
         """Compile analysis and charts into the final premium HTML file."""
+        self.citations_map = {}
+        
         # Read Vega-lite chart specifications
         chart_specs = {}
         for name, path in chart_paths.items():
@@ -195,22 +253,26 @@ class HTMLExporter:
         sec_liquidity_ratios = render_story_section("thanh-khoản", "Phần III - B", "Khả năng Thanh khoản & Hệ số Thanh toán", "liquidity_ratios", "chart-liquidity")
         sec_cash_flow = render_story_section("dòng-tiền", "Phần IV", "Phân tích Lưu chuyển Tiền tệ (Dòng tiền)", "cash_flow", "chart-cash-flow")
         
-        # Abstention section
-        abstention_content = sections.get("abstention_2022", "<p>Chưa thiết lập cơ chế từ chối.</p>")
-        abstention_html = self._markdown_to_html(abstention_content)
-        sec_abstention = f"""
-        <section id="cơ-chế-từ-chối" class="report-section">
-            <span class="section-tag">Kiểm soát chất lượng</span>
-            <h2>Cơ chế Từ chối Trả lời & Dữ liệu năm 2022</h2>
-            <div class="refusal-note">
-                <h4>Chính sách từ chối (Abstention Policy)</h4>
-                {abstention_html}
+        # Conclusions with Net Margin chart
+        sec_conclusions = render_story_section("kết-luận", "Phần V", "Kết luận chung & Khuyến nghị", "conclusions", "chart-net-margin")
+
+        # Citations section
+        if self.citations_map:
+            citations_li = "".join(f'<li style="margin-bottom: 8px; font-size: 0.9rem; color: var(--text-secondary);"><strong>[{num}]</strong> {cite}</li>' for cite, num in sorted(self.citations_map.items(), key=lambda x: x[1]))
+        else:
+            citations_li = '<li style="margin-bottom: 8px; font-size: 0.9rem; color: var(--text-secondary); font-style: italic;">Không có nguồn trích dẫn trực tiếp nào được sử dụng trong phiên bản tóm tắt này.</li>'
+            
+        sec_citations = f"""
+        <section id="danh-muc-trich-dan" class="report-section">
+            <span class="section-tag">Nguồn dữ liệu</span>
+            <h2>Danh mục Trích dẫn</h2>
+            <div class="section-block" style="padding: 1.5rem 2rem;">
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                    {citations_li}
+                </ul>
             </div>
         </section>
         """
-        
-        # Conclusions with Net Margin chart
-        sec_conclusions = render_story_section("kết-luận", "Phần V", "Kết luận chung & Khuyến nghị", "conclusions", "chart-net-margin")
 
         # Complete Premium HTML Template
         template = f"""<!DOCTYPE html>
@@ -571,20 +633,121 @@ class HTMLExporter:
             color: var(--text-primary);
         }}
         
-        /* Refusal Note */
-        .refusal-note {{
-            background: #fff7f7;
-            border-left: 4px solid var(--accent-red);
-            padding: 1.25rem 1.5rem;
-            border-radius: 0 10px 10px 0;
-            margin: 1.25rem 0;
-            border: 1px solid #fecaca;
+        /* Citation references */
+        .cite-ref {{
+            position: relative;
+            cursor: pointer;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin: 0 3px;
+            border: 1px solid #dbeafe;
+            vertical-align: super;
         }}
         
-        .refusal-note h4 {{
-            color: var(--accent-red);
-            margin-bottom: 0.4rem;
+        .cite-ref:hover {{
+            background: #1d4ed8;
+            color: white;
+            border-color: #1d4ed8;
+        }}
+        
+        /* Tooltip style resembling a browser link preview card */
+        .cite-tooltip {{
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 140%;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 10px;
+            padding: 10px 14px;
+            width: 250px;
+            z-index: 1000;
+            transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-align: left;
+            pointer-events: none;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }}
+        
+        .cite-ref:hover .cite-tooltip {{
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }}
+        
+        .cite-tooltip-header {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+        }}
+        
+        .cite-tooltip-nav {{
+            font-family: monospace;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+        }}
+        
+        .cite-tooltip-title {{
+            font-size: 0.8rem;
             font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }}
+        
+        .cite-tooltip-icon {{
+            font-size: 0.8rem;
+        }}
+        
+        .cite-tooltip-body {{
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }}
+        
+        .cite-tooltip-body strong {{
+            color: #1e293b;
+        }}
+        
+        /* Highlight words styling */
+        .kw-pct {{
+            color: var(--accent-purple);
+            background-color: rgba(124, 58, 237, 0.07);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-weight: 600;
+        }}
+        
+        .kw-money {{
+            color: #15803d;
+            background-color: rgba(22, 163, 74, 0.07);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-weight: 600;
+        }}
+        
+        .kw-ratio {{
+            color: #b45309;
+            background-color: rgba(217, 119, 6, 0.07);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-weight: 600;
         }}
         
         /* Scrollbar */
@@ -627,8 +790,8 @@ class HTMLExporter:
                     <li class="nav-item"><a href="#nguồn-vốn">Cơ cấu Nguồn vốn</a></li>
                     <li class="nav-item"><a href="#thanh-khoản">Khả năng Thanh khoản</a></li>
                     <li class="nav-item"><a href="#dòng-tiền">Dòng tiền tệ</a></li>
-                    <li class="nav-item"><a href="#cơ-chế-từ-chối">Thông tin năm 2022</a></li>
                     <li class="nav-item"><a href="#kết-luận">Kết luận & Khuyến nghị</a></li>
+                    <li class="nav-item"><a href="#danh-muc-trich-dan">Danh mục Trích dẫn</a></li>
                 </ul>
             </nav>
         </div>
@@ -659,8 +822,8 @@ class HTMLExporter:
         {sec_capital_structure}
         {sec_liquidity_ratios}
         {sec_cash_flow}
-        {sec_abstention}
         {sec_conclusions}
+        {sec_citations}
     </main>
 </div>
 
@@ -685,20 +848,42 @@ class HTMLExporter:
             container.innerHTML = `<div style="color: var(--text-secondary); text-align: center; padding: 2rem;">Không có dữ liệu biểu đồ</div>`;
             return;
         }}
-        vegaEmbed('#' + containerId, spec, opts).catch(err => {{
-            console.error("Lỗi vẽ biểu đồ " + containerId + ":", err);
-            container.innerHTML = `<div style="color: var(--accent-red); text-align: center; padding: 2rem; font-size: 0.9rem;">Không thể hiển thị biểu đồ: ${{err.message}}</div>`;
-        }});
+        try {{
+            vegaEmbed('#' + containerId, spec, opts).catch(err => {{
+                console.error("Lỗi vẽ biểu đồ " + containerId + ":", err);
+                container.innerHTML = `<div style="color: var(--accent-red); text-align: center; padding: 2rem; font-size: 0.9rem;">Không thể hiển thị biểu đồ: ${{err.message}}</div>`;
+            }});
+        }} catch (err) {{
+            console.error("Lỗi vẽ biểu đồ đồng bộ " + containerId + ":", err);
+            container.innerHTML = `<div style="color: var(--accent-red); text-align: center; padding: 2rem; font-size: 0.9rem;">Lỗi vẽ biểu đồ: ${{err.message}}</div>`;
+        }}
     }}
 
-    // Render all charts defensively
-    safeEmbedChart('chart-rev-prof', revProfSpec, embedOpts);
-    safeEmbedChart('chart-asset', assetSpec, embedOpts);
-    safeEmbedChart('chart-working-capital', workingCapitalSpec, embedOpts);
-    safeEmbedChart('chart-capital', capitalSpec, embedOpts);
-    safeEmbedChart('chart-liquidity', liquiditySpec, embedOpts);
-    safeEmbedChart('chart-cash-flow', cashFlowSpec, embedOpts);
-    safeEmbedChart('chart-net-margin', netMarginSpec, embedOpts);
+    // Render all charts defensively when vegaEmbed is ready
+    function initCharts(attempts = 0) {{
+        if (typeof vegaEmbed === 'undefined') {{
+            if (attempts < 50) {{
+                setTimeout(() => initCharts(attempts + 1), 100);
+            }} else {{
+                console.error("VegaEmbed library failed to load after 5s.");
+                document.querySelectorAll('.chart-container').forEach(c => {{
+                    c.innerHTML = `<div style="color: var(--accent-red); text-align: center; padding: 2rem; font-size: 0.9rem;">Lỗi: Thư viện biểu đồ (vegaEmbed) chưa được tải. Vui lòng tải lại trang.</div>`;
+                }});
+            }}
+            return;
+        }}
+        
+        safeEmbedChart('chart-rev-prof', revProfSpec, embedOpts);
+        safeEmbedChart('chart-asset', assetSpec, embedOpts);
+        safeEmbedChart('chart-working-capital', workingCapitalSpec, embedOpts);
+        safeEmbedChart('chart-capital', capitalSpec, embedOpts);
+        safeEmbedChart('chart-liquidity', liquiditySpec, embedOpts);
+        safeEmbedChart('chart-cash-flow', cashFlowSpec, embedOpts);
+        safeEmbedChart('chart-net-margin', netMarginSpec, embedOpts);
+    }}
+    
+    // Start chart initialization on window load
+    window.addEventListener('load', () => initCharts());
     
     // Scroll active link styling
     window.addEventListener('scroll', () => {{

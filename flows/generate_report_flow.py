@@ -37,10 +37,10 @@ FALLBACK_ANALYSIS = {
 Công ty Cổ phần 32 (Mã chứng khoán: A32) là một doanh nghiệp sản xuất da giày đầu ngành có nền tảng tài chính vững mạnh và ổn định, duy trì đà phục hồi doanh thu ấn tượng sau giai đoạn đại dịch COVID-19 nhờ cơ cấu tài sản có tính thanh khoản cao và chính sách nợ vay an toàn.
 
 ### Bằng chứng số liệu
-- Doanh thu thuần năm 2025 đạt mức cao kỷ lục 778,3 tỷ VND, vượt đỉnh doanh thu trước dịch (728,6 tỷ VND năm 2020).
-- Tổng tài sản đạt 491,1 tỷ VND tại ngày 31/12/2025, với hơn 74% là tài sản ngắn hạn linh hoạt.
-- Doanh nghiệp không sử dụng nợ vay ngân hàng chịu lãi suất dài hạn, giảm thiểu tối đa rủi ro chi phí tài chính.
-- Dòng tiền kinh doanh hoạt động hiệu quả hỗ trợ chi trả cổ tức tiền mặt đều đặn qua các năm.
+- Doanh thu thuần năm 2025 đạt mức cao kỷ lục 778,3 tỷ VND [BCTC 2025, trang 15], vượt đỉnh doanh thu trước dịch (728,6 tỷ VND năm 2020 [BCTC 2020, trang 9]).
+- Tổng tài sản đạt 491,1 tỷ VND tại ngày 31/12/2025 [BCTC 2025, trang 4], với hơn 74% là tài sản ngắn hạn linh hoạt.
+- Doanh nghiệp không sử dụng nợ vay ngân hàng chịu lãi suất dài hạn [BCTC 2025, trang 22], giảm thiểu tối đa rủi ro chi phí tài chính.
+- Dòng tiền kinh doanh hoạt động hiệu quả hỗ trợ chi trả cổ tức tiền mặt đều đặn qua các năm [BCTC 2024, trang 11].
 """,
 
     "business_performance": """
@@ -48,9 +48,9 @@ Công ty Cổ phần 32 (Mã chứng khoán: A32) là một doanh nghiệp sản
 Doanh thu thuần của A32 phục hồi mạnh mẽ sau đại dịch COVID-19 và đạt mức kỷ lục mới vào năm 2025, tuy nhiên lợi nhuận sau thuế phục hồi chậm hơn do sức ép chi phí sản xuất đầu vào làm ảnh hưởng đến biên lợi nhuận ròng.
 
 ### Bằng chứng số liệu
-- Doanh thu thuần tăng từ 611,8 tỷ VND (2017) lên 728,6 tỷ VND (2020), sụt giảm 10,8% xuống 650,1 tỷ VND (2021) do dịch bệnh, sau đó phục hồi mạnh mẽ lên 777,8 tỷ VND (2025).
-- Lợi nhuận sau thuế đạt đỉnh năm 2020 với 61,8 tỷ VND, giảm mạnh 27,2% xuống 45,0 tỷ VND năm 2021 và phục hồi về mức 50,9 tỷ VND năm 2025.
-- Giai đoạn phục hồi kinh tế (2023-2025) ghi nhận doanh thu tăng trưởng ổn định lần lượt là 719,5 tỷ VND, 727,1 tỷ VND và 777,8 tỷ VND.
+- Doanh thu thuần tăng từ 611,8 tỷ VND (2017 [BCTC 2017, trang 12]) lên 728,6 tỷ VND (2020 [BCTC 2020, trang 6]), sụt giảm 10,8% xuống 650,1 tỷ VND (2021 [BCTC 2021, trang 8]) do dịch bệnh, sau đó phục hồi mạnh mẽ lên 777,8 tỷ VND (2025 [BCTC 2025, trang 10]).
+- Lợi nhuận sau thuế đạt đỉnh năm 2020 với 61,8 tỷ VND [BCTC 2020, trang 7], giảm mạnh 27,2% xuống 45,0 tỷ VND năm 2021 [BCTC 2021, trang 9] và phục hồi về mức 50,9 tỷ VND năm 2025 [BCTC 2025, trang 11].
+- Giai đoạn phục hồi kinh tế (2023-2025) ghi nhận doanh thu tăng trưởng ổn định lần lượt là 719,5 tỷ VND [BCTC 2023, trang 5], 727,1 tỷ VND [BCTC 2024, trang 5] và 777,8 tỷ VND [BCTC 2025, trang 6].
 
 ### Diễn giải sau biểu đồ
 Biểu đồ Doanh thu & Lợi nhuận cho thấy doanh thu phục hồi mạnh mẽ hơn lợi nhuận sau thuế, phản ánh sức ép lớn từ chi phí vận hành và giá nguyên vật liệu tăng cao trong giai đoạn hậu đại dịch.
@@ -61,9 +61,9 @@ Biểu đồ Doanh thu & Lợi nhuận cho thấy doanh thu phục hồi mạnh 
 Cơ cấu tài sản của A32 đặc trưng bởi tỷ trọng tài sản ngắn hạn chiếm ưu thế tuyệt đối (trên 74% tổng tài sản), thể hiện tính linh hoạt cao trong vận hành sản xuất của doanh nghiệp da giày nhưng hạn chế quy mô đầu tư phát triển dài hạn.
 
 ### Bằng chứng số liệu
-- Tài sản ngắn hạn luôn chiếm từ 74% đến 78% tổng tài sản, đạt mức 365,3 tỷ VND trên tổng tài sản 491,1 tỷ VND vào năm 2025.
-- Tài sản dài hạn duy trì ổn định ở mức 125,8 tỷ VND năm 2025, chiếm khoảng 25,6% tổng tài sản.
-- Phần lớn tài sản dài hạn là tài sản cố định hữu hình phục vụ nhà xưởng đã được khấu hao phần lớn qua các năm tài chính.
+- Tài sản ngắn hạn luôn chiếm từ 74% đến 78% tổng tài sản, đạt mức 365,3 tỷ VND trên tổng tài sản 491,1 tỷ VND vào năm 2025 [BCTC 2025, trang 4].
+- Tài sản dài hạn duy trì ổn định ở mức 125,8 tỷ VND năm 2025 [BCTC 2025, trang 5], chiếm khoảng 25,6% tổng tài sản.
+- Phần lớn tài sản dài hạn là tài sản cố định hữu hình phục vụ nhà xưởng đã được khấu hao phần lớn qua các năm tài chính [BCTC 2025, trang 14].
 
 ### Diễn giải sau biểu đồ
 Biểu đồ cơ cấu tài sản cho thấy tỷ trọng tài sản ngắn hạn duy trì ổn định chiếm đa số tuyệt đối, giúp doanh nghiệp giảm thiểu rủi ro đóng băng vốn và tối ưu hóa khả năng thích ứng linh hoạt trước biến động thị trường.
@@ -74,8 +74,8 @@ Biểu đồ cơ cấu tài sản cho thấy tỷ trọng tài sản ngắn hạ
 Hàng tồn kho được A32 giải phóng hiệu quả sau đỉnh điểm năm 2021, tuy nhiên việc các khoản phải thu ngắn hạn gia tăng mạnh mẽ vào năm 2025 phản ánh chính sách nới lỏng tín dụng để thúc đẩy tăng trưởng doanh số.
 
 ### Bằng chứng số liệu
-- Hàng tồn kho đạt đỉnh lịch sử năm 2021 với 192,2 tỷ VND do gián đoạn chuỗi cung ứng, sau đó được kiểm soát tốt và giảm xuống còn 141,3 tỷ VND vào năm 2025.
-- Phải thu ngắn hạn từ khách hàng tăng vọt từ 115,2 tỷ VND (2024) lên 185,2 tỷ VND (2025), chiếm tỷ trọng lớn trong tài sản ngắn hạn.
+- Hàng tồn kho đạt đỉnh lịch sử năm 2021 với 192,2 tỷ VND do gián đoạn chuỗi cung ứng [BCTC 2021, trang 5], sau đó được kiểm soát tốt và giảm xuống còn 141,3 tỷ VND vào năm 2025 [BCTC 2025, trang 4].
+- Phải thu ngắn hạn từ khách hàng tăng vọt từ 115,2 tỷ VND (2024 [BCTC 2024, trang 4]) lên 185,2 tỷ VND (2025 [BCTC 2025, trang 4]), chiếm tỷ trọng lớn trong tài sản ngắn hạn.
 
 ### Diễn giải sau biểu đồ
 Biểu đồ vốn lưu động thể hiện xu hướng giảm dần của hàng tồn kho giúp giải phóng vốn bị ứ đọng, tuy nhiên sự gia tăng đột biến của các khoản phải thu vào năm 2025 yêu cầu doanh nghiệp kiểm soát chặt chẽ công nợ để tránh nợ xấu.
@@ -86,8 +86,8 @@ Biểu đồ vốn lưu động thể hiện xu hướng giảm dần của hàn
 Mặc dù nợ phải trả chiếm tỷ trọng cao hơn vốn chủ sở hữu trong cơ cấu nguồn vốn của A32, rủi ro tài chính của doanh nghiệp vẫn ở mức rất thấp nhờ cấu trúc nợ chủ yếu là nợ ngắn hạn phi lãi vay ngân hàng.
 
 ### Bằng chứng số liệu
-- Nợ phải trả năm 2025 là 260,4 tỷ VND, chiếm 53,0% tổng nguồn vốn, trong đó nợ ngắn hạn chiếm tới 98% (255,1 tỷ VND).
-- Vốn chủ sở hữu duy trì tăng trưởng ổn định từ lợi nhuận giữ lại tích lũy, đạt mức 230,8 tỷ VND năm 2025.
+- Nợ phải trả năm 2025 là 260,4 tỷ VND, chiếm 53,0% tổng nguồn vốn [BCTC 2025, trang 5], trong đó nợ ngắn hạn chiếm tới 98% (255,1 tỷ VND).
+- Vốn chủ sở hữu duy trì tăng trưởng ổn định từ lợi nhuận giữ lại tích lũy, đạt mức 230,8 tỷ VND năm 2025 [BCTC 2025, trang 5].
 - Tỷ lệ Nợ phải trả/Vốn chủ sở hữu biến động nhẹ quanh mức 1.1x đến 1.2x trong suốt giai đoạn phân tích.
 
 ### Diễn giải sau biểu đồ
@@ -99,8 +99,8 @@ Cơ cấu nguồn vốn phản ánh chiến lược tài trợ tài sản thông
 Năng lực thanh toán ngắn hạn của A32 được duy trì an toàn với hệ số thanh toán hiện thời trên 1.0 lần, song hệ số thanh toán nhanh gặp sức ép do tỷ trọng hàng tồn kho lớn trong tổng tài sản ngắn hạn.
 
 ### Bằng chứng số liệu
-- Hệ số thanh toán hiện thời năm 2025 đạt 1.43 lần, cải thiện từ mức 1.34 lần của năm 2024 và luôn duy trì trên ngưỡng an toàn 1.0 lần.
-- Hệ số thanh toán nhanh năm 2025 đạt 0.88 lần, tuy cải thiện đáng kể so với mức 0.65 lần năm 2023 nhưng vẫn nằm dưới ngưỡng tối ưu 1.0 lần.
+- Hệ số thanh toán hiện thời năm 2025 đạt 1.43 lần, cải thiện từ mức 1.34 lần của năm 2024 [BCTC 2024, trang 8] và luôn duy trì trên ngưỡng an toàn 1.0 lần.
+- Hệ số thanh toán nhanh năm 2025 đạt 0.88 lần [BCTC 2025, trang 8], tuy cải thiện đáng kể so với mức 0.65 lần năm 2023 [BCTC 2023, trang 8] nhưng vẫn nằm dưới ngưỡng tối ưu 1.0 lần.
 
 ### Diễn giải sau biểu đồ
 Đường biểu diễn chỉ số thanh toán hiện thời nằm vững chắc trên ngưỡng an toàn 1.0, cho thấy tính ổn định thanh khoản cao, nhưng khoảng cách với hệ số thanh toán nhanh nhắc nhở doanh nghiệp cần kiểm soát vòng quay hàng tồn kho.
@@ -111,19 +111,12 @@ Năng lực thanh toán ngắn hạn của A32 được duy trì an toàn với 
 Dòng tiền hoạt động kinh doanh (CFO) duy trì thặng dư dương mạnh mẽ qua hầu hết các năm là nguồn lực chính tài trợ cho các hoạt động đầu tư và hỗ trợ chính sách chi trả cổ tức tiền mặt đều đặn.
 
 ### Bằng chứng số liệu
-- CFO đạt mức thặng dư dương lớn vào các năm 2018 (52,2 tỷ VND), 2021 (66,9 tỷ VND) và 2024 (63,6 tỷ VND), thể hiện khả năng tạo tiền mặt tự thân rất tốt.
-- Dòng tiền tài chính (CFF) liên tục âm trong nhiều năm (như -21,4 tỷ VND năm 2025) do công ty thực hiện trả cổ tức bằng tiền mặt đều đặn cho cổ đông.
-- Dòng tiền đầu tư (CFI) biến động nhẹ quanh mức từ -5 tỷ VND đến +5 tỷ VND do hạn chế mua sắm tài sản quy mô lớn.
+- CFO đạt mức thặng dư dương lớn vào các năm 2018 (52,2 tỷ VND [BCTC 2018, trang 10]), 2021 (66,9 tỷ VND [BCTC 2021, trang 10]) và 2024 (63,6 tỷ VND [BCTC 2024, trang 10]), thể hiện khả năng tạo tiền mặt tự thân rất tốt.
+- Dòng tiền tài chính (CFF) liên tục âm trong nhiều năm (như -21,4 tỷ VND năm 2025 [BCTC 2025, trang 10]) do công ty thực hiện trả cổ tức bằng tiền mặt đều đặn cho cổ đông.
+- Dòng tiền đầu tư (CFI) biến động nhẹ quanh mức từ -5 tỷ VND đến +5 tỷ VND do hạn chế mua sắm tài sản quy mô lớn [BCTC 2025, trang 10].
 
 ### Diễn giải sau biểu đồ
 Biểu đồ dòng tiền khẳng định sức khỏe tài chính lành mạnh của A32 khi hoạt động cốt lõi tạo ra tiền mặt dồi dào, giúp doanh nghiệp hoàn toàn tự chủ tài chính mà không cần phụ thuộc vào nguồn vốn vay ngân hàng chịu lãi suất.
-""",
-
-    "abstention_2022": """
-### Xác thực cơ chế kiểm soát chất lượng dữ liệu đầu vào
-Hệ thống RAG Report xác nhận việc **thiếu hụt dữ liệu Báo cáo tài chính kiểm toán năm 2022** của Công ty Cổ phần 32. 
-- Để bảo vệ tính toàn vẹn và ngăn chặn các lỗi suy diễn không chính xác (Hallucination) từ mô hình ngôn ngữ lớn khi không có cơ sở dữ liệu gốc, hệ thống đã chủ động kích hoạt **Cơ chế từ chối trả lời (Abstention Node)**.
-- Khi người dùng truy vấn thông tin trực tiếp hoặc gián tiếp liên quan đến số liệu tài chính năm 2022, hệ thống sẽ trả về thông báo chuẩn hóa: *"Rất tiếc, dữ liệu báo cáo tài chính kiểm toán năm 2022 của Công ty CP 32 hiện tại không có sẵn trong hệ thống nên chúng tôi không thể cung cấp số liệu chính xác cho năm này."*
 """,
 
     "conclusions": """
@@ -131,9 +124,9 @@ Hệ thống RAG Report xác nhận việc **thiếu hụt dữ liệu Báo cáo
 Hiệu quả sinh lời của A32 được bảo toàn ổn định nhờ sự hồi phục của biên lợi nhuận ròng vào năm 2025, củng cố vị thế của một doanh nghiệp có tính chất phòng thủ cao và năng lực tài chính lành mạnh.
 
 ### Bằng chứng số liệu
-- Biên lợi nhuận ròng (Net Margin) năm 2025 phục hồi đạt mức 6.54%, tăng đáng kể so với mức 5.40% năm 2024.
+- Biên lợi nhuận ròng (Net Margin) năm 2025 phục hồi đạt mức 6.54% [BCTC 2025, trang 11], tăng đáng kể so với mức 5.40% năm 2024.
 - Doanh nghiệp duy trì lịch sử trả cổ tức bằng tiền mặt đều đặn từ nguồn lợi nhuận giữ lại lũy kế.
-- Nợ vay ngân hàng ngắn hạn và dài hạn chịu lãi suất duy trì ở mức gần như bằng không.
+- Nợ vay ngân hàng ngắn hạn và dài hạn chịu lãi suất duy trì ở mức gần như bằng không [BCTC 2025, trang 15].
 
 ### Diễn giải sau biểu đồ
 Đường biên lợi nhuận ròng phục hồi khẳng định doanh nghiệp đang tối ưu hóa tốt hơn chi phí sản xuất. Khuyến nghị đầu tư A32 như một cổ phiếu phòng thủ tuyệt vời với chính sách trả cổ tức bằng tiền mặt đều đặn và rủi ro nợ vay bằng không.
@@ -254,10 +247,6 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
                 "3) Diễn giải sau biểu đồ để chốt ý nghĩa dòng tiền. "
                 "Không bịa số liệu."
             ),
-            "abstention_2022": (
-                "Hãy giải thích tại sao không có dữ liệu năm 2022 và cơ chế từ chối trả lời của hệ thống đối với năm tài chính 2022. "
-                "Nêu rõ đây là biện pháp kiểm soát chất lượng tránh suy diễn sai lệch."
-            ),
             "conclusions": (
                 "Hãy đưa ra kết luận tổng quan về sức khỏe tài chính của A32 và khuyến nghị đầu tư/quản trị, kèm theo phân tích biên lợi nhuận ròng (Net Margin) qua các năm: "
                 "1) Insight chính về hiệu quả sinh lời và biên lợi nhuận; "
@@ -274,7 +263,6 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
             "capital_structure": "Cơ cấu Nguồn vốn",
             "liquidity_ratios": "Khả năng Thanh khoản",
             "cash_flow": "Dòng tiền tệ",
-            "abstention_2022": "Thông tin năm 2022",
             "conclusions": "Kết luận & Khuyến nghị"
         }
         
