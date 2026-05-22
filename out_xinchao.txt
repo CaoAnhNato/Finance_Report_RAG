@@ -2,11 +2,8 @@ PROMPT:
 Xin chào!
 
 CONTENT:
-Xin chào! Rất vui được gặp bạn. Tôi có thể giúp gì cho bạn hôm nay?
+Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?
 
 REASONING:
-Người dùng chào hỏi bằng tiếng Việt. Cần trả lời bằng tiếng Việt một cách thân thiện.
-
-Chào hỏi là tương tác đơn giản, có thể trả lời bằng vài cách như "Chào bạn!" hoặc "Xin chào! Bạn cần giúp gì không?".
-
-Chọn cách trả lời tự nhiên và thân thiện, mở đầu cuộc trò chuyện.
+Hỏi: Xin chào!
+Câu trả lời: Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?

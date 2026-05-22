@@ -5,6 +5,8 @@ CONTENT:
 
 
 REASONING:
-Cần giải thích khái niệm "phân tích tài chính" một cách rõ ràng, dễ hiểu và có hệ thống. Đây là câu hỏi mở, nên cần định nghĩa, đề cập các khía cạnh chính, mục đích, phương pháp, công cụ và đối tượng sử dụng. Có thể thêm vai trò trong đầu tư và kết luận.
+Chúng ta cần trả lời câu hỏi "Phân tích tài chính là gì?" bằng tiếng Việt. Đây là một câu hỏi định nghĩa, khá cơ bản. Cần đưa ra câu trả lời chi tiết, bao gồm định nghĩa, mục đích, các loại phân tích tài chính, công cụ và phương pháp. Người dùng có thể là sinh viên hoặc người mới tìm hiểu, nên trả lời rõ ràng, có cấu trúc.
 
-Sẽ trả lời bằng tiếng Việt, giọng điệu chuyên nghiệp nhưng dễ tiếp thu. Cấu trúc: mở đầu định nghĩa đơn giản, sau đó đi sâu vào các thành phần: phân tích cơ bản và kỹ thuật, các báo cáo tài chính, tỷ số, mục đích sử dụng của
+Hãy phác thảo:
+
+1. Định nghĩa: Phân tích tài chính là quá trình đánh giá các dự án, ngân sách, báo cáo tài chính và các giao dịch tài ch

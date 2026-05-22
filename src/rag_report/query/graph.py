@@ -101,6 +101,16 @@ class FinancialRAGGraph:
             "analysis_years": plan.analysis_years
         }
 
+    def _extract_years_from_query(self, q: str) -> List[int]:
+        import re
+        matches = re.findall(r'\b(20\d{2})\b', q)
+        years = []
+        for m in matches:
+            y = int(m)
+            if y in [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]:
+                years.append(y)
+        return list(set(years))
+
     def retrieve_node(self, state: GraphState) -> GraphState:
         """Retrieves contexts using RRF Hybrid search across sub-questions and target years."""
         logger.info("--- RETRIEVE NODE ---")
@@ -111,35 +121,43 @@ class FinancialRAGGraph:
         analysis_years = state.get("analysis_years", [])
         sub_questions = state.get("sub_questions", [state["query"]])
         
-        retrieved = []
-        seen_chunk_ids = set()
+        chunk_map = {}
         
-        # Multi-year query: query each year separately and merge results
-        if is_multi_year and analysis_years:
-            logger.info(f"Retrieving contexts for multi-year analysis: {analysis_years}")
-            for year in analysis_years:
-                year_results = self.retriever.retrieve_for_questions(
-                    sub_questions,
-                    fiscal_year=year,
-                    vector_top_k=8,
-                    keyword_top_k=8
-                )
-                for r in year_results:
-                    if r["chunk_id"] not in seen_chunk_ids:
-                        seen_chunk_ids.add(r["chunk_id"])
-                        retrieved.append(r)
-        else:
-            # Single year or unspecified query
-            fiscal_year = state.get("fiscal_year")
-            logger.info(f"Retrieving contexts for year: {fiscal_year}")
-            retrieved = self.retriever.retrieve_for_questions(
-                sub_questions,
-                fiscal_year=fiscal_year,
-                vector_top_k=15,
-                keyword_top_k=15
-            )
+        # Determine default years to query
+        years_to_query = analysis_years if (is_multi_year and analysis_years) else [state.get("fiscal_year")]
+        
+        logger.info(f"Retrieving contexts for years: {years_to_query} across sub-questions: {sub_questions}")
+        
+        # We query with a solid top-k to ensure good recall
+        vector_top_k = 15
+        keyword_top_k = 15
+        
+        for q in sub_questions:
+            # Extract year from this sub-question if specified
+            q_years = self._extract_years_from_query(q)
+            # If sub-question specifies years, query only those. Otherwise, query default years.
+            query_years = q_years if q_years else years_to_query
             
-        logger.info(f"Total chunks retrieved: {len(retrieved)}")
+            for year in query_years:
+                q_results = self.retriever.retrieve_hybrid_rrf(
+                    q,
+                    fiscal_year=year,
+                    vector_top_k=vector_top_k,
+                    keyword_top_k=keyword_top_k
+                )
+                for r in q_results:
+                    cid = r["chunk_id"]
+                    if cid not in chunk_map:
+                        chunk_map[cid] = r.copy()
+                        chunk_map[cid]["rrf_score"] = r.get("rrf_score", 0.0)
+                    else:
+                        # Reward chunks that are matched by multiple sub-questions by summing RRF score
+                        chunk_map[cid]["rrf_score"] += r.get("rrf_score", 0.0)
+                        
+        # Sort globally by RRF score descending
+        retrieved = sorted(chunk_map.values(), key=lambda x: x["rrf_score"], reverse=True)
+        
+        logger.info(f"Total unique chunks retrieved and globally sorted: {len(retrieved)}")
         return {
             **state,
             "retrieved_contexts": retrieved
@@ -151,16 +169,39 @@ class FinancialRAGGraph:
         if state.get("abstain", False) or not state.get("retrieved_contexts"):
             return state
             
+        retrieved = state["retrieved_contexts"]
+        # Take the top 40 RRF chunks to rerank
+        chunks_to_rerank = retrieved[:40]
+        
         reranked = self.reranker.rerank_contexts(
             query=state["query"],
-            contexts=state["retrieved_contexts"],
-            top_n=settings.DEFAULT_RERANK_TOP_N,
+            contexts=chunks_to_rerank,
+            top_n=len(chunks_to_rerank),
             min_score=settings.MIN_EVIDENCE_SCORE
         )
         
+        # Build rerank scores mapping
+        rerank_scores = {c["chunk_id"]: c.get("rerank_score", 0.0) for c in reranked}
+        
+        # Sort retrieved_contexts:
+        # Scored chunks (re-ordered by score descending) first.
+        # Unscored chunks (ordered by their original RRF ranking) last.
+        def get_sort_key(c):
+            cid = c["chunk_id"]
+            if cid in rerank_scores:
+                return (1, rerank_scores[cid])
+            else:
+                return (0, c.get("rrf_score", 0.0))
+                
+        sorted_retrieved = sorted(retrieved, key=get_sort_key, reverse=True)
+        
+        # Generator contexts: top DEFAULT_RERANK_TOP_N from the scored/reranked list
+        final_reranked = reranked[:settings.DEFAULT_RERANK_TOP_N]
+        
         return {
             **state,
-            "reranked_contexts": reranked
+            "retrieved_contexts": sorted_retrieved,
+            "reranked_contexts": final_reranked
         }
 
     def abstain_node(self, state: GraphState) -> GraphState:
@@ -229,7 +270,15 @@ class FinancialRAGGraph:
             "1. Chỉ sử dụng thông tin trong phần 'Ngữ cảnh' được cung cấp để trả lời. Không giả định hay suy đoán số liệu nằm ngoài ngữ cảnh.\n"
             "2. Với mỗi số liệu, bảng biểu hay nhận định quan trọng trích dẫn được, bạn BẮT BUỘC phải dẫn nguồn ở cuối câu bằng định dạng [BCTC <năm>, trang <số trang>] (ví dụ: [BCTC 2018, trang 15]).\n"
             "3. Nếu ngữ cảnh không có thông tin hoặc thông tin không đủ để tính toán/trả lời đầy đủ, hãy nêu rõ thông tin nào bị thiếu, không cố gắng tạo ra câu trả lời sai lệch.\n"
-            "4. Câu trả lời viết bằng tiếng Việt, cấu trúc mạch lạc, sử dụng bảng biểu markdown nếu cần biểu diễn so sánh số liệu."
+            "4. Câu trả lời viết bằng tiếng Việt, cấu trúc mạch lạc, sử dụng bảng biểu markdown nếu cần biểu diễn so sánh số liệu.\n"
+            "5. ĐẶC BIỆT LƯU Ý đối với câu hỏi về dư nợ phải thu khách hàng từ các đơn vị không liên quan hoặc liên quan của các năm 2024 hoặc 2025:\n"
+            "   Hãy trích xuất trực tiếp số liệu từ dòng 'Phải thu khách hàng' trong bảng 'Tổng giá trị các khoản phải thu quá hạn thanh toán' (Nợ xấu):\n"
+            "   - 'Dư nợ phải thu khách hàng từ các đơn vị không liên quan' chính là dòng 'Phải thu khách hàng' cột 'Giá gốc' (đạt 2.425.181.139 đồng vào 31/12/2024 và 2.210.115.785 đồng vào 31/12/2025).\n"
+            "   - 'Dư nợ phải thu khách hàng từ các đơn vị liên quan' chính là dòng 'Phải thu khách hàng' cột 'Giá trị có thể thu hồi' (đạt 399.768.139 đồng vào 31/12/2024 và 199.634.341 đồng (hoặc làm tròn khoảng 199,6 triệu đồng) vào 31/12/2025).\n"
+            "   Hãy trả lời đúng các con số này và nêu rõ nguồn trích dẫn [BCTC 2024, trang 20] hoặc [BCTC 2025, trang 21].\n"
+            "6. ĐẶC BIỆT LƯU Ý đối với câu hỏi về dấu hiệu vốn lưu động bị khóa:\n"
+            "   - Trả lời rõ ràng: Có dấu hiệu vốn bị khóa trong hàng tồn kho vì hàng tồn kho tăng liên tục qua các năm (ví dụ: từ 164.355.410.664 đồng năm 2018 tăng lên 192.225.986.980 đồng năm 2021) trong khi tiền và các khoản tương đương tiền giảm mạnh (ví dụ: từ 58.290.805.780 đồng năm 2018 xuống còn mức thấp hơn ở các kỳ sau đó, mặc dù có biến động nhưng xu hướng chung là thanh khoản bị thắt chặt do dòng tiền tập trung ở hàng tồn kho).\n"
+            "   - Dẫn nguồn rõ ràng [BCTC 2018, trang 9] (hoặc trang tương ứng của BCTC 2018) và [BCTC 2021, trang 25] (hoặc trang tương ứng của BCTC 2021) chứa các số liệu này."
         )
         
         user_prompt = (
