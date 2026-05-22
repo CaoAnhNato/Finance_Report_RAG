@@ -286,8 +286,21 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
             
             def custom_progress(step, msg):
                 show_progress(step, f"[{title}] {msg}")
-                
-            result = graph.run(query, on_progress=custom_progress)
+
+            ERROR_TOKENS = ["Đã xảy ra lỗi hệ thống", "lỗi hệ thống"]
+            MAX_SECTION_RETRIES = 3
+            result = None
+            for attempt in range(1, MAX_SECTION_RETRIES + 1):
+                if attempt > 1:
+                    cooldown = 30
+                    logger.warning(f"Section '{key}' returned error/empty answer. Retry {attempt}/{MAX_SECTION_RETRIES} after {cooldown}s cooldown...")
+                    time.sleep(cooldown)
+                result = graph.run(query, on_progress=custom_progress)
+                answer = result.get("answer", "")
+                if answer and not any(tok in answer for tok in ERROR_TOKENS):
+                    break
+                logger.warning(f"Section '{key}' attempt {attempt} produced invalid answer: '{answer[:80]}...'")
+
             sections[key] = result["answer"]
             
             # Cool down to avoid rate limits / 401 error from proxies on subsequent requests

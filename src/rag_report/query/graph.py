@@ -2,7 +2,7 @@ import logging
 from typing import TypedDict, List, Dict, Any, Optional
 from langgraph.graph import StateGraph, START, END
 from openai import OpenAI
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
+from tenacity import retry, stop_never, wait_exponential, retry_if_exception_type, before_sleep_log
 
 from src.rag_report.config import settings
 from src.rag_report.query.planner import QueryPlanner, QueryPlan
@@ -234,13 +234,12 @@ class FinancialRAGGraph:
 
     @retry(
         retry=retry_if_exception_type(Exception),
-        stop=stop_after_attempt(6),
-        wait=wait_exponential(multiplier=3, min=10, max=45),
-        before_sleep=before_sleep_log(logger, logging.WARNING),
-        reraise=True
+        stop=stop_never,
+        wait=wait_exponential(multiplier=3, min=10, max=60),
+        before_sleep=before_sleep_log(logger, logging.WARNING)
     )
     def _call_generator_api(self, system_prompt: str, user_prompt: str) -> str:
-        """Call report LLM model with retry mechanism using streaming to prevent proxy timeouts."""
+        """Call report LLM model with unlimited retry using streaming to prevent proxy timeouts."""
         response = self.llm_client.chat.completions.create(
             model=settings.REPORT_MODEL,
             messages=[
@@ -255,7 +254,10 @@ class FinancialRAGGraph:
                 delta = chunk.choices[0].delta.content
                 if delta:
                     collected_chunks.append(delta)
-        return "".join(collected_chunks).strip()
+        result = "".join(collected_chunks).strip()
+        if not result:
+            raise ValueError("LLM returned empty response. Retrying...")
+        return result
 
     def generate_node(self, state: GraphState) -> GraphState:
         """LLM generates final answer with citations from the reranked contexts."""
@@ -305,18 +307,11 @@ class FinancialRAGGraph:
             "Câu trả lời của bạn:"
         )
         
-        try:
-            answer = self._call_generator_api(system_prompt, user_prompt)
-            return {
-                **state,
-                "answer": answer
-            }
-        except Exception as e:
-            logger.error(f"Failed to generate answer after retries: {str(e)}")
-            return {
-                **state,
-                "answer": "Đã xảy ra lỗi hệ thống khi sinh câu trả lời."
-            }
+        answer = self._call_generator_api(system_prompt, user_prompt)
+        return {
+            **state,
+            "answer": answer
+        }
 
     # --- Routing functions ---
     

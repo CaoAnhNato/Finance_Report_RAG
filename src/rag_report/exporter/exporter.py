@@ -230,17 +230,20 @@ class HTMLExporter:
     
     <style>
         :root {{
-            --bg-color: #0b0f19;
-            --card-bg: rgba(17, 24, 39, 0.7);
-            --border-color: rgba(255, 255, 255, 0.08);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-purple: #8b5cf6;
-            --accent-orange: #f59e0b;
-            --accent-red: #ef4444;
-            --accent-glow: rgba(59, 130, 246, 0.12);
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --border-color: #dde3ec;
+            --text-primary: #1e293b;
+            --text-secondary: #4b5a6e;
+            --accent-blue: #1d4ed8;
+            --accent-green: #16a34a;
+            --accent-purple: #7c3aed;
+            --accent-orange: #d97706;
+            --accent-red: #dc2626;
+            --accent-glow: rgba(29, 78, 216, 0.08);
+            --sidebar-bg: #ffffff;
+            --header-gradient-start: #1e3a5f;
+            --header-gradient-end: #2563eb;
         }}
         
         * {{
@@ -253,11 +256,7 @@ class HTMLExporter:
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
-            line-height: 1.65;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
-            background-attachment: fixed;
+            line-height: 1.7;
         }}
         
         /* Layout wrapper */
@@ -268,40 +267,42 @@ class HTMLExporter:
         
         /* Sidebar Navigation */
         .sidebar {{
-            width: 280px;
-            background: rgba(10, 15, 26, 0.85);
-            backdrop-filter: blur(20px);
+            width: 270px;
+            background: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
             position: fixed;
             height: 100vh;
-            padding: 2.5rem 1.5rem;
+            padding: 2rem 1.25rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             z-index: 100;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+            overflow-y: auto;
         }}
         
         .logo-section {{
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }}
         
         .logo-badge {{
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
             color: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 8px;
+            padding: 0.45rem 0.75rem;
+            border-radius: 6px;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }}
         
         .logo-title {{
             font-weight: 700;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
         }}
@@ -310,124 +311,125 @@ class HTMLExporter:
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.25rem;
         }}
         
         .nav-item a {{
             display: flex;
             align-items: center;
-            padding: 0.75rem 1rem;
+            padding: 0.6rem 0.9rem;
             color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 500;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
             border: 1px solid transparent;
         }}
         
         .nav-item a:hover, .nav-item.active a {{
-            color: var(--text-primary);
-            background: rgba(59, 130, 246, 0.08);
-            border-color: rgba(59, 130, 246, 0.2);
-            padding-left: 1.25rem;
+            color: var(--accent-blue);
+            background: rgba(29, 78, 216, 0.07);
+            border-color: rgba(29, 78, 216, 0.15);
         }}
         
         .sidebar-footer {{
-            color: #6b7280;
-            font-size: 0.8rem;
+            color: #94a3b8;
+            font-size: 0.78rem;
             border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
+            padding-top: 1rem;
         }}
         
         /* Main Content */
         .main-content {{
-            margin-left: 280px;
+            margin-left: 270px;
             flex: 1;
-            padding: 3rem 4rem;
+            padding: 2.5rem 3.5rem;
             max-width: 1200px;
         }}
         
         /* Header Hero */
         .report-header {{
-            margin-bottom: 3.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            color: white;
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 24px rgba(29,78,216,0.18);
         }}
         
         .company-tag {{
             display: inline-block;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent-blue);
-            padding: 0.25rem 0.75rem;
+            background: rgba(255,255,255,0.18);
+            color: #e0e7ff;
+            padding: 0.2rem 0.75rem;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 600;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.25);
         }}
         
         .report-title {{
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
             font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+            line-height: 1.25;
         }}
         
         .report-meta {{
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.9rem;
             display: flex;
             gap: 2rem;
+            flex-wrap: wrap;
         }}
         
         .meta-item strong {{
-            color: var(--text-primary);
+            color: #ffffff;
         }}
         
         /* Section Cards */
         .report-section {{
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: box-shadow 0.2s ease;
         }}
         
         .report-section:hover {{
-            transform: translateY(-4px);
-            box-shadow: 0 15px 35px var(--accent-glow);
-            border-color: rgba(59, 130, 246, 0.15);
+            box-shadow: 0 6px 20px rgba(29,78,216,0.1);
         }}
         
         .section-tag {{
             color: var(--accent-blue);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             display: block;
         }}
         
         .report-section h2 {{
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
             font-family: 'Outfit', sans-serif;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             color: var(--text-primary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.75rem;
         }}
         
         .report-section p {{
             color: var(--text-secondary);
-            margin-bottom: 1.25rem;
-            font-size: 1.05rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
         }}
         
         .report-section strong {{
@@ -438,7 +440,7 @@ class HTMLExporter:
         .section-block {{
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.25rem;
         }}
         
         .section-text {{
@@ -446,13 +448,13 @@ class HTMLExporter:
         }}
         
         .section-text h3 {{
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: var(--text-primary);
-            font-weight: 600;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
+            font-weight: 700;
+            margin-top: 1.25rem;
+            margin-bottom: 0.6rem;
             font-family: 'Outfit', sans-serif;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #e2e8f0;
             padding-bottom: 0.25rem;
         }}
         
@@ -465,41 +467,40 @@ class HTMLExporter:
             margin-left: 0;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
         }}
         
         .section-text li {{
             position: relative;
-            padding-left: 1.5rem;
+            padding-left: 1.4rem;
             color: var(--text-secondary);
-            font-size: 1.025rem;
+            font-size: 0.97rem;
         }}
         
         .section-text li::before {{
-            content: "→";
+            content: "▸";
             color: var(--accent-blue);
             font-weight: bold;
             position: absolute;
             left: 0;
-            font-size: 1.1rem;
         }}
         
         /* Chart container */
         .chart-wrapper {{
             width: 100%;
-            margin-top: 1.5rem;
+            margin-top: 1.25rem;
             display: flex;
             justify-content: center;
         }}
         
         .chart-container {{
             width: 100%;
-            max-width: 750px;
-            background: rgba(10, 15, 26, 0.4);
-            border-radius: 12px;
+            max-width: 780px;
+            background: #f8fafc;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            padding: 1.5rem;
+            padding: 1.25rem;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -508,96 +509,101 @@ class HTMLExporter:
         
         /* Takeaway styling */
         .chart-takeaway {{
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(139, 92, 246, 0.03));
+            background: linear-gradient(135deg, #eff6ff, #f5f3ff);
             border-left: 4px solid var(--accent-blue);
-            padding: 1.5rem;
-            border-radius: 4px 12px 12px 4px;
-            margin-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            border-right: 1px solid rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 1.25rem 1.5rem;
+            border-radius: 4px 10px 10px 4px;
+            margin-top: 1.25rem;
+            border-top: 1px solid #dbeafe;
+            border-right: 1px solid #dbeafe;
+            border-bottom: 1px solid #dbeafe;
         }}
         
         .chart-takeaway h3 {{
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--accent-blue);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             font-family: 'Outfit', sans-serif;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 700;
         }}
         
         .chart-takeaway p {{
-            font-size: 1rem !important;
-            color: var(--text-primary) !important;
+            font-size: 0.97rem !important;
+            color: #1e3a5f !important;
             margin-bottom: 0 !important;
-            line-height: 1.6;
+            line-height: 1.65;
         }}
         
         /* Tables in reports */
         table {{
             width: 100%;
             border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
+            margin: 1.25rem 0;
+            font-size: 0.93rem;
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid var(--border-color);
         }}
         
         th {{
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--text-primary);
+            background: #eff6ff;
+            color: #1e3a5f;
             text-align: left;
-            padding: 0.85rem 1.2rem;
-            font-weight: 600;
-            border-bottom: 2px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            font-weight: 700;
+            border-bottom: 2px solid #dbeafe;
         }}
         
         td {{
-            padding: 0.85rem 1.2rem;
-            border-bottom: 1px solid var(--border-color);
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
             color: var(--text-secondary);
         }}
         
+        tr:nth-child(even) td {{
+            background: #f8fafc;
+        }}
+        
         tr:hover td {{
-            background: rgba(255, 255, 255, 0.02);
+            background: #eff6ff;
             color: var(--text-primary);
         }}
         
         /* Refusal Note */
         .refusal-note {{
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), transparent);
+            background: #fff7f7;
             border-left: 4px solid var(--accent-red);
-            padding: 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 1.5rem 0;
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1.25rem 0;
+            border: 1px solid #fecaca;
         }}
         
         .refusal-note h4 {{
             color: var(--accent-red);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             font-weight: 700;
         }}
         
         /* Scrollbar */
         ::-webkit-scrollbar {{
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }}
         
         ::-webkit-scrollbar-track {{
-            background: var(--bg-color);
+            background: #f1f5f9;
         }}
         
         ::-webkit-scrollbar-thumb {{
-            background: #27272a;
+            background: #cbd5e1;
             border-radius: 4px;
         }}
         
         ::-webkit-scrollbar-thumb:hover {{
-            background: #3f3f46;
+            background: #94a3b8;
         }}
     </style>
 </head>
@@ -642,7 +648,7 @@ class HTMLExporter:
             
             <div class="report-meta">
                 <span class="meta-item">Đối tượng phân tích: <strong>Báo cáo tài chính kiểm toán 8 năm</strong></span>
-                <span class="meta-item">Mô hình phân tích: <strong>DeepSeek v4 Pro + FPT Reranker</strong></span>
+                <span class="meta-item">Mô hình phân tích: <strong>GPT-5.5 Pro + FPT Reranker</strong></span>
             </div>
         </header>
 
@@ -669,7 +675,7 @@ class HTMLExporter:
     const netMarginSpec = {json.dumps(chart_specs.get("net_margin", {}))};
     
     // Embed configurations
-    const embedOpts = {{actions: false, theme: 'dark', renderer: 'svg'}};
+    const embedOpts = {{actions: false, theme: 'default', renderer: 'svg'}};
     
     // Defensive chart rendering wrapper
     function safeEmbedChart(containerId, spec, opts) {{
