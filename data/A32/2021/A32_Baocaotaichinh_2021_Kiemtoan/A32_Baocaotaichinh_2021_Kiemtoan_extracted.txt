@@ -1,0 +1,987 @@
+===== PAGE 1 =====
+[Non-Text]
+
+anviet
+
+Certified Public Accountants
+
+Công ty TNHH Kiểm toán An Việt
+
+www.anvietcpa.com
+
+CÔNG
+TY CỔ
+PHẦN
+
+32
+
+Digitally signed by
+
+CÔNG TY CÓ PHẦN 32
+
+DN:
+
+E=nvkien2003@yahoo.c
+
+om. CN=CÔNG TÝ CỔ
+
+PHAN 32. O=MST
+
+0300517896 I = "170
+
+Quang Trung, Phuò
+
+10. Quân Gò Ván Thành
+
+Phá Hồ Chí Minh"
+
+C-VN
+
+C=VN
+Reason: I am the author
+
+reason. I am the author of this document
+
+of this document
+Location:
+
+Location.
+Date: 2022-03-14 00:00
+
+Date: 2022-03-14 09.02.
+
+28
+
+CÔNG TY CỔ PHẦN 32
+
+BÁO CÁO TÀI CHÍNH ĐÃ ĐƯỢC KIỂM TOÁN
+
+Cho năm tài chính kết thúc ngày 31/12/2021
+
+===== PAGE 2 =====
+CÔNG TY CỔ PHẦN 32
+
+BÁO CÁO TÀI CHÍNH ĐÃ ĐƯỢC KIỂM TOÁN
+
+Cho năm tài chính kết thúc ngày 31/12/2021
+
+Thành phố Hồ Chí Minh, tháng 03 năm 2022
+
+===== PAGE 3 =====
+CÔNG TY CỔ PHẦN 32
+
+MỤC LỤC
+
+<table><tr><td>NỘI DUNG</td><td>TRANG</td></tr><tr><td>BÁO CÁO CỦA BAN ĐIỀU HÀNH</td><td>2</td></tr><tr><td>BÁO CÁO KIỂM TOÁN ĐỘC LẬP</td><td>3 - 4</td></tr><tr><td>BẢNG CÂN ĐỐI KẾ TOÁN</td><td>5 - 6</td></tr><tr><td>BÁO CÁO KẾT QUẢ HOẠT ĐỘNG KINH DOANH</td><td>7</td></tr><tr><td>BÁO CÁO LƯU CHUYÊN TIỀN TỆ</td><td>8</td></tr><tr><td>THUYẾT MINH BÁO CÁO TÀI CHÍNH</td><td>9 - 29</td></tr></table>
+
+1
+
+===== PAGE 4 =====
+CÔNG TY CỔ PHẦN 32
+
+BÁO CÁO CỦA BAN ĐIỀU HÀNH
+
+Ban Điều hành Công ty Cổ phần 32 ("Công ty") trình bày báo cáo này cùng với báo cáo tài chính đã được kiểm toán của Công ty cho năm tài chính kết thúc ngày 31/12/2021.
+
+HỘI ĐỒNG QUẢN TRỊ VÀ BAN ĐIỀU HÀNH
+
+Các thành viên Hội đồng quản trị và Ban điều hành đã điều hành Công ty trong năm tài chính kết thúc ngày 31/12/2021 và đến ngày lập báo cáo này gồm:
+
+Hội đồng quản trị
+
+<table><tr><td>Ông Nguyễn Thế Anh</td></tr><tr><td>Ông Ngô Thành Thắng</td></tr><tr><td>Bà Trần Thị Bình</td></tr><tr><td>Ông Vũ Xuân Tạo</td></tr><tr><td>Ông Trần Bá Thượng</td></tr></table>
+
+<table><tr><td>Chủ tịch Hội đồng quản trị</td></tr><tr><td>Phó chủ tịch Hội đồng quản trị</td></tr><tr><td>Thành viên Hội đồng quản trị</td></tr><tr><td>Thành viên Hội đồng quản trị</td></tr><tr><td>Thành viên Hội đồng quản trị</td></tr></table>
+
+Ban Điều hành
+
+<table><tr><td>Ông Nguyễn Thế Anh</td></tr><tr><td>Ông Ngô Thành Thắng</td></tr><tr><td>Ông Phạm Văn Hà</td></tr><tr><td>Bà Trần Thị Bình</td></tr></table>
+
+<table><tr><td>Chủ tịch Hội đồng quản trị</td></tr><tr><td>Tổng giám đốc</td></tr><tr><td>Phó Tổng giám đốc</td></tr><tr><td>Kế toán trưởng</td></tr><tr><td>Phó Tổng giám đốc (miễn nhiệm ngày 03/04/2021)</td></tr></table>
+
+TRÁCH NHIỆM CỦA BAN ĐIỀU HÀNH
+
+Ban Điều hành Công ty chịu trách nhiệm lập Báo cáo tài chính cho năm tài chính kết thúc ngày 31/12/2021 phần ánh một cách trung thực và hợp lý tình hình tài chính cũng như kết quả hoạt động kinh doanh và tình hình lưu chuyển tiền tệ của Công ty trong năm. Trong việc lập các Báo cáo tài chính này, Ban điều hành được yêu cầu phải:
+
+- Tuân thủ chuẩn mực kế toán Việt Nam, Chế độ kế toán doanh nghiệp và các quy định pháp lý có liên quan đến việc lập và trình bày báo cáo tài chính.
+
+- Lựa chọn các chính sách kế toán thích hợp và áp dụng các chính sách đó một cách nhất quán;
+
+- Đưa ra các xét đoán và ước tính một cách hợp lý và thận trọng;
+
+- Nếu rõ các nguyên tắc kế toán thích hợp có được tuân thủ hay không, có những áp dụng sai lệch trọng yếu cần được công bố và giải thích trong báo cáo tài chính hay không;
+
+- Thiết lập và áp dụng kiểm soát nội bộ một cách hữu hiệu cho mục đích lập và trình bày báo cáo tài chính hợp lý nhằm hạn chế rủi ro và gian lân; và
+
+- Lập báo cáo tài chính trên cơ sở hoạt động liên tục trừ trường hợp không thể cho rằng Công ty sẽ tiếp tục hoạt động kinh doanh.
+
+Ban điều hành Công ty chịu trách nhiệm đảm bảo rằng số kế toán được ghi chép một cách phù hợp để phần ánh hợp lý tình hình tài chính của Công ty ở bắt ký thời điểm nào và đảm bảo rằng báo cáo tài chính tuân thủ các Chuẩn mực kế toán Việt Nam, Chế độ kế toán doanh nghiệp và các quy định pháp lý có liên quan tới việc lập và trình bày báo cáo tài chính. Ban điều hành cũng chịu trách nhiệm đảm bảo an toàn cho tài sản của Công ty và vì vậy thực hiện các biện pháp thích hợp để ngăn chắn và phát hiện các hành vi gian lận và sai phạm khác.
+
+Bản điều hành xác nhận rằng Công ty đã tuân thủ các yêu cầu nêu trên trong việc lập Báo cáo tài chính.
+
+Nguyên Thế Anh
+
+Chủ tịch Hội đồng quản trị
+
+TP.Hồ Chí Minh, ngày 05 tháng 03 năm 2022
+
+2
+
+===== PAGE 5 =====
+[Non-Text]
+
+[Non-Text]
+
+anviet
+
+Certified Public Accountants
+
+Công ty TNHH Kiểm toán An Việt
+
+Tâng 12, toa nhà 167 Bùi Thị Xuân, quận Hai Bà Trung, Hà Nội
+
+W www.anvietcpa.com
+
+E anviet@anvietcpa.com
+
+T (84-24) 6278 2904
+
+F (84-24) 6278 2905
+
+Số: 42 /2022/BCKT-AVI-TC1
+
+BÁO CÁO KIỂM TOÁN ĐỘC LẬP
+
+Kính gửi: Hội đồng quản trị và Ban điều hành Công ty Cổ phần 32
+
+Chúng tôi đã kiểm toán Báo cáo tài chính kèm theo của Công ty Cổ phần 32 (gọi tất là “Công ty”), được lập ngày 05/03/2022 và được trình bày từ trang số 05 đến trang số 29, bao gồm Bảng cân đối kế toán tại ngày 31/12/2021, Báo cáo kết quả hoạt động kinh doanh, Báo cáo lưu chuyển tiền tệ cho năm tài chính kết thúc cùng ngày và bản Thuyết minh báo cáo tài chính.
+
+Trách nhiệm của Ban điều hành
+
+Ban điều hành Công ty chịu trách nhiệm lập và trình bày trung thực và hợp lý báo cáo tài chính theo chuẩn mục kế toán Việt Nam, chế độ kế toán doanh nghiệp và các quy định pháp lý có liên quan đến việc lập và trình bày báo cáo tài chính và chịu trách nhiệm về kiểm soát nội bộ mà Ban điều hành xác định là cần thiết để đảm bảo việc lập và trình bày báo cáo tài chính không có sai sót trọng yếu do gian lần hoặc nhằm lẫn.
+
+Trách nhiệm của kiểm toán viên
+
+Trách nhiệm của chúng tối là đưa ra ý kiến về Báo cáo tài chính dựa trên kết quả của cuộc kiểm toán. Chứng tối đã tiên hành kiểm toán theo các Chuẩn mục kiểm toán Việt Nam. Các chuẩn mục này yêu cầu chúng tối tuân thủ chuẩn mục và các quy định về đạo đức nghề nghiệp, lập kế hoạch và thực hiện cuộc kiểm toán để đạt được sự đảm bảo hợp lý về việc liệu Báo cáo tài chính của Công ty có còn sai sốt trọng yếu hay không.
+
+Công việc kiểm toán bao gồm thực hiện các thủ tục nhằm thu thập các bằng chứng kiểm toán về các số liệu và thuyết minh trên Báo cáo tài chính. Các thủ tục kiểm toán được lựa chọn dựa trên xét đoán của kiểm toán viên, bao gồm đánh giá rủi ro có sai sót trong yếu trong báo cáo tài chính do gian lập hoặc nhằm lẫn. Khi thực hiện đánh giá các rủi ro này, kiểm toán viên đã xem xét kiểm soát nội bộ của Công ty liên quan đến việc lập và trình bày Báo cáo tài chính trung thực, hợp lý nhằm thiết kế các thủ tục kiểm toán phù hợp với tình hình thực tế, tuy nhiên không nhằm mục đích đưa ra ý kiến về hiệu quả của kiểm soát nội bộ của đơn vị. Công việc kiểm toán cũng bao gồm đánh giá tính thích hợp của các chính sách kế toán được áp dụng và tình hợp lý của các ước tính kế toán của Ban điều hành cũng như đánh giá việc trình bày tổng thể Báo cáo tài chính.
+
+Chúng tôi tin tưởng rằng các bằng chứng kiểm toán mà chúng tôi đã thu thập được là đầy đủ và thích hợp làm cơ sở cho ý kiến kiểm toán ngoại trừ của chúng tôi.
+
+Cơ sở của ý kiến kiểm toán ngoại trừ
+
+Hàng năm, Công ty thực hiện nghĩa vụ về tiền sử dụng đất quốc phòng và ghi nhận chi phí tiền sử dụng đất vào kết quả kinh doanh từng năm tài chính. Theo Công văn số 69/CKT-KSV ngày 10/01/2022 của Cục Kinh tế - Bộ Quốc phòng V/v rà soát, xác định tiền sử dụng đất quốc phòng; ngày 18/01/2022, đoàn công tác của Bộ Quốc đã làm việc với Công ty để xác định số tiền sử dụng đất Công ty phải nộp từ năm 2018 đến năm 2021. Theo biến bản làm việc giữa hai bên, tiền sử dụng đất phải nộp bổ sung của năm 2021 và từ năm 2018 đến năm 2020 với số tiền lần lượt là 2.778.992.292 đồng và 8.591.518.067 đồng. Trong việc lập báo cáo tài chính năm 2021, Công ty đã hạch toán vào chi phí số tiền sử dụng đất nộp bổ sung của năm 2021 khoảng 2,7 tỷ đồng và kiến nghị Bộ Quốc phòng không truy thu số tiền sử dụng đất từ năm 2018 đến năm 2020. Tuy nhiên, đến thời điểm lập báo cáo tài chính kèm theo Bộ Quốc phòng chưa có ý kiến đồng ý điều chỉnh giảm tiền sử dụng đất từ năm 2018 đến năm 2020. Trong trường hợp Bộ Quốc phòng vẫn truy thu tiền sử dụng đất quốc phòng từ năm 2018 đến năm 2020 thì kết quả kinh doanh của Công ty có thể giảm số tiền khoảng 8,591 tỷ đồng.
+
+3
+
+Partnering for Success
+
+===== PAGE 6 =====
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89. 90. 91. 92. 93. 94. 95. 96. 97. 98. 99.
+
+Ý kiến kiểm toán ngoại trừ
+
+Theo ý kiến của chúng tôi, ngoại trừ ảnh hưởng của vấn đề nêu tại đoạn “Cơ sở của ý kiến kiểm toán ngoại trừ”, Báo cáo tài chính kèm theo đã phần ánh trung thực và hợp lý, trên các khóa cạnh trong yếu tính hình tài chính của Công ty Cổ phần 32 tại ngày 31/12/2021 cũng như kết quả hoạt động kinh doanh và tình hình lưu chuyển tiền tệ cho năm tài chính kết thúc cùng ngày, phù hợp với các Chuẩn mực kế toán Việt Nam, Chế độ kế toán doanh nghiệp và các quy định pháp lý có liên quan tới việc lập và trình bày Báo cáo tài chính.
+
+Vân đề khác
+
+Báo cáo tài chính cho năm tài chính kết thúc ngày 31/12/2020 được kiểm toán bởi Kiểm toán viên khác. Tại Báo cáo kiểm toán số 56-21/BC-TC/VAE ngày 02/03/2021, Kiểm toán viên trình bày ý kiến kiểm toán chấp nhận toàn phần.
+
+Vũ Bình Minh
+
+Tổng giám đốc
+
+Giấy CN ĐKHN kiểm toán số 0034-2018-055-1
+
+Thay mặt và đại diện cho
+
+CÔNG TY TNHH KIỂM TOÁN AN VIỆT
+
+Hà Nội, ngày 05 tháng 03 năm 2022
+
+Tạ Thị Thẩm
+
+Kiểm toán viên
+
+Giấy CN ĐKHN kiểm toán số 3676-2021-055-1
+
+4
+
+\( \therefore {S}_{\Delta APQ} = {S}_{\Delta AQP} + {S}_{\Delta PQQ} \)
+
+===== PAGE 7 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+BẢNG CÂN ĐỐI KẾ TOÁN
+
+Tại ngày 31 tháng 12 năm 2021
+
+MÃU SÓ B01- DN
+
+Đơn vị tính: VND
+
+<table><tr><td colspan="2">CHỈ TIÊU</td><td>Mã số</td><td>Thuyết minh</td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td colspan="2">A - TÀI SẢN NGẮN HẠN</td><td>100</td><td></td><td>401.956.113.112</td><td>356.691.280.424</td></tr><tr><td>I.</td><td>Tiền và các khoản tương đương tiền</td><td>110</td><td>5</td><td>97.299.243.376</td><td>44.359.080.786</td></tr><tr><td>1.</td><td>Tiền</td><td>111</td><td></td><td>74.299.243.376</td><td>22.359.080.786</td></tr><tr><td>2.</td><td>Các khoản tương đương tiền</td><td>112</td><td></td><td>23.000.000.000</td><td>22.000.000.000</td></tr><tr><td>II.</td><td>Các khoản phải thu ngắn hạn</td><td>130</td><td></td><td>112.325.433.320</td><td>121.819.457.695</td></tr><tr><td>1.</td><td>Phải thu ngắn hạn của khách hàng</td><td>131</td><td>6</td><td>87.650.372.734</td><td>107.583.294.045</td></tr><tr><td>2.</td><td>Trả trước cho người bán ngắn hạn</td><td>132</td><td></td><td>11.260.458.427</td><td>2.515.271.624</td></tr><tr><td>3.</td><td>Phải thu ngắn hạn khác</td><td>136</td><td>7</td><td>15.137.847.805</td><td>12.791.461.249</td></tr><tr><td>4.</td><td>Dự phòng phải thu ngắn hạn khó đòi</td><td>137</td><td>8</td><td>(1.723.245.646)</td><td>(1.070.569.223)</td></tr><tr><td>III.</td><td>Hàng tồn kho</td><td>140</td><td>9</td><td>192.225.986.980</td><td>190.450.695.083</td></tr><tr><td>1.</td><td>Hàng tồn kho</td><td>141</td><td></td><td>198.751.862.802</td><td>197.321.374.915</td></tr><tr><td>2.</td><td>Dự phòng giảm giá hàng tồn kho</td><td>149</td><td></td><td>(6.525.875.822)</td><td>(6.870.679.832)</td></tr><tr><td>IV.</td><td>Tài sản ngắn hạn khác</td><td>150</td><td></td><td>105.449.436</td><td>62.046.860</td></tr><tr><td>1.</td><td>Thuế và các khoản khác phải thu Nhà nước</td><td>153</td><td>15</td><td>105.449.436</td><td>62.046.860</td></tr><tr><td colspan="2">B - TÀI SẢN DÀI HẠN</td><td>200</td><td></td><td>126.174.782.886</td><td>131.604.173.493</td></tr><tr><td>I.</td><td>Tài sản cố định</td><td>220</td><td></td><td>114.253.527.600</td><td>119.638.693.791</td></tr><tr><td>1.</td><td>Tài sản cố định hữu hình</td><td>221</td><td>11</td><td>113.976.502.600</td><td>119.539.468.791</td></tr><tr><td></td><td>- Nguyên giá</td><td>222</td><td></td><td>242.736.090.484</td><td>255.420.026.077</td></tr><tr><td></td><td>- Giá trị hao mòn luỹ kế</td><td>223</td><td></td><td>(128.759.587.884)</td><td>(135.880.557.286)</td></tr><tr><td>2.</td><td>Tài sản cố định vô hình</td><td>227</td><td></td><td>277.025.000</td><td>99.225.000</td></tr><tr><td></td><td>- Nguyên giá</td><td>228</td><td></td><td>393.482.600</td><td>183.482.600</td></tr><tr><td></td><td>- Giá trị hao mòn luỹ kế</td><td>229</td><td></td><td>(116.457.600)</td><td>(84.257.600)</td></tr><tr><td>II.</td><td>Tài sản dở dang dài hạn</td><td>240</td><td></td><td>808.290.909</td><td>672.559.925</td></tr><tr><td>1.</td><td>Chi phí xây dựng cơ bản dở dang</td><td>242</td><td>10</td><td>808.290.909</td><td>672.559.925</td></tr><tr><td>III.</td><td>Đầu tư tài chính dài hạn</td><td>250</td><td></td><td>10.572.570.000</td><td>10.572.570.000</td></tr><tr><td>1.</td><td>Đầu tư góp vốn vào đơn vị khác</td><td>253</td><td>12</td><td>10.572.570.000</td><td>10.572.570.000</td></tr><tr><td>IV.</td><td>Tài sản dài hạn khác</td><td>260</td><td></td><td>540.394.377</td><td>720.349.777</td></tr><tr><td>1.</td><td>Chi phí trả trước dài hạn</td><td>261</td><td></td><td>540.394.377</td><td>720.349.777</td></tr><tr><td></td><td>TỔNG CỘNG TÀI SẢN</td><td>270</td><td></td><td>528.130.895.998</td><td>488.295.453.917</td></tr></table>
+
+5
+
+===== PAGE 8 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+BÀNG CÂN ĐỐI KẾ TOÁN (Tiếp theo)
+
+Tại ngày 31 tháng 12 năm 2021
+
+MÃU SÓ B01 - DN
+
+Đơn vị tính: VND
+
+<table><tr><td>CHỈ TIÊU</td><td>Mã số</td><td>Thuyết minh</td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>C - NỘ PHẢI TRẢ</td><td>300</td><td></td><td>289.745.705.674</td><td>246.078.511.317</td></tr><tr><td>I. Nợ ngắn hạn</td><td>310</td><td></td><td>289.745.705.674</td><td>246.078.511.317</td></tr><tr><td>1. Phải trả người bán ngắn hạn</td><td>311</td><td>13</td><td>112.114.630.565</td><td>90.690.167.861</td></tr><tr><td>2. Người mua trả tiền trước ngắn hạn</td><td>312</td><td>15</td><td>44.517.433.279</td><td>7.914.265.310</td></tr><tr><td>3. Thuế và các khoản phải nộp Nhà nước</td><td>313</td><td>14</td><td>3.895.312.897</td><td>16.868.260.746</td></tr><tr><td>4. Phải trả người lao động</td><td>314</td><td></td><td>14.382.970.856</td><td>25.534.233.761</td></tr><tr><td>5. Chi phí phải trả ngắn hạn</td><td>315</td><td>16</td><td>1.325.995.962</td><td>513.492.171</td></tr><tr><td>6. Doanh thu chưa thực hiện ngắn hạn</td><td>318</td><td></td><td>280.000.000</td><td>773.958.967</td></tr><tr><td>7. Phải trả ngắn hạn khác</td><td>319</td><td>17</td><td>100.112.815.804</td><td>99.131.696.816</td></tr><tr><td>8. Vay và nợ thuê tài chính ngắn hạn</td><td>320</td><td></td><td>-</td><td>552.619.624</td></tr><tr><td>9. Dự phòng phải trả ngắn hạn</td><td>321</td><td></td><td>2.778.992.292</td><td>-</td></tr><tr><td>10. Quỹ khen thưởng, phúc lợi</td><td>322</td><td></td><td>10.337.554.019</td><td>4.099.816.061</td></tr><tr><td>D - VỐN CHỦ SỞ HỮU</td><td>400</td><td></td><td>238.385.190.324</td><td>242.216.942.600</td></tr><tr><td>I. Vốn chủ sở hữu</td><td>410</td><td>18</td><td>238.057.190.324</td><td>242.222.852.600</td></tr><tr><td>1. Vốn góp của chủ sở hữu</td><td>411</td><td></td><td>68.000.000.000</td><td>68.000.000.000</td></tr><tr><td>- Cổ phiếu phổ thông có quyền biểu quyết</td><td>411a</td><td></td><td>68.000.000.000</td><td>68.000.000.000</td></tr><tr><td>2. Quỹ đầu tư phát triển</td><td>418</td><td></td><td>125.033.001.086</td><td>112.400.892.936</td></tr><tr><td>3. Lợi nhuận sau thuế chưa phân phối</td><td>421</td><td></td><td>45.024.189.238</td><td>61.821.959.664</td></tr><tr><td>- LNST chưa phân phối lũy kế đến cuối năm trước</td><td>421a</td><td></td><td>23.666.232.496</td><td>25.714.932.496</td></tr><tr><td>- LNST chưa phân phối năm nay</td><td>421b</td><td></td><td>21.357.956.742</td><td>36.107.027.168</td></tr><tr><td>II. Nguồn kinh phí và quỹ khác</td><td>430</td><td></td><td>328.000.000</td><td>(5.910.000)</td></tr><tr><td>1. Nguồn kinh phí</td><td>431</td><td></td><td>328.000.000</td><td>(5.910.000)</td></tr><tr><td>TỔNG CỘNG NGUỒN VỐN</td><td>440</td><td></td><td>528.130.895.998</td><td>488.295.453.917</td></tr></table>
+
+TP.Hồ Chí Minh, ngày 05 tháng 03 năm 2022
+
+Người lập
+
+Đặng Kiêu Oanh
+
+Kế toán trường
+
+Trần Thị Bình
+
+Chủ tịch Hội đồng quản trị
+
+6
+
+1101. 五二元
+
+===== PAGE 9 =====
+[Non-Text]
+
+CÔNG TY CÓ PHẦN 32
+
+BÁO CÁO KẾT QUÀ HOẠT ĐỘNG KINH DOANH
+
+Cho năm tài chính kết thúc ngày 31/12/2021
+
+MÃU SÓ B02- DN
+
+Đơn vị tính: VND
+
+<table><tr><td colspan="2">CHỈ TIÊU</td><td>Mã số</td><td>Thuyết minh</td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>1.</td><td>Doanh thu bán hàng và cung cấp dịch vụ</td><td>01</td><td>20</td><td>650.148.136.248</td><td>728.582.496.415</td></tr><tr><td>2.</td><td>Các khoản giảm trừ doanh thu</td><td>02</td><td>20</td><td>-</td><td>1.450.000</td></tr><tr><td>3.</td><td>Doanh thu thuần về bán hàng và cung cấp dịch vụ</td><td>10</td><td>20</td><td>650.148.136.248</td><td>728.581.046.415</td></tr><tr><td>4.</td><td>Giá vốn hàng bán</td><td>11</td><td>21</td><td>578.731.775.257</td><td>648.984.925.398</td></tr><tr><td>5.</td><td>Lợi nhuận gộp về bán hàng và cung cấp dịch vụ</td><td>20</td><td></td><td>71.416.360.991</td><td>79.596.121.017</td></tr><tr><td>6.</td><td>Doanh thu hoạt động tài chính</td><td>21</td><td>22</td><td>7.638.558.828</td><td>9.381.676.739</td></tr><tr><td>7.</td><td>Chi phí tài chính</td><td>22</td><td>23</td><td>406.023.529</td><td>924.890.156</td></tr><tr><td></td><td>- Trong đó: Chi phí lãi vay</td><td>23</td><td></td><td>-</td><td>-</td></tr><tr><td>8.</td><td>Chi phí bán hàng</td><td>25</td><td>24</td><td>4.750.944.770</td><td>5.218.939.576</td></tr><tr><td>9.</td><td>Chi phí quản lý doanh nghiệp</td><td>26</td><td>24</td><td>33.817.431.627</td><td>32.226.921.969</td></tr><tr><td>10.</td><td>Lợi nhuận thuần từ hoạt động kinh doanh</td><td>30</td><td></td><td>40.080.519.893</td><td>50.607.046.055</td></tr><tr><td>11.</td><td>Thu nhập khác</td><td>31</td><td>25</td><td>1.844.875.093</td><td>95.840.824</td></tr><tr><td>12.</td><td>Chi phí khác</td><td>32</td><td></td><td>175.399.058</td><td>119.809.744</td></tr><tr><td>13.</td><td>Lợi nhuận khác</td><td>40</td><td></td><td>1.669.476.035</td><td>(23.968.920)</td></tr><tr><td>14.</td><td>Tổng lợi nhuận kế toán trước thuế</td><td>50</td><td></td><td>41.749.995.928</td><td>50.583.077.135</td></tr><tr><td>15.</td><td>Chi phí thuế TNDN hiện hành</td><td>51</td><td>27</td><td>7.140.739.186</td><td>8.476.049.967</td></tr><tr><td>16.</td><td>Lợi nhuận sau thuế thu nhập doanh nghiệp</td><td>60</td><td></td><td>34.609.256.742</td><td>42.107.027.168</td></tr><tr><td>17.</td><td>Lãi cơ bản trên cổ phiếu</td><td>70</td><td>28</td><td>4.134</td><td>4.058</td></tr></table>
+
+TP.Hồ Chí Minh, ngày 05 tháng 03 năm 2022
+
+Người lập
+
+Đăng Kiêu Oanh
+
+Kế toán trường
+
+Trần Thị Bình
+
+Chủ tịch Hội đồng quản trị
+
+7
+
+\( \therefore {S}_{\Delta APQ} = {S}_{\Delta AQP} + {S}_{\Delta QPQ} \)
+
+===== PAGE 10 =====
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89. 90. 91. 92. 93. 94. 95. 96. 97. 98. 99.
+
+CÔNG TY CÓ PHẦN 32
+
+BÁO CÁO LƯU CHUYÊN TIÊN TỆ
+
+(Theo phương pháp trực tiếp)
+
+Cho năm tài chính kết thúc ngày 31/12/2021
+
+MĂU SÓ B03 - DN
+
+Đơn vị tính: VND
+
+<table><tr><td rowspan="2"></td><td rowspan="2">CHỈ TIẾU</td><td rowspan="2">Mã số</td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>I.</td><td colspan="4">LUU CHUYÊN TIẾN TỪ HOAT ĐỘNG KINH DOANH</td></tr><tr><td>1.</td><td>Tiền thu từ bản hàng, cung cấp dịch vụ và doanh thu khác</td><td>01</td><td>733.537.709.949</td><td>694.327.806.589</td></tr><tr><td>2.</td><td>Tiền chi trả cho người cung cấp hàng hóa, dịch vụ</td><td>02</td><td>(463.999.111.460)</td><td>(502.531.470.645)</td></tr><tr><td>3.</td><td>Tiền chi trả cho người lao động</td><td>03</td><td>(134.023.842.663)</td><td>(152.502.329.345)</td></tr><tr><td>4.</td><td>Tiền chi nộp thuế thu nhập doanh nghiệp</td><td>05</td><td>(11.205.507.235)</td><td>(8.592.694.705)</td></tr><tr><td>5.</td><td>Tiền thu khác từ hoạt động kinh doanh</td><td>06</td><td>118.447.017.652</td><td>21.450.317.279</td></tr><tr><td>6.</td><td>Tiền chi khác cho hoạt động kinh doanh</td><td>07</td><td>(175.849.587.907)</td><td>(47.871.878.442)</td></tr><tr><td></td><td>Lưu chuyển tiền thuần từ hoạt động kinh doanh</td><td>20</td><td>66.906.678.336</td><td>4.279.750.731</td></tr><tr><td>II.</td><td colspan="4">LUU CHUYÊN TIẾN TỆ TỪ HOAT ĐỘNG ĐẦU TỪ</td></tr><tr><td>1.</td><td>Tiền chi để mua sắm, xây dựng TSCĐ và các TSDH khác</td><td>21</td><td>(4.580.133.081)</td><td>(5.442.645.248)</td></tr><tr><td>2.</td><td>Tiền thu từ thanh lý, nhượng bán TSCĐ và các TSDH khác</td><td>22</td><td>1.948.181.818</td><td>9.090.909</td></tr><tr><td>3.</td><td>Tiền thu lãi cho vay, cổ tức và lợi nhuận được chia</td><td>27</td><td>7.090.754.793</td><td>8.726.296.064</td></tr><tr><td></td><td>Lưu chuyển tiền thuần từ hoạt động đầu tư</td><td>30</td><td>4.458.803.530</td><td>3.292.741.725</td></tr><tr><td>III.</td><td colspan="4">LUU CHUYÊN TIẾN TỆ TỪ HOAT ĐỘNG TẢI CHINH</td></tr><tr><td>1.</td><td>Tiền vay ngắn hạn, dài hạn nhận được</td><td>33</td><td></td><td>36.965.000.000</td></tr><tr><td>2.</td><td>Tiền chi trả nợ gốc vay</td><td>34</td><td></td><td>(45.686.758.876)</td></tr><tr><td>3.</td><td>Cổ tức, lợi nhuận đã trả cho chủ sở hữu</td><td>36</td><td>(18.428.000.000)</td><td>(14.960.000.000)</td></tr><tr><td></td><td>Lưu chuyển tiền thuần từ hoạt động tài chính</td><td>40</td><td>(18.428.000.000)</td><td>(23.681.758.876)</td></tr><tr><td></td><td>Lưu chuyển tiền thuần trong năm</td><td>50</td><td>52.937.481.866</td><td>(16.109.266.420)</td></tr><tr><td></td><td>Tiền và tương đương tiền đầu năm</td><td>60</td><td>44.359.080.786</td><td>60.513.753.437</td></tr><tr><td></td><td>Ảnh hưởng của thay đổi tỷ giá hồi đoái</td><td>61</td><td>2.680.724</td><td>(45.406.231)</td></tr><tr><td></td><td>Tiền và tương đương tiền cuối năm</td><td>70</td><td>97.299.243.376</td><td>44.359.080.786</td></tr></table>
+
+TP Hồ Chí Minh, ngày 05 tháng 03 năm 2022
+
+Người lập
+
+Đặng Kiểu Oanh
+
+Kế toán trường
+
+Trần Thị Bình
+
+Chù tich Hôi dòng quản trị
+
+Nguyễn Thế Anh
+
+8
+
+===== PAGE 11 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MĂU SÓ B09 - DN
+
+1. ĐẶC ĐIỂM HOẠT ĐỘNG
+
+1.1. Hình thức sở hữu vốn
+
+Công ty Cổ phần 32 (goi tất là “Công ty”) là doanh nghiệp được cổ phần theo Quyết định số 1357/QĐ-BQP ngày 01/07/2005 của Bộ Quốc phòng. Công ty hoạt động theo Giấy chứng nhận đăng ký doanh nghiệp số 0300517896, đăng ký lần đầu ngày 22 tháng 01 năm 2008 và đăng ký thay đổi lần thứ 06 ngày 20 tháng 02 năm 2020 do Sở Kế hoạch và Đầu tư thành phố Hồ Chí Minh cấp.
+
+Vốn điều lệ của Công ty theo Giấy chứng nhận đăng ký doanh nghiệp là 68.000.000.000 đồng tương ứng với 6.800.000 cổ phần, mệnh giá một cổ phần là 10.000 đồng; cổ phiếu của Công ty được giao dịch trên sản chứng khoán upcom.
+
+Tổng số nhân viên của Công ty tại ngày 31 tháng 12 năm 2021 là 1.098 người (ngày 31 tháng 12 năm 2020: 1.232 người).
+
+Ngành nghề kinh doanh và hoạt động chính
+
+- Sản xuất giày dép, hàng may mặc, sản phẩm từ plastic;
+
+- Sản xuất, mua bán, gia công sản phẩm nguyên phụ liệu, máy móc thiết bị phụ tùng ngành may, da giày - nhựa và bảo hộ lao động, đồng phục;
+
+- May trang phục, sản xuất sản phẩm từ da lông thú, sản xuất vali, túi sách các loại tương tự (không tái chế phép thải, tây nhuộm, hồ, in và không gia công hàng đã qua sử dụng);
+
+- Kinh doanh bất động sản, cho thuê.
+
+1.2. Chu kỳ sản xuất, kinh doanh thông thường
+
+Chu kỳ sản xuất, kinh doanh thông thường của Công ty được thực hiện trong thời gian không quá 12 tháng.
+
+1.3. Cấu trúc Công ty
+
+Trụ sở chính của Công ty đặt tại số 170 đường Quang Trung, quận Gò Vấp, thành phố Hồ Chí Minh.
+
+Các đơn vị trực thuộc Công ty bao gồm:
+
+<table><tr><td></td><td>Tên đơn vị</td><td>Địa chỉ</td></tr><tr><td>1</td><td>Chi nhánh Công ty Cổ phần 32 tại Hà Nội</td><td>Số 18C phố Cửa Đông, phường Cửa Đông, quận Hoàn Kiểm, thành phố Hà Nội</td></tr><tr><td>2</td><td>Chi nhánh Công ty Cổ phần 32 tại Đắk Lắk</td><td>Số 11 Trường Chinh, phường Thắng Lợi, thành phố Buôn Ma Thuột, tỉnh Đắk Lắk</td></tr><tr><td>3</td><td>Xí nghiệp 1</td><td>Số 170 đường Quang Trung, quận Gò Váp, thành phố Hồ Chí Minh</td></tr><tr><td>4</td><td>Xí nghiệp 3</td><td>Số 170 đường Quang Trung, quận Gò Váp, thành phố Hồ Chí Minh</td></tr><tr><td>5</td><td>Xí nghiệp 5</td><td>Số 170 đường Quang Trung, quận Gò Váp, thành phố Hồ Chí Minh</td></tr><tr><td>6</td><td>Xí nghiệp 7</td><td>Số 170 đường Quang Trung, quận Gò Váp, thành phố Hồ Chí Minh</td></tr><tr><td>7</td><td>Xí nghiệp thương mại</td><td>Số 170 đường Quang Trung, quận Gò Váp, thành phố Hồ Chí Minh</td></tr><tr><td>8</td><td>Cửa hàng giới thiệu sản phẩm</td><td>Số 170 đường Quang Trung, quận Gò Váp, thành phố Hồ Chí Minh</td></tr></table>
+
+9
+
+===== PAGE 12 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+2. NIÊN ĐỘ KẾ TOÁN, ĐƠN VỊ TIỀN TỆ SỬ DỤNG TRONG KẾ TOÁN
+
+Niên độ kế toán của Công ty bắt đầu từ ngày 01 tháng 01 và kết thúc vào ngày 31 tháng 12 năm dương lịch.
+
+Đơn vị tiền tệ sử dụng trong kế toán: Đồng Việt Nam (VND)
+
+3. CHUẢN MỤC VÀ CHẾ ĐỘ KÉ TOÁN ÁP DỤNG
+
+Báo cáo tài chính được trình bày bằng Đồng Việt Nam (VND), được lập dựa trên các nguyên tắc kế toán phù hợp với quy định của Chế độ kế toán doanh nghiệp ban hành tại Thông tư số 200/2014/TT-BTC ngày 22/12/2014, Thông tư số 53/2016/TT-BTC ngày 21/03/2016 của Bộ Tài chính, Chuẩn mực kế toán Việt Nam và các quy định pháp lý có liên quan đến việc lập và trình bày báo cáo tài chính.
+
+Công ty Cổ phần 32 bán hàng hóa cho các chỉ nhánh của Công ty tại Đắk Lắk và Hà Nội ghi nhận công nợ phải thu nội bộ (tài khoản 136)
+
+Công ty ghi nhận các khoản nợ phải trả vào tài khoản 336 (phải trả nội bộ) đối với công nợ của các Xí nghiệp trực thuộc, cửa hàng giới thiệu sản phẩm và các chỉ nhánh tại Đắk Lắk và Hà Nội.
+
+4. TÓM TẮT CÁC CHÍNH SÁCH KẾ TOÁN CHỦ YẾU
+
+4.1. Cơ sở lập báo cáo tài chính
+
+Báo cáo tài chính được lập trên cơ sở kế toán đơn tích (trừ một số thông tin liên quan đến lưu chuyển tiền tệ), theo nguyên tắc giả gốc, dưa trên giả thiết hoạt động liên tục.
+
+4.2. U'óc tính kê toán
+
+Việc lập báo cáo tài chính tuân thủ Chuẩn mực kế toán Việt Nam, Chế độ kế toán doanh nghiệp và các quy định pháp lý có liên quan đến việc lập và trình bày báo cáo tài chính yêu cầu Ban điều hành phải có những ước tính và giả định ảnh hưởng đến số liệu báo cáo về công nợ, tài sản và việc trình bày các khoản công nợ và tài sản tiềm tàng tại ngày lập báo cáo tài chính cũng như các số liệu báo cáo về doanh thu và chi phí trong suốt năm tài chính. Kết quả hoạt động kinh doanh thực tế có thể khác với các ước tính, giả định đặt ra.
+
+4.3. Tiền và các khoản tương đương tiền
+
+Tiền phần ánh toàn bộ số tiền hiện có của Công ty tại ngày kết thúc niên độ kế toán, bao gồm tiền mặt, tiền gửi ngân hàng không kỳ hạn và tiền đang chuyển.
+
+Các khoản tương đương tiền phần ánh các khoản đầu tư ngắn hạn có thời hạn thu hồi không quá 03 tháng kể từ ngày đầu tư có khả năng chuyển đổi dễ dàng thành một lượng tiền xác định và không có rủi ro trong việc chuyển đổi thành tiền tại thời điểm báo cáo, được ghi nhận phù hợp với quy định của Chuẩn mực kế toán Việt Nam số 24 - Báo cáo Lưu chuyển tiền tệ.
+
+4.4. Công cụ tài chính
+
+Ghi nhận ban đầu
+
+Tài sản tài chính
+
+Theo Thông tư số 210/2009/TT-BTC ngày 06/11/2009 của Bộ Tài chính, tài sản tài chính được phân loại một cách phù hợp, cho mục đích thuyết minh trong các báo cáo tài chính, thành tài sản tài chính được ghi nhận theo giá trị hợp lý thông qua báo cáo kết quả hoạt động kinh doanh, các khoản cho vay và phải thu, các khoản đầu tư nằm giữ đến ngày đáo hạn và tài sản tài chính sẵn sàng để bán. Công ty xác định phân loại các tài sản tài chính này tại thời điểm ghi nhận lần đầu.
+
+Tại thời điểm ghi nhận lần đầu, tài sản tài chính được xác định theo giá gốc cộng với các chi phí giao dịch trực tiếp liên quan đến việc mua sắm tài sản tài chính đó. Các tài sản tài chính của Công ty bao gồm tiền và các khoản tương đương tiền, chứng khoán kinh doanh, đầu tư nằm giữ đến ngày đáo hạn, phải thu khách hàng, phải thu về cho vay và phải thu khác.
+
+10
+
+===== PAGE 13 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Nợ phải trả tài chính
+
+Theo Thông tư số 210/2009/TT-BTC ngày 06/11/2009 của Bộ Tài chính, nợ phải trả tài chính được phân loại một cách phù hợp, cho mục đích thuyết minh trong các bảo cáo tài chính, thành nợ phải trả tài chính được ghi nhận theo giá trị hợp lý thông qua báo cáo kết quả hoạt động kinh doanh và nợ phải trả tài chính được xác định theo giá trị phân bổ. Công ty xác định phân loại các nợ phải trả tài chính này tại thời điểm ghi nhận lần đầu.
+
+Tại thời điểm ghi nhận lần đầu, nợ phải trả tài chính được xác định theo giá gốc cộng với các chi phí giao dịch trực tiếp liên quan đến việc phát hành nợ phải trả tài chính đó. Nợ phải trả tài chính của Công ty bao gồm phải trả người bán, chỉ phí phải trả, phải trả khác, vay và nợ thuê tài chính.
+
+Giá trị sau ghi nhận ban đầu
+
+Giá trị sau ghi nhận ban đầu của các công cụ tài chính được phần ánh theo giá trị hợp lý. Trường hợp chưa có quy định về việc xác định lại giá trị hợp lý của các công cụ tài chính thì trình bày theo giá trị ghi sổ.
+
+Bù trừ các công cụ tài chính
+
+Các tài sản tài chính và nợ phải trả tài chính được bù trừ và giá trị thuần sẽ được trình bày trên bằng cân đối kế toán, nếu và chỉ nếu, Công ty có quyền hợp pháp thực hiện việc bù trừ các giá trị đã được ghi nhận này và có ý định bù trừ trên cơ sở thuần, hoặc thu được các tài sản và thanh toán nợ phải trả đồng thời.
+
+4.5. Chuyên đổi ngoại tệ
+
+Nguyên tắc chuyển đổi ngoại tệ được thực hiện theo quy định của Chuẩn mực kế toán Việt Nam (VAS) số 10 - Ảnh hưởng của việc thay đổi tỷ giá hối đoái và Chế độ kế toán doanh nghiệp hiện hành.
+
+Trong năm, các nghiệp vụ kinh tế phát sinh bằng ngoại tệ được chuyển đổi sang VND theo tỷ giá giao dịch thực tế tại ngày phát sinh hoặc tỷ giá ghi số kế toán. Chênh lệch tỷ giá phát sinh được phân ánh vào doanh thu hoạt động tài chính (nếu lãi) và chi phí tài chính (nếu lỗ). Các khoản mục tiền tế có gốc ngoại tệ được đánh giá lại theo tỷ giá giao dịch thực tế tại ngày kết thúc ký kế toán. Chênh lệch tỷ giá do đánh giá lại được phân ánh vào chênh lệch tỷ giá hối đoài, số dư khoản mục này được kết chuyển sang doanh thu hoạt động tài chính (nếu lãi) hoặc chi phí tài chính (nếu lỗ) tại ngày kết thúc ký kế toán.
+
+4.6. Các khoản phải thu và dự phòng phải thu khó đòi
+
+Các khoản phải thu được theo dõi chi tiết theo kỳ hạn gốc, kỳ hạn còn lại tại thời điểm báo cáo, đối tượng phải thu, loại nguyên tệ phải thu và các yếu tố khác theo yêu cầu quản lý của Công ty. Việc phân loại các khoản phải thu là phải thu của khách hàng, phải thu khác được thực hiện theo nguyên tắc:
+
+- Phải thu của khách hàng gồm các khoản phải thu mang tính thương mại phát sinh từ giao dịch có tính chất mua - bán, bao gồm cả các khoản phải thu về tiền bán hàng xuất khẩu ủy thác cho đơn vị khác;
+
+- Phải thu khác gồm các khoản phải thu không có tính thương mại, không liên quan đến giao dịch mua - bán, bao gồm: Phải thu về lãi cho vay, lãi tiền gửi; các khoản đã chi hộ; các khoản bên nhận ủy thác xuất khẩu phải thu hộ cho bên giao ủy thác; phải thu về tiền phạt, bởi thường; các khoản tạm ứng; cầm cố, ký cước, ký quỹ, cho mượn tài sản...
+
+Công ty căn cứ kỳ hạn còn lại tại thời điểm báo cáo của các khoản phải thu để phân loại là phải thu dài hạn hoặc ngắn hạn và đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ theo nguyên tắc như trình bày tại thuyết minh số 4.4.
+
+Các khoản phải thu được ghi nhận không vượt quá giá trị có thể thu hồi. Dự phòng phải thu khó đòi được trích lập cho những khoản phải thu đã quá hạn thanh toán từ sâu tháng trở lên, hoặc các khoản phải thu mà người nợ khó có khả năng thanh toán do bị giải thể, phá sản hay các khó khăn tương tự phù hợp với các quy định của Chế độ kế toán doanh nghiệp hiện hành.
+
+11
+
+===== PAGE 14 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+4.7. Hàng tồn kho
+
+Hàng tồn kho được xác định trên cơ sở giá thấp hơn giữa giá gốc và giá trị thuần có thể thực hiện được. Giá gốc hàng tồn kho bao gồm chi phí mua, chi phí chế biến và các chi phí liên quan trực tiếp khác phát sinh để có được hàng tồn kho ở địa điểm và trạng thái hiện tại. Giá gốc của hàng tồn kho được xác định theo phương pháp bình quân gia quyền. Giá trị thuần có thể thực hiện được xác định bằng giá bán ước tính trừ các chi phí ước tính để hoàn thành và chi phí ước tính cần thiết cho việc tiêu thụ chúng.
+
+Hàng tồn kho được hạch toán theo phương pháp kê khai thường xuyên.
+
+Dư phòng giảm giá hàng tồn kho là số chênh lệch giữa giá gốc của hàng tồn kho lớn hơn giá trị thuần có thể thực hiện được của chúng tại ngày kết thúc niên độ kế toán, được trích lập phù hợp với các quy định của Chế độ kế toán doanh nghiệp hiện hành.
+
+4.8. Tài sản cố định hữu hình và khấu hao
+
+Tài sản cố định hữu hình được trình bày theo nguyên giá trừ giá trị hao mòn lũy kế. Nguyên giá tài sản cố định hữu hình được xác định theo giá gốc.
+
+Nguyên giá tài sản cố định hữu hình hình thành từ mua sắm và xây dựng chuyển giao là bao gồm giá mua và toàn bộ các chi phí khác liên quan trực tiếp đến việc đưa tài sản vào trạng thái sẵn sàng sử dụng.
+
+Nguyên giá tài sản cố định hữu hình do tự làm, tự xây dựng bao gồm chi phí xây dựng, chi phí sản xuất thực tế phát sinh công chi phí lắp đặt và chạy thử.
+
+Các chi phí phát sinh sau ghi nhận ban đầu được ghi tăng nguyên giá của tài sản nếu chứng thực sự cải thiện trạng thái hiện tại so với trạng thái tiêu chuẩn ban đầu của tài sản đó, như:
+
+- Thay đổi bộ phận của tài sản cố định hữu hình làm tăng thời gian sử dụng hữu ích, hoặc làm tăng công suất sử dụng của chúng; hoặc
+
+- Cải tiến bộ phận của tài sản cố định hữu hình làm tăng đáng kể chất lượng sản phẩm sản xuất ra; hoặc
+
+- Áp dụng quy trình công nghệ sản xuất mới làm giảm chi phí hoạt động của tài sản so với trước.
+
+Các chi phí phát sinh để sửa chữa, bảo dưỡng nhằm mục đích khởi phục hoặc duy trì khả năng đem lai lợi ích kinh tế của tài sản theo trạng thái hoạt động tiêu chuẩn ban đầu, không thỏa mãn một trong các điều kiện trên, được ghi nhận vào chi phí sản xuất, kinh doanh trong kỳ.
+
+Tài sản cố định hữu hình được khấu hao theo phương pháp đường thẳng dựa trên thời gian sử dụng ước tính của tài sản phù hợp với khung khấu hao quy định tại Thông tư số 45/2013/TT-BTC ngày 25/4/2013 của Bộ Tài chính.
+
+Thời gian khấu hao cụ thể của các loại tài sản cố định được áp dụng như sau:
+
+<table><tr><td>Nhà cửa vật kiến trúc</td><td>05 - 25</td></tr><tr><td>Mãy móc thiết bị</td><td>05 - 07</td></tr><tr><td>Phương tiện vận tải, truyền dẫn</td><td>06 - 08</td></tr><tr><td>Thiết bị dụng cụ quản lý</td><td>03 - 05</td></tr><tr><td>Tài sản cố định khác</td><td>03 - 07</td></tr></table>
+
+4.9. Đầu tư góp vốn vào đơn vị khác
+
+Đầu tư góp vốn vào đơn vị khác là các khoản đầu tư vào công cụ vốn nhưng Công ty không có quyền kiểm soát, đồng kiểm soát hoặc có ảnh hưởng đáng kể đối với bên nhận đầu tư.
+
+12
+
+===== PAGE 15 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Dự phòng tổn thất các khoản đầu tư góp vốn vào đơn vị khác là số chênh lệch lớn hơn giữa giá gốc và giá trị thị trường của khoản đầu tư hoặc phần sở hữu của Công ty trong vốn chủ sở hữu thực có của bên nhận đầu tư, được trích lập phù hợp với các quy định của Chế độ kế toán doanh nghiệp hiện hành.
+
+4.10. Các khoản nợ phải trả
+
+Các khoản nợ phải trả được theo dõi chi tiết theo kỳ hạn gốc, kỳ hạn còn lại tại thời điểm báo cáo, đối tượng phải trả, loại nguyên tệ phải trả và các yếu tố khác theo nhu cầu quản lý của Công ty. Việc phân loại các khoản phải trả là phải trả người bán, phải trả khác được thực hiện theo nguyên tắc:
+
+- Phải trả người bán gồm các khoản phải trả mang tính thương mại phát sinh từ giao dịch có tính chất mua - bán, bao gồm cả các khoản phải trả khi nhập khẩu thông qua người nhận ủy thác;
+
+- Phải trả khác gồm các khoản phải trả không có tính thương mại, không liên quan đến giao dịch mua, bán, cung cấp hàng hóa dịch vụ, bao gồm: Phải trả về lãi vay; các khoản phải trả do bên thứ ba chi hộ; các khoản tiền bên nhận ủy thác nhận của các bên liên quan để thanh toán theo chỉ định trong giao dịch ủy thác xuất nhập khẩu; mượn tài sản; phải trả về tiền phạt, bồi thường; tài sản phát hiện thừa chưa rõ nguyên nhân; phải trả về các khoản bảo hiểm xã hội, bảo hiểm y tế, bảo hiểm thất nghiệp, kinh phí công đoàn; các khoản nhận ký cược, ký quỹ...
+
+Công ty căn cứ ký hạn còn lại tại thời điểm báo cáo của các khoản nợ phải trả để phân loại là phải trả dài hạn hoặc ngắn hạn và đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ theo nguyên tắc như trình bày tại thuyết minh số 4.4.
+
+Các khoản nợ phải trả được ghi nhận không thấp hơn nghĩa vụ phải thanh toán. Khi có các bằng chứng cho thấy một khoản tổn thất có khả năng xảy ra, Công ty ghi nhận ngay một khoản phải trả theo nguyên tắc thân trong.
+
+4.11. Chi phí phải trả
+
+Chi phí phải trả được ghi nhận dựa trên các ước tính hợp lý về lãi tiền vay phải trả và số tiền phải trả cho các hàng hóa, dịch vụ đã sử dụng trong kỳ do chưa có hóa đơn hoặc chưa đủ hồ sơ, tài liệu kế toán.
+
+4.12. Vay và nợ thuê tài chính
+
+Các khoản đi vay được theo dõi chi tiết theo từng đối tượng cho vay, cho nợ, từng khế ước vay nợ; theo kỳ hạn phải trả của các khoản vay, nợ thuê tài chính và theo nguyên tệ. Các khoản có thời gian trả nợ còn lại trên 12 tháng kể từ thời điểm báo cáo được trình bày là vay và nợ thuê tài chính dài hạn. Các khoản đến hạn trả trong vòng 12 tháng tiếp theo kể từ thời điểm báo cáo được trình bày là vay và nợ thuê tài chính ngắn hạn.
+
+4.13. Ghi nhận doanh thu
+
+Doanh thu bán hàng được ghi nhận khi đồng thời thỏa mãn các điều kiện sau:
+
+(a) Công ty đã chuyển giao phần lớn rủi ro và lợi ích gắn liền với quyền sở hữu sản phẩm hoặc hàng hóa cho người mua;
+
+(b) Công ty không còn nắm giữ quyền quản lý hàng hóa như người sở hữu hàng hóa hoặc quyền kiểm soát hàng hóa. Khi hợp đồng quy định người mua được quyền trả lại sản phẩm, hàng hóa đã mua theo những điều kiện cụ thể, Công ty chỉ được ghi nhận doanh thu khi những điều kiện cụ thể đó không còn tồn tại và người mua không được quyền trả lại sản phẩm, hàng hóa (trừ trường hợp khách hàng có quyền trả lại hàng hóa dưới hình thức đối lại để lấy hàng hóa, dịch vụ khác);
+
+(c) Doanh thu được xác định tương đối chắc chắn;
+
+(d) Công ty sẽ thu được lợi ích kinh tế từ giao dịch bán hàng; và
+
+(e) Xác định được chi phí liên quan đến giao dịch bán hàng.
+
+13
+
+===== PAGE 16 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Doanh thu cung cấp dịch vụ được ghi nhận khi đồng thời thỏa mãn các điều kiện sau:
+
+(a) Doanh thu được xác định tương đối chắc chắn. Khi hợp đồng quy định người mua được quyền trả lại dịch vụ đã mua theo những điều kiện cụ thể, Công ty chỉ được ghi nhận doanh thu khi những điều kiện cụ thể đó không còn tồn tại và người mua không được quyền trả lại dịch vụ đã cung cấp;
+
+(b) Có khả năng thu được lợi ích kinh tế từ giao dịch cung cấp dịch vụ đó;
+
+(c) Xác định được phần công việc đã hoàn thành tại ngày của bằng cân đối kế toán; và
+
+(d) Xác định được chi phí phát sinh cho giao dịch và chi phí để hoàn thành giao dịch cung cấp dịch vụ đó.
+
+Trường hợp giao dịch về cung cấp dịch vụ thực hiện trong nhiều kỳ kế toán thì việc xác định doanh thu của dịch vụ trong từng kỳ thường được thực hiện theo phương pháp tỷ lệ hoàn thành. Theo phương pháp này, doanh thu được ghi nhận trong kỳ kế toán được xác định theo tỷ lệ phần công việc đã hoàn thành.
+
+Doanh thu hoạt động tài chính bao gồm: lãi tiền gửi; cổ tức, lợi nhuận được chia (nếu có); lãi chênh lệch tỷ giá... Cụ thể như sau:
+
+(a) Lãi tiền gửi được xác định tương đối chắc chắn trên cơ sở số dư tiền gửi và lãi suất thực tế từng kỳ;
+
+(b) Cổ tức, lợi nhuận được chia được ghi nhận theo thông báo của bên chia cổ tức, lợi nhuận;
+
+(c) Chênh lệch tỷ giá phần ánh các khoản lãi chênh lệch tỷ giá hối đoái thực tế phát sinh trong kỳ của các nghiệp vụ phát sinh có gốc ngoại tệ và lãi chênh lệch tỷ giá hối đoái do đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ tại thời điểm báo cáo.
+
+Thu nhập khác phần ánh các khoản thu nhập phát sinh từ các sự kiện hay các nghiệp vụ riêng biệt với hoạt động kinh doanh thông thường của Công ty, ngoài các khoản doanh thu nếu trên.
+
+4.14. Thuế
+
+Thuế thu nhập doanh nghiệp bao gồm thuế thu nhập hiện hành và thuế thu nhập hoãn lại.
+
+Chi phí thuế thu nhập hiện hành phần ánh số thuế thu nhập doanh nghiệp phải nộp phát sinh trong năm và số thuế thu nhập doanh nghiệp phải nộp bổ sung do phát hiện sai sót không trọng yếu của các năm trước. Thu nhập thuế thu nhập hiện hành phần ánh số thuế thu nhập doanh nghiệp phải nộp được ghi giảm do phát hiện sai sót không trọng yếu của các năm trước.
+
+Chi phí thuế thu nhập hoãn lại phần ánh số chênh lệch giữa tài sản thuế thu nhập hoãn lại được hoàn nhập trong năm lớn hơn tài sản thuế thu nhập hoãn lại phát sinh trong năm hoặc thuế thu nhập hoãn lại phải trả phát sinh trong năm lớn hơn thuế thu nhập hoãn lại phải trả được hoàn nhập trong năm. Thu nhập thuế thu nhập hoãn lại phần ánh số chênh lệch giữa tài sản thuế thu nhập hoãn lại phát sinh trong năm lớn hơn tài sản thuế thu nhập hoãn lại được hoàn nhập trong năm hoặc thuế thu nhập hoãn lại phải trả được hoàn nhập trong năm lớn hơn thuế thu nhập hoãn lại phải trả phát sinh trong năm.
+
+Thuế thu nhập hoãn lại được tính trên các khoản chênh lệch giữa giá trị ghi sổ và cơ sở tính thuế của các khoản mục tài sản hoặc công nợ trên báo cáo tài chính, khoản lỗ tính thuế và ưu đãi thuế chưa sử dụng. Thuế thu nhập hoãn lại phải trả phải được ghi nhận cho tất cả các khoản chênh lệch tạm thời, đối với tài sản thuế thu nhập hoãn lại chỉ được ghi nhận khi chắc chắn có đủ lợi nhuận tính thuế trong tương lai để khấu trừ các khoản chênh lệch tạm thời.
+
+Thuế thu nhập hoãn lại được xác định theo thuế suất dự tính sẽ áp dụng cho năm mà tài sản được thu hồi hay nợ phải trả được thanh toán. Thuế thu nhập hoãn lại được ghi nhận vào báo cáo kết quả hoạt động kinh doanh trừ trường hợp khoản thuế đó có liên quan đến các khoản mục được ghi thẳng vào vốn chủ sở hữu, trong trường hợp này, thuế thu nhập hoãn lại cũng được ghi thẳng vào vốn chủ sở hữu.
+
+14
+
+11회 Z를 높고 12
+
+===== PAGE 17 =====
+[Non-Text]
+
+CÔNG TY CÓ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Tài sản thuế thu nhập hoãn lại và thuế thu nhập hoãn lại phải trả được bù trừ khi Công ty có quyền hợp pháp để bù trừ giữa tài sản thuế thu nhập hiện hành với thuế thu nhập hiện hành phải nộp và khi các tài sản thuế thu nhập hoãn lại và thuế thu nhập hoãn lại phải trả liên quan tới thuế thu nhập doanh nghiệp được quản lý bởi cùng một cơ quan thuế và Công ty có dự định thanh toán thuế thu nhập hiện hành trên cơ sở thuần.
+
+Thu nhập tính thuế có thể khác với tổng lợi nhuận kế toán trước thuế được trình bày trên báo cáo kết quả hoạt động kinh doanh vi thu nhập tính thuế không bao gồm các khoản thu nhập chịu thuế hay chi phí được khấu trừ trong các nằm khác (bao gồm cả lỗ mang sang, nếu có) và ngoài ra không bao gồm các thu nhập không chịu thuế hoặc chi phí không được khấu trừ.
+
+Việc xác định thuế thu nhập của Công ty căn cứ vào các quy định hiện hành về thuế. Tuy nhiên, những quy định này thay đổi theo từng thời kỳ và việc xác định nghĩa vụ về thuế thu nhập doanh nghiệp tùy thuộc vào kết quả kiểm tra của cơ quan thuế có thẩm quyền.
+
+Các loại thuế khác được áp dụng theo các luật thuế hiện hành tại Việt Nam.
+
+4.15. Bên liên quan
+
+Các bên được coi là bên liên quan với Công ty nếu có khả năng kiểm soát hoặc có ảnh hưởng đáng kể đối với Công ty trong việc ra quyết định các chính sách tài chính và hoạt động hoặc có chung các thành viên quản lý chủ chốt hoặc cùng chịu sự chỉ phối của một công ty khác (cùng thuộc Tổng công ty).
+
+Các cá nhân có quyền trực tiếp hoặc gián tiếp biểu quyết dẫn đến có ảnh hưởng đáng kể tới Công ty, kể cả các thành viên mật thiết trong gia đình của các cá nhân này (bố, mẹ, vợ, chồng, con, anh, chỉ ern ruột).
+
+Các nhân viên quản lý chủ chốt có quyền và trách nhiệm về việc lập kế hoạch, quản lý và kiểm soát các hoạt động của Công ty: những người lãnh đạo, các nhân viên quản lý của Công ty và các thành viên mật thiết trong gia đình của các cá nhân này.
+
+Các doanh nghiệp do các cá nhân được nêu ở trên nằm trực tiếp hoặc gián tiếp phần quan trọng quyền biểu quyết hoặc thông qua việc này người đó có thể có ảnh hưởng đáng kể tới Công ty, bao gồm những doanh nghiệp được sở hữu bởi những người lãnh đạo hoặc các cổ đông chính của Công ty và những doanh nghiệp có chung một thành viên quản lý chủ chất với Công ty.
+
+5. TIỀN VÀ CÁC KHOÀN TƯƠNG ĐƯƠNG TIỀN
+
+<table><tr><td rowspan="2"></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Tiền mặt</td><td>27.168.598</td><td>63.855.865</td></tr><tr><td>Tiền gửi ngân hàng</td><td>74.272.074.778</td><td>22.295.224.921</td></tr><tr><td>Các khoản tương đương tiền</td><td>23.000.000.000</td><td>22.000.000.000</td></tr><tr><td>Cộng</td><td>97.299.243.376</td><td>44.359.080.786</td></tr></table>
+
+15
+
+11.1 ≤ - 置 0.10
+
+===== PAGE 18 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+MÃU SÓ B09 - DN
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+6. PHÀI THU KHÁCH HÀNG NGÁN HẠN
+
+<table><tr><td rowspan="2"></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td colspan="3">Phải thu khách hàng bên liên quan</td></tr><tr><td>Cục Quản nhu - Bộ Quốc Phòng</td><td>10.405.800.950</td><td>53.337.891.737</td></tr><tr><td>Công ty TNHH MTV Tổng công ty 28 - CN Cần Thơ</td><td>111.245.600</td><td>57.728.000</td></tr><tr><td>Công ty TNHH MTV - Tổng Công ty 28</td><td>426.872.950</td><td>208.285.450</td></tr><tr><td>Xửồng may Cục Hậu cần Quản khu 9</td><td>336.465.350</td><td>-</td></tr><tr><td>Xửồng may Cục Hậu cần Quản khu 5</td><td>54.096.000</td><td>-</td></tr><tr><td>Xí nghiệp May Cục Hậu cần Quản khu 7</td><td>47.076.150</td><td>51.516.100</td></tr><tr><td colspan="3">Phải thu của khách hàng khác</td></tr><tr><td>D Jacobsons &amp; Sons LTD,</td><td>33.476.735.151</td><td>28.199.250.024</td></tr><tr><td>Văn phòng Tòa án nhân dân Tối cao</td><td>11.319.703.000</td><td>5.313.423.000</td></tr><tr><td>Nhà máy giày Quản đội Than Va</td><td>11.834.466.466</td><td>-</td></tr><tr><td>Các đối tượng khác</td><td>19.637.911.117</td><td>20.415.199.734</td></tr><tr><td>Cộng</td><td>87.650.372.734</td><td>107.583.294.045</td></tr></table>
+
+7. PHẢI THU NGẮN HẠN KHÁC
+
+<table><tr><td rowspan="2"></td><td colspan="2">31/12/2021</td><td colspan="2">01/01/2021</td></tr><tr><td>Giá trịVND</td><td>Dự phòngVND</td><td>Giá trịVND</td><td>Dự phòngVND</td></tr><tr><td>Tạm ứng</td><td>396.299.843</td><td>-</td><td>316.060.496</td><td>-</td></tr><tr><td>Phải thu khác</td><td>1.096.393.928</td><td>-</td><td>988.124.638</td><td>-</td></tr><tr><td>Bộ tư lệnh Quản đoàn 4</td><td>500.000.000</td><td>-</td><td>500.000.000</td><td>-</td></tr><tr><td>Công ty TNHH Nayoka Việt Nam</td><td>-</td><td>-</td><td>218.681.818</td><td>-</td></tr><tr><td>Lãi dự thu</td><td>-</td><td>-</td><td>38.838.356</td><td>-</td></tr><tr><td>Các đối tượng khác</td><td>596.393.928</td><td>-</td><td>230.604.464</td><td>-</td></tr><tr><td>Dư nợ BHYT</td><td>131.773.895</td><td>-</td><td>69.479.999</td><td>-</td></tr><tr><td>Phải thu tiền hàng tại chi nhánh</td><td>13.513.380.139</td><td>-</td><td>11.417.796.116</td><td>-</td></tr><tr><td>Cộng</td><td>15.137.847.805</td><td>-</td><td>12.791.461.249</td><td>-</td></tr></table>
+
+16
+
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11.
+
+===== PAGE 19 =====
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+8. NỘ' XÁU
+
+MĂU SÓ B09 - DN
+
+<table><tr><td rowspan="3"></td><td colspan="4">31/12/2021</td><td colspan="4">01/01/2021</td></tr><tr><td>Thời gian quá hạn</td><td>Giá gốc</td><td>Giá trị có thể thu hồi</td><td>Dự phòng</td><td>Thời gian quá hạn</td><td>Giá gốc</td><td>Giá trị có thể thu hồi</td><td>Dự phòng</td></tr><tr><td>Năm</td><td>VND</td><td>VND</td><td>VND</td><td>Năm</td><td>VND</td><td>VND</td><td>VND</td></tr><tr><td rowspan="2">Công ty TNHH Sutumi</td><td>Từ 1 - 2 năm</td><td>167.179.000</td><td>83.589.500</td><td>(83.589.500)</td><td>Từ 6 tháng - 1 năm</td><td>326.734.000</td><td>228.713.800</td><td>(98.020.200)</td></tr><tr><td>Từ 2 - 3 năm</td><td>642.821.000</td><td>192.846.300</td><td>(449.974.700)</td><td>Từ 1 - 2 năm</td><td>523.266.000</td><td>261.633.000</td><td>(261.633.000)</td></tr><tr><td>Trần Mỉ Đơ</td><td>Trên 3 năm</td><td>124.300.000</td><td>-</td><td>(124.300.000)</td><td>Từ 2 - 3 năm</td><td>124.300.000</td><td>37.290.000</td><td>(87.010.000)</td></tr><tr><td>Cơ sở Nhất Tỉnh</td><td></td><td>-</td><td>-</td><td>-</td><td>Từ 6 tháng - 1 năm</td><td>300.000.000</td><td>210.000.000</td><td>(90.000.000)</td></tr><tr><td>Công ty TNHH Sản xuất thương mại giày dép Đô Ba</td><td>Trên 3 năm</td><td>158.190.000</td><td>-</td><td>(158.190.000)</td><td>Từ 2 - 3 năm</td><td>158.190.000</td><td>47.457.000</td><td>(110.733.000)</td></tr><tr><td>Cơ sở Thống Nhất</td><td></td><td>-</td><td>-</td><td>-</td><td>Từ 6 tháng - 1 năm</td><td>290.181.900</td><td>203.127.330</td><td>(87.054.570)</td></tr><tr><td rowspan="2">Heng Amnot - Borey Seng</td><td>Từ 6 tháng - 1 năm</td><td>974.255.025</td><td>681.978.517</td><td>(292.276.508)</td><td></td><td>-</td><td>-</td><td>-</td></tr><tr><td>Từ 1 - 2 năm</td><td>436.992.468</td><td>218.496.234</td><td>(218.496.234)</td><td></td><td>-</td><td>-</td><td>-</td></tr><tr><td>Công ty TNHH Ngôi Nhà Giày</td><td>Từ 6 tháng - 1 năm</td><td>306.617.295</td><td>214.632.106</td><td>(91.985.189)</td><td></td><td>-</td><td>-</td><td>-</td></tr><tr><td>Công ty TNHH xuất nhập khẩu sản xuất và thương mại Pháp Thành</td><td>Từ 2 - 3 năm</td><td>382.205.100</td><td>191.102.550</td><td>(191.102.550)</td><td></td><td>-</td><td>-</td><td>-</td></tr><tr><td>Các đối tượng khác</td><td>Từ 6 tháng - 2 năm</td><td>217.581.787</td><td>104.250.822</td><td>(113.330.965)</td><td>Từ 6 tháng - 1 năm</td><td>729.740.507</td><td>393.622.054</td><td>(336.118.453)</td></tr><tr><td>Cộng</td><td></td><td>3.410.141.675</td><td>1.686.896.029</td><td>(1.723.245.646)</td><td></td><td>2.452.412.407</td><td>1.381.843.184</td><td>(1.070.569.223)</td></tr></table>
+
+17
+
+[Illegible Handwriting]
+
+===== PAGE 20 =====
+CÔNG TY CÓ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+9. HÀNG TÔN KHO
+
+<table><tr><td rowspan="3"></td><td colspan="2">31/12/2021</td><td colspan="2">01/01/2021</td></tr><tr><td>Giá gốc</td><td>Dự phòng</td><td>Giá gốc</td><td>Dự phòng</td></tr><tr><td>VND</td><td>VND</td><td>VND</td><td>VND</td></tr><tr><td>Nguyên liệu, vật liệu</td><td>54.681.023.239</td><td>(5.372.535.964)</td><td>47.201.759.664</td><td>(5.473.208.392)</td></tr><tr><td>Công cụ, dụng cụ</td><td>67.852.203</td><td>-</td><td>57.768.724</td><td>-</td></tr><tr><td>Chi phí sản xuất kinh doanh dở dang</td><td>59.021.997.387</td><td>-</td><td>40.070.379.970</td><td>-</td></tr><tr><td>Thành phẩm</td><td>84.980.734.973</td><td>(1.153.339.858)</td><td>109.991.211.557</td><td>(1.397.471.440)</td></tr><tr><td>Hàng hoá</td><td>255.000</td><td>-</td><td>255.000</td><td>-</td></tr><tr><td>Cộng</td><td>198.751.862.802</td><td>(6.525.875.822)</td><td>197.321.374.915</td><td>(6.870.679.832)</td></tr></table>
+
+10. XÂY DỰNG CO' BẢN DỒ' DANG
+
+<table><tr><td rowspan="2"></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Mua sám</td><td>308.290.909</td><td>172.559.925</td></tr><tr><td>Dự án xây dựng Chung cư khu Dĩ An</td><td>500.000.000</td><td>500.000.000</td></tr><tr><td>Cộng</td><td>808.290.909</td><td>672.559.925</td></tr></table>
+
+18
+
+===== PAGE 21 =====
+CÔNG TY CÓ PHẦN 32
+
+<table><tr><td rowspan="2"></td><td colspan="2">Nhà xưởng và vật kiến trúc</td><td>Máy móc thiết bị</td><td>Phương tiện vận tải</td><td>TSCĐ khác</td><td>Tổng</td></tr><tr><td colspan="2">VND</td><td>VND</td><td>VND</td><td>VND</td><td>VND</td></tr><tr><td colspan="7">NGUYÊN GIÁ</td></tr><tr><td>Tại ngày 01/01/2021</td><td colspan="2">122.687.075.770</td><td>121.895.573.841</td><td>6.464.871.677</td><td>4.372.504.789</td><td>255.420.026.077</td></tr><tr><td>Mua trong năm</td><td colspan="2">-</td><td>1.283.470.815</td><td>396.479.246</td><td>-</td><td>1.679.950.061</td></tr><tr><td>Đầu tư xây dựng cơ bản hoàn thành</td><td colspan="2">2.092.163.637</td><td>-</td><td>522.908.865</td><td>-</td><td>2.615.072.502</td></tr><tr><td>Thanh lý, nhượng bán</td><td colspan="2">(15.612.900.861)</td><td>(823.962.248)</td><td>(533.876.000)</td><td>(8.219.047)</td><td>(16.978.958.156)</td></tr><tr><td>Tại ngày 31/12/2021</td><td colspan="2">109.166.338.546</td><td>122.355.082.408</td><td>6.850.383.788</td><td>4.364.285.742</td><td>242.736.090.484</td></tr><tr><td colspan="7">GIÁ TRỊ HAO MÒN LỦY KẾ</td></tr><tr><td>Tại ngày 01/01/2021</td><td colspan="2">59.322.695.224</td><td>69.577.568.179</td><td>4.596.832.827</td><td>2.383.461.056</td><td>135.880.557.286</td></tr><tr><td>Khấu hao trong năm</td><td colspan="2">2.617.383.413</td><td>6.486.218.827</td><td>319.119.124</td><td>204.156.279</td><td>9.626.877.643</td></tr><tr><td>Thanh lý, nhượng bán</td><td colspan="2">(15.612.900.861)</td><td>(592.851.137)</td><td>(533.876.000)</td><td>(8.219.047)</td><td>(16.747.847.045)</td></tr><tr><td>Tại ngày 31/12/2021</td><td colspan="2">46.327.177.776</td><td>75.470.935.869</td><td>4.382.075.951</td><td>2.579.398.288</td><td>128.759.587.884</td></tr><tr><td colspan="7">GIÁ TRỊ CÒN LẠI</td></tr><tr><td>Tại ngày 01/01/2021</td><td colspan="2">63.364.380.546</td><td>52.318.005.662</td><td>1.868.038.850</td><td>1.989.043.733</td><td>119.539.468.791</td></tr><tr><td>Tại ngày 31/12/2021</td><td colspan="2">62.839.160.770</td><td>46.884.146.539</td><td>2.468.307.837</td><td>1.784.887.454</td><td>113.976.502.600</td></tr><tr><td>Nguyên giá TSCĐ hết khấu hao còn sử dụng</td><td colspan="2">4.897.263.209</td><td>38.274.440.900</td><td>3.252.177.495</td><td>1.092.248.017</td><td>47.516.129.621</td></tr><tr><td colspan="7">ĐẦU TƯ GÓP VỐN VÀO ĐƠN VỊ KHÁC</td></tr><tr><td rowspan="3"></td><td colspan="3">31/12/2021</td><td colspan="3">01/01/2021</td></tr><tr><td>Số lượng cổ phiếu</td><td>Giá gốc</td><td>Giá trị hợp lý (*)</td><td>Dự phòng</td><td>Số lượng cổ phiếu</td><td>Giá gốc</td></tr><tr><td>CP</td><td>VND</td><td>VND</td><td>VND</td><td>CP</td><td>VND</td></tr><tr><td>Ngân hàng TMCP Quân đội</td><td>2.895.110</td><td>10.572.570.000</td><td>83.668.679.000</td><td>-</td><td>2.124.899</td><td>10.572.570.000</td></tr></table>
+
+(*) Giá trị hợp lý của khoản đầu tư được xác định = số lượng cổ phiếu x giá đóng của của cổ phiếu trên sản HOSE tại thời điểm lập báo cáo tài chính.
+
+19
+
+===== PAGE 22 =====
+CÔNG TY CÓ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+13. PHÀI TRÀ NGƯỜI BÁN NGẮN HẠN
+
+MĂU SÓ B09 - DN
+
+<table><tr><td rowspan="2"></td><td colspan="2">31/12/2021</td><td colspan="2">01/01/2021</td></tr><tr><td>Giá trịVND</td><td>Số có khả năngtrả nợVND</td><td>Giá trịVND</td><td>Số có khả năng trả nợVND</td></tr><tr><td>Công ty Cổ phần Kim Hải Đông</td><td>9.497.156.211</td><td>9.497.156.211</td><td>15.680.205.412</td><td>15.680.205.412</td></tr><tr><td>Công ty TNHH Sản xuất và Thương mại Hoàng Duy</td><td>5.909.954.884</td><td>5.909.954.884</td><td>10.343.950.684</td><td>10.343.950.684</td></tr><tr><td>Công ty TNHH Thương mại thể thao Gốc Việt</td><td>27.882.646.814</td><td>27.882.646.814</td><td>12.131.133.183</td><td>12.131.133.183</td></tr><tr><td>Công ty TNHH Sản xuất - Thương mại Nguyễn Phát</td><td>5.758.603.400</td><td>5.758.603.400</td><td>6.123.635.900</td><td>6.123.635.900</td></tr><tr><td>Hợp tác xã Cường Thịnh</td><td>7.236.396.574</td><td>7.236.396.574</td><td>7.737.479.108</td><td>7.737.479.108</td></tr><tr><td>Các đối tượng khác</td><td>55.829.872.682</td><td>55.829.872.682</td><td>38.673.763.574</td><td>38.673.763.574</td></tr><tr><td>Cộng</td><td>112.114.630.565</td><td>112.114.630.565</td><td>90.690.167.861</td><td>90.690.167.861</td></tr></table>
+
+20
+
+===== PAGE 23 =====
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+MÃU SÓ B09 - DN
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+15. NGƯỜI MUA TRẢ TIỀN TRƯỚC NGẮN HẠN
+
+<table><tr><td rowspan="2"></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Cục Trang bị và Kho vận - Bộ Công An</td><td>32.192.500.000</td><td>-</td></tr><tr><td>Các đối tượng khác</td><td>12.324.933.279</td><td>7.914.265.310</td></tr><tr><td>Cộng</td><td>44.517.433.279</td><td>7.914.265.310</td></tr></table>
+
+16. CHI PHÍ PHÀI TRÀ NGÁN HẠN
+
+<table><tr><td rowspan="2"></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Trích trước tiền điện, nước</td><td>556.429.904</td><td>443.492.171</td></tr><tr><td>Chi phí phải trả khác</td><td>769.566.058</td><td>70.000.000</td></tr><tr><td>Cộng</td><td>1.325.995.962</td><td>513.492.171</td></tr></table>
+
+17. PHÀI TRÀ KHÁC NGÂN HẠN
+
+<table><tr><td rowspan="2"></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Kinh phí công đoàn</td><td>5.835.924.293</td><td>6.144.972.919</td></tr><tr><td>Bảo hiểm xã hội</td><td>1.845.125.065</td><td>1.561.968.941</td></tr><tr><td>Bảo hiểm thất nghiệp</td><td>324.347.661</td><td>315.550.760</td></tr><tr><td>Cổ tức phải trả</td><td>3.332.000.000</td><td>-</td></tr><tr><td>Các khoản đặt cọc</td><td>5.268.676.955</td><td>5.088.676.955</td></tr><tr><td>Trường THPT Dân lập Hồng Hà</td><td>2.000.000.000</td><td>2.000.000.000</td></tr><tr><td>Công ty TNHH TMDV Du Miên</td><td>1.500.000.000</td><td>1.500.000.000</td></tr><tr><td>Công ty Cổ phần đầu tư Cái Mép</td><td>500.000.000</td><td>500.000.000</td></tr><tr><td>Các khoản đặt cọc khác</td><td>1.268.676.955</td><td>1.088.676.955</td></tr><tr><td>Phải trả khác cho các đơn vị trực thuộc</td><td>79.798.269.269</td><td>81.329.221.326</td></tr><tr><td>Các khoản phải trả, phải nộp khác</td><td>3.708.472.561</td><td>4.691.305.915</td></tr><tr><td>Cộng</td><td>100.112.815.804</td><td>99.131.696.816</td></tr></table>
+
+21
+
+===== PAGE 24 =====
+CÔNG TY CỔ PHẦN 32
+
+<table><tr><td rowspan="2"></td><td>Vốn góp của chủ sở hữu</td><td>Quỹ đầu tư phát triển</td><td>Lợi nhuận sau thuế chưa phân phối</td><td>Cộng</td></tr><tr><td>VND</td><td>VND</td><td>VND</td><td>VND</td></tr><tr><td>Tại ngày 01/01/2020</td><td>68.000.000.000</td><td>95.985.605.867</td><td>59.630.342.595</td><td>223.615.948.462</td></tr><tr><td>Lãi trong năm</td><td>-</td><td>-</td><td>42.107.027.168</td><td>42.107.027.168</td></tr><tr><td>Chia cổ tức</td><td>-</td><td>-</td><td>(14.960.000.000)</td><td>(14.960.000.000)</td></tr><tr><td>Trích lập các quỹ</td><td>-</td><td>16.415.287.069</td><td>(22.950.410.099)</td><td>(6.535.123.030)</td></tr><tr><td>Chi thù lao HĐQT và Ban kiểm soát</td><td>-</td><td>-</td><td>(5.000.000)</td><td>(5.000.000)</td></tr><tr><td>Chi hỗ trợ cấp trên</td><td>-</td><td>-</td><td>(2.000.000.000)</td><td>(2.000.000.000)</td></tr><tr><td>Tại ngày 31/12/2020</td><td>68.000.000.000</td><td>112.400.892.936</td><td>61.821.959.664</td><td>242.222.852.600</td></tr><tr><td>Lãi trong năm</td><td>-</td><td>-</td><td>34.609.256.742</td><td>34.609.256.742</td></tr><tr><td>Phân phối lợi nhuận 2020 (*)</td><td>-</td><td>12.632.108.150</td><td>(38.107.027.168)</td><td>(25.474.919.018)</td></tr><tr><td>Tạm phân phối lợi nhuận 2021 (**)</td><td>-</td><td>-</td><td>(13.300.000.000)</td><td>(13.300.000.000)</td></tr><tr><td>Tại ngày 31/12/2021</td><td>68.000.000.000</td><td>125.033.001.086</td><td>45.024.189.238</td><td>238.057.190.324</td></tr></table>
+
+22
+
+===== PAGE 25 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Chi tiết vốn góp của chủ sở hữu
+
+<table><tr><td rowspan="2"></td><td colspan="2">31/12/2021</td><td colspan="2">01/01/2021</td></tr><tr><td>VND</td><td>Tỷ lệ</td><td>VND</td><td>Tỷ lệ</td></tr><tr><td>Tổng cục Hậu Cần</td><td>34.680.000.000</td><td>51,00%</td><td>34.680.000.000</td><td>51,00%</td></tr><tr><td>Các cổ đông khác</td><td>33.320.000.000</td><td>49,00%</td><td>33.320.000.000</td><td>49,00%</td></tr><tr><td>Cộng</td><td>68.000.000.000</td><td>100,0%</td><td>68.000.000.000</td><td>100,00%</td></tr></table>
+
+Các giao dịch về vốn với các chủ sở hữu và phân phối cổ tức, chia lợi nhuận
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td colspan="3">Vốn đầu tư của chủ sở hữu</td></tr><tr><td>- Vốn góp đầu năm</td><td>68.000.000.000</td><td>68.000.000.000</td></tr><tr><td>- Vốn góp tăng trong năm</td><td>-</td><td>-</td></tr><tr><td>- Vốn góp giảm trong năm</td><td>-</td><td>-</td></tr><tr><td>- Vốn góp cuối năm</td><td>68.000.000.000</td><td>68.000.000.000</td></tr><tr><td>Cổ tức, lợi nhuận đã chia</td><td>21.760.000.000</td><td>14.960.000.000</td></tr><tr><td colspan="3">Cổ phiếu</td></tr><tr><td></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>Số lượng cổ phiếu đăng ký phát hành</td><td>6.800.000</td><td>6.800.000</td></tr><tr><td>Số lượng cổ phiếu đã bán ra công chúng</td><td>6.800.000</td><td>6.800.000</td></tr><tr><td>- Cổ phiếu phổ thông</td><td>6.800.000</td><td>6.800.000</td></tr><tr><td>Số lượng cổ phiếu được mua lại (cổ phiếu quỹ)</td><td>-</td><td>-</td></tr><tr><td>Số lượng cổ phiếu đang lưu hành</td><td>6.800.000</td><td>6.800.000</td></tr><tr><td>- Cổ phiếu phổ thông</td><td>6.800.000</td><td>6.800.000</td></tr><tr><td>Mệnh giá cổ phiếu đang lưu hành (đồng/cổ phiếu)</td><td>10.000</td><td>10.000</td></tr></table>
+
+19. CÁC KHOÀN MỤC NGOÀI BÀNG CÂN ĐỐI KẾ TOÁN
+
+<table><tr><td></td><td>31/12/2021</td><td>01/01/2021</td></tr><tr><td>Ngoại tệ các loại - Dollar Mỹ (USD)</td><td>518.241,94</td><td>745.044,49</td></tr></table>
+
+20. DOANH THU BÁN HÀNG VÀ CUNG CÁP DỊCH VỤ
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Doanh thu</td><td>650.148.136.248</td><td>728.582.496.415</td></tr><tr><td>Doanh thu bán hàng hóa, dịch vụ</td><td>637.310.298.883</td><td>712.021.383.625</td></tr><tr><td>Doanh thu gia công</td><td>12.837.837.365</td><td>16.561.112.790</td></tr><tr><td>Các khoản giảm trừ doanh thu</td><td>-</td><td>1.450.000</td></tr><tr><td>Hàng bán bị trả lại</td><td>-</td><td>1.450.000</td></tr><tr><td>Cộng</td><td>650.148.136.248</td><td>728.581.046.415</td></tr></table>
+
+23
+
+||Δ/▶조요요|
+
+===== PAGE 26 =====
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+MÃU SÓ B09 - DN
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+Doanh thu với các bên liên quan
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Cục Quân nhu - Bộ Quốc Phòng</td><td>178.666.852.417</td><td>246.354.390.627</td></tr><tr><td>Công ty Cố phần 26</td><td>3.266.052.136</td><td>710.775.909</td></tr><tr><td>Công ty TNHH MTV Tổng Công ty 28 - CN Cần Thơ</td><td>731.433.274</td><td>517.869.500</td></tr><tr><td>Công ty TNHH MTV - Tổng Công ty 28</td><td>1.616.658.406</td><td>2.044.044.133</td></tr><tr><td>Xửồng May Cục Hậu cần Quân khu 9</td><td>1.602.681.363</td><td>1.974.967.409</td></tr><tr><td>Xỉ nghiệp May Cục Hậu cần Quân khu 5</td><td>270.971.818</td><td>-</td></tr><tr><td>Xỉ nghiệp May Cục Hậu cần Quân khu 7</td><td>508.129.273</td><td>610.823.090</td></tr><tr><td>Cộng</td><td>186.662.778.687</td><td>252.212.870.668</td></tr></table>
+
+21. GIÁ VÓN HÀNG BÁN
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Giá vốn bán hàng hóa, dịch vụ</td><td>579.076.579.267</td><td>650.195.196.356</td></tr><tr><td>Hoàn nhập dự phòng giảm giá hàng tồn kho</td><td>(344.804.010)</td><td>(1.210.270.958)</td></tr><tr><td>Cộng</td><td>578.731.775.257</td><td>648.984.925.398</td></tr></table>
+
+22. DOANH THU HOẠT ĐỘNG TÀI CHÍNH
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Lãi tiền gửi</td><td>800.954.793</td><td>804.808.710</td></tr><tr><td>Lãi hợp tác kinh doanh</td><td>6.289.800.000</td><td>8.219.450.000</td></tr><tr><td>Lãi chênh lệch tỷ giá phát sinh</td><td>547.804.035</td><td>316.542.319</td></tr><tr><td>Doanh thu hoạt động tài chính khác</td><td>-</td><td>40.875.710</td></tr><tr><td>Cộng</td><td>7.638.558.828</td><td>9.381.676.739</td></tr></table>
+
+23. CHI PHÍ TÀI CHÍNH
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Lỗ chênh lệch tỷ giá đã thực hiện</td><td>150.649.029</td><td>5.810.680</td></tr><tr><td>Lỗ chênh lệch tỷ giá chưa thực hiện</td><td>255.374.500</td><td>135.385.137</td></tr><tr><td>Chi phí tài chính khác</td><td>-</td><td>783.694.339</td></tr><tr><td>Cộng</td><td>406.023.529</td><td>924.890.156</td></tr></table>
+
+24
+
+11.2.2
+
+===== PAGE 27 =====
+[Non-Text]
+
+CÔNG TY CÓ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+MÃU SÓ B09 - DN
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+24. CHI PHÍ BÁN HÀNG VÀ QUẢN LÝ DOANH NGHIỆP
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Chi phí quản lý doanh nghiệp</td><td>33.817.431.627</td><td>32.226.921.969</td></tr><tr><td>Chi phí nhân viên quản lý</td><td>16.307.484.243</td><td>16.716.141.686</td></tr><tr><td>Chi phí vật liệu, đồ dùng văn phòng</td><td>284.496.552</td><td>511.147.193</td></tr><tr><td>Chi phí khấu hao tài sản cố định</td><td>2.337.634.391</td><td>2.093.828.144</td></tr><tr><td>Thuế, phí và lệ phí</td><td>5.283.631.909</td><td>3.055.430.421</td></tr><tr><td>Trích lập dự phòng phải thu khó đòi</td><td>652.676.423</td><td>561.100.700</td></tr><tr><td>Chi phí dịch vụ mua ngoài và khác</td><td>8.951.508.109</td><td>9.289.273.825</td></tr><tr><td>Chi phí bán hàng</td><td>4.750.944.770</td><td>5.218.939.576</td></tr><tr><td>Chi phí vật liệu, bao bì</td><td>121.089.238</td><td>1.309.424.317</td></tr><tr><td>Chi phí dịch vụ mua ngoài</td><td>1.800.243.500</td><td>2.488.280.570</td></tr><tr><td>Chi phí khác bằng tiền</td><td>2.829.612.032</td><td>1.421.234.689</td></tr><tr><td>Cộng</td><td>38.568.376.397</td><td>37.445.861.545</td></tr></table>
+
+25. THU NHẬP KHÁC
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Thanh lý, nhượng bán TSCĐ</td><td>1.831.818.182</td><td>95.454.544</td></tr><tr><td>Thu nhập khác</td><td>13.056.911</td><td>386.280</td></tr><tr><td>Cộng</td><td>1.844.875.093</td><td>95.840.824</td></tr></table>
+
+26. CHI PHÍ SÀN XUÁT KINH DOANH THEO YÉU TÓ
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Chi phí nguyên liệu, vật liệu</td><td>325.402.097.113</td><td>353.410.078.462</td></tr><tr><td>Chi phí nhân công</td><td>137.603.338.379</td><td>172.047.828.195</td></tr><tr><td>Chi phí khấu hao tài sản cố định</td><td>9.385.616.215</td><td>9.401.831.755</td></tr><tr><td>Chi phí dịch vụ mua ngoài</td><td>29.001.020.375</td><td>21.321.386.867</td></tr><tr><td>Chi phí khác bằng tiền</td><td>8.940.461.970</td><td>13.894.638.317</td></tr><tr><td>Cộng</td><td>510.332.534.052</td><td>570.075.763.596</td></tr></table>
+
+27. CHI PHÍ THUÉ THU NHẬP DOANH NGHIỆP HIỆN HÀNH
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Lợi nhuận kế toán trước thuế TNDN</td><td>41.749.995.928</td><td>50.583.077.135</td></tr><tr><td>Điều chỉnh cho thu nhập chịu thuế</td><td>6.289.800.000</td><td>8.219.450.000</td></tr><tr><td>Trừ: Thu nhập không chịu thuế</td><td>6.289.800.000</td><td>8.219.450.000</td></tr><tr><td>Cộng: Các khoản chi phí không được khấu trừ</td><td>-</td><td>16.622.700</td></tr><tr><td>Thu nhập chịu thuế</td><td>35.460.195.928</td><td>42.380.249.835</td></tr><tr><td>Thuế suất</td><td>20%</td><td>20%</td></tr><tr><td>Chi phí thuế thu nhập doanh nghiệp năm nay</td><td>7.092.039.186</td><td>8.476.049.967</td></tr><tr><td>Bổ sung thuế TNDN năm trước</td><td>48.700.000</td><td>-</td></tr><tr><td>Chi phí thuế thu nhập doanh nghiệp hiện hành</td><td>7.140.739.186</td><td>8.476.049.967</td></tr></table>
+
+25
+
+115≤-当只
+
+===== PAGE 28 =====
+[Non-Text]
+
+CÔNG TY CÓ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+28. LÃI CƠ BẢN TRÊN CỔ PHIÉU
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Lợi nhuận kế toán sau thuế thu nhập doanh nghiệp</td><td>34.609.256.742</td><td>42.107.027.168</td></tr><tr><td>Trích quỹ khen thưởng phúc lợi (*)</td><td>(6.500.000.000)</td><td>(14.514.919.018)</td></tr><tr><td>Lợi nhuận phân bổ cho cổ đông sở hữu cổ phiếu phổ thông</td><td>28.109.256.742</td><td>27.592.108.150</td></tr><tr><td>Cổ phiếu phổ thông đang lưu hành bình quân trong năm</td><td>6.800.000</td><td>6.800.000</td></tr><tr><td>Lãi cơ bản trên cổ phiếu</td><td>4.134</td><td>4.058</td></tr></table>
+
+(*) Lãi cơ bản trên cổ phiếu năm 2020 đã được trình bày lại do ảnh hưởng của việc điều chỉnh số trích quỹ khen thưởng phúc lợi từ nguồn lợi nhuận sau thuế năm 2020 theo Nghị quyết Đại hội đồng cổ đông thường niên năm 2021.
+
+Lợi nhuận phân bổ cho cổ đông sở hữu cổ phiếu phổ thông để tính lãi cơ bản trên cổ phiếu năm 2021 đã được loại trừ số tạm trích quỹ khen thưởng phúc lợi. Số liệu cuối cùng có thể được điều chỉnh, phụ thuộc vào việc trích các quỹ của Công ty từ lợi nhuận sau thuế sau khi được thông qua tại Đại hội đồng cổ đông thường niên.
+
+29. CÔNG CỤ TÀI CHÍNH
+
+Chi tiết các chính sách kế toán chủ yếu và các phương pháp mà Công ty áp dụng (bao gồm các tiêu chí để ghi nhận, cơ sở xác định giá trị và cơ sở ghi nhận các khoản thu nhập và chỉ phí) đối với từng loại tài sản tài chính, nợ phải trả tài chính và công cụ vốn được trình bày tại thuyết minh Công cụ tài chính.
+
+<table><tr><td rowspan="2"></td><td>Giá trị ghi số31/12/2021</td><td>Giá trị ghi số01/01/2021</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td colspan="3">Tài sản tài chính</td></tr><tr><td>Tiền và các khoản tương đương tiền</td><td>97.299.243.376</td><td>44.359.080.786</td></tr><tr><td>Phải thu của khách hàng</td><td>87.650.372.734</td><td>107.583.294.045</td></tr><tr><td>Các khoản đầu tư tài chính</td><td>10.572.570.000</td><td>10.572.570.000</td></tr><tr><td>Phải thu khác</td><td>1.228.167.823</td><td>1.057.604.637</td></tr><tr><td>Cộng</td><td>196.750.353.933</td><td>163.572.549.468</td></tr><tr><td colspan="3">Công nợ tài chính</td></tr><tr><td>Phải trả người bán</td><td>112.114.630.565</td><td>90.690.167.861</td></tr><tr><td>Chỉ phí phải trả</td><td>1.325.995.962</td><td>513.492.171</td></tr><tr><td>Phải trả khác</td><td>20.314.546.535</td><td>17.802.475.490</td></tr><tr><td>Vay và nợ thuê tài chính</td><td>-</td><td>552.619.624</td></tr><tr><td>Cộng</td><td>133.755.173.062</td><td>109.558.755.146</td></tr><tr><td>Trừ đi các khoản dự phòng</td><td>(1.723.245.646)</td><td>(1.070.569.223)</td></tr></table>
+
+Công ty trình bày và thuyết minh về công cụ tài chính theo quy định của Thông tư số 210/2009/TT-BTC ngày 06/11/2009 của Bộ Tài chính. Thông tư này hướng dẫn áp dụng chuẩn mực kế toán quốc tế về trình bày báo cáo tài chính và thuyết minh thông tin đối với công cụ tài chính nhưng không đưa ra hướng dẫn cụ thể cho việc đánh giá và ghi nhận công cụ tài chính theo giá trị hợp lý. Công ty đã trình bày giá trị hợp lý của công cụ tài chính theo hướng dẫn về thuyết minh báo cáo tài chính của Thông tư số 200/2014/TT-BTC ngày 22/12/2014 của Bộ Tài chính tại một số thuyết minh ở phần trên.
+
+26
+
+[Illegible Handwriting]
+
+===== PAGE 29 =====
+The image contains a row of identical mechanical components, each with four vertical pins. There is no text or numerical data present in the image. Therefore, the correct OCR output is an empty string.
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Mục tiêu quản lý rủi ro tài chính
+
+Các hoạt động của Công ty phải chịu rủi ro tín dụng và rủi ro thanh khoản.
+
+Ban điều hành chịu trách nhiệm đặt mục tiêu và các nguyên tắc cơ bản về quản lý rủi ro tài chính cho Công ty. Ban điều hành lập các chính sách chi tiết như nhận diện và đo lường rủi ro, hạn mức rủi ro và các chiến lược phòng ngừa rủi ro. Việc quản lý rủi ro tài chính được nhân sự thuộc bộ phận tài chính thực hiện.
+
+Các nhân sự thuộc bộ phận tài chính đo lường mức độ rủi ro thực tế so với hạn mức được đề ra và lập báo cáo thường xuyên để Hội đồng quản trị và Ban điều hành xem xét. Thông tin trình bày sau đây là dựa trên thông tin mà Ban điều hành nhận được.
+
+Rùi ro tín dụng
+
+Chính sách của Công ty là chỉ giao dịch với các khách hàng có quá trình tín dụng tốt và thu được đủ tài sản đảm bảo phù hợp nhằm giảm rủi ro tín dụng. Đối với các tài sản tài chính khác, chính sách của Công ty là giao dịch với các tổ chức tài chính và các đối tác khác có xếp hạng tín nhiệm cao.
+
+Mức rủi ro tín dụng tối đa đối với mỗi nhóm tài sản tài chính bằng với giá trị ghi sổ cửa nhóm công cụ tài chính đó trên bằng cân đối kế toán. Các nhóm tài sản tài chính lớn của Công ty là tiền gửi ngân hàng (không kỳ hạn, có kỳ hạn), phải thu của khách hàng, phải thu về cho vay và phải thu khác.
+
+Các tài sản tài chính không quá hạn cũng không bị giảm giá
+
+Tiền gửi ngân hàng không quá hạn cũng không bị giảm giá là các khoản tiền gửi chủ yếu tại các ngân hàng có xếp hạng tín nhiệm cao theo xác định của các cơ quan xếp hạng tín nhiệm quốc tế. Phải thu khách hàng, phải thu về cho vay và phải thu khác không quá hạn cũng không bị giảm giá chủ yếu là từ các đối tượng có quá trình thanh toán tốt cho Công ty.
+
+Rùi ro thanh khoản
+
+Rủi ro thanh khoản là rủi ro Công ty gặp khó khăn trong việc đáp ứng các nghĩa vụ gắn liền với các khoản nợ tài chính được thanh toán bằng cách giao tiền mặt hoặc một tài sản tài chính khác.
+
+Bảng dưới đây phân tích các khoản nợ tài chính phi phải sinh vào các nhóm đáo hạn có liên quan dưa trên kỳ hạn còn lại từ ngày lập bảng cân đối kế toán đến ngày đáo hạn theo hợp đồng. Các số tiền được trình bày trong bảng sau là các dòng tiền theo hợp đồng không chiết khấu.
+
+<table><tr><td></td><td>Đến 1 nămVND</td><td>Trên 1 nămVND</td></tr><tr><td colspan="3">Tại ngày 31/12/2021</td></tr><tr><td>Phải trả người bán</td><td>90.690.167.861</td><td>-</td></tr><tr><td>Chi phí phải trả</td><td>513.492.171</td><td>-</td></tr><tr><td>Phải trả khác</td><td>17.802.475.490</td><td>-</td></tr><tr><td>Vay và nợ thuê tài chính</td><td>-</td><td>-</td></tr><tr><td>Cộng</td><td>109.006.135.522</td><td>-</td></tr><tr><td colspan="3">Tại ngày 01/01/2021</td></tr><tr><td>Phải trả người bán</td><td>112.114.630.565</td><td>-</td></tr><tr><td>Chi phí phải trả</td><td>1.325.995.962</td><td>-</td></tr><tr><td>Phải trả khác</td><td>20.314.546.535</td><td>-</td></tr><tr><td>Vay và nợ thuê tài chính</td><td>552.619.624</td><td>-</td></tr><tr><td>Cộng</td><td>134.307.792.686</td><td>-</td></tr></table>
+
+27
+
+===== PAGE 30 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+Đo lường theo giá trị hợp lý
+
+Giá gốc trừ dự phòng (nếu có) đối với chứng khoán kinh doanh, phải thu khách hàng, phải thu về cho vay, phải thu khác, phải trả người bán, chi phí phải trả, phải trả khác, vay và nợ thuê tài chính là gần bằng với giá trị hợp lý của chúng.
+
+30. GIAO DỊCH VỚI BÊN LIÊN QUAN
+
+Trong năm, Công ty có giao dịch với các bên liên quan như sau:
+
+<table><tr><td>Bên liên quan</td><td>Mối liên hệ</td></tr><tr><td>Cục Quân nhu - Bộ Quốc Phòng</td><td>Đơn vị trực thuộc Bộ Quốc phòng</td></tr><tr><td>Công ty TNHH MTV - Tổng cục 28</td><td>Đơn vị trực thuộc Bộ Quốc phòng</td></tr><tr><td>Xí nghiệp May Cục Hậu cần Quân khu 7</td><td>Đơn vị trực thuộc Bộ Quốc phòng</td></tr><tr><td>Xưởng May Cục Hậu cần Quân khu 9</td><td>Đơn vị trực thuộc Bộ Quốc phòng</td></tr><tr><td>Xưởng May Cục Hậu cần Quân khu 5</td><td>Đơn vị trực thuộc Bộ Quốc phòng</td></tr></table>
+
+Ngoài các số dư và giao dịch với các bên liên quan được trình bày tại các thuyết minh khác của Báo cáo tài chính này, trong năm Công ty có số dư và giao dịch với các bên liên quan sau:
+
+Giao dịch với bên liên quan
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td colspan="3">Mua hàng</td></tr><tr><td>Công ty TNHH MTV - Tổng Công ty 28</td><td>172.406.000</td><td>279.629.818</td></tr><tr><td colspan="3">Chi trả cổ tức</td></tr><tr><td>Tổng cục Hậu Cần</td><td>11.097.600.000</td><td>7.629.600.000</td></tr></table>
+
+Thu nhập của Hội đồng quản trị và Ban điều hành
+
+<table><tr><td>Họ và tên</td><td>Chức vụ</td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td></td><td></td><td>VND</td><td>VND</td></tr><tr><td>Ông Nguyễn Thế Anh</td><td>Chủ tịch HĐQT</td><td>807.321.968</td><td>810.691.443</td></tr><tr><td>Ông Ngô Thành Thắng</td><td>Phó chủ tịch HĐQT kiểm Tổng giám đốc</td><td>740.107.718</td><td>740.698.078</td></tr><tr><td>Ông Phạm Văn Hà</td><td>Phó Tổng giám đốc</td><td>617.194.449</td><td>525.908.132</td></tr><tr><td>Bà Trần Thị Bình</td><td>Thành viên HĐQT kiểm kế toán trường</td><td>588.133.026</td><td>586.336.056</td></tr><tr><td>Ông Vũ Xuân Tạo</td><td>Thành viên HĐQT</td><td>60.000.000</td><td>138.198.394</td></tr><tr><td>Ông Trần Bá Thượng</td><td>Thành viên HĐQT</td><td>60.000.000</td><td>60.000.000</td></tr><tr><td>Cộng</td><td></td><td>2.872.757.160</td><td>2.861.832.103</td></tr></table>
+
+31. THÔNG TIN KHÁC
+
+<table><tr><td rowspan="2"></td><td>Năm 2021</td><td>Năm 2020</td></tr><tr><td>VND</td><td>VND</td></tr><tr><td>Thu nhập của Ban kiểm soát</td><td>821.156.575</td><td>999.583.003</td></tr></table>
+
+28
+
+===== PAGE 31 =====
+[Non-Text]
+
+CÔNG TY CỔ PHẦN 32
+
+THUYẾT MINH BÁO CÁO TÀI CHÍNH
+
+Các thuyết minh này là một bộ phận hợp thành và cần được đọc đồng thời với báo cáo tài chính kèm theo
+
+MÃU SÓ B09 - DN
+
+32. CÁC SỰ KIỆN PHÁT SINH SAU NGÀY KẾT THỨC NIÊN ĐỘ KẾ TOÁN
+
+Không có sự kiện bất thường nào xảy ra sau ngày kết thúc niên độ kế toán làm ảnh hưởng đến tình hình tài chính và hoạt động của Công ty cần thiết phải điều chỉnh hoặc trình bày trên Báo cáo tài chính cho năm tài chính kết thúc ngày 31/12/2021.
+
+33. ẢNH HƯỜNG CỦA DỊCH COVID-19 ĐÉN VIỆC LẬP VÀ TRÌNH BÀY BÁO CÁO TÀI CHÍNH
+
+Đại dịch Covid 19 xuất hiện từ đầu năm 2020 đến nay vẫn chưa được không chế đã ảnh hưởng tiêu cực tới tất cả mọi hoạt động của xã hội. Do ảnh hưởng của đại dịch nên các hoạt động sản xuất, kinh doanh của Công ty trong năm 2021 cũng đã bị ảnh hưởng, đặc biệt là trong giai đoạn Thành phố Hồ Chí Minh áp dụng biện pháp giãn cách xã hội theo Chỉ thị 16/CT-TTg ngày 31/03/2020 của Chính phủ. Hội động quản trị và Ban điều hành Công ty đang tiếp tục theo dõi, đánh giá rủi ro một cách thận trọng để có các quyết định phù hợp đối với hoạt động kinh doanh của doanh nghiệp trong thời gian tới. Báo cáo tài chính cho năm tài chính kết thúc ngày 31/12/2021 đã phần ảnh thực trạng tỉnh hình tài chính và hoạt động kinh doanh của Công ty trong năm và không có điều chỉnh cần thiết nào khác liên quan đến ảnh hưởng của dịch bệnh Covid-19 tới số liệu báo cáo tài chính này.
+
+34. SÓ LIỆU SO SÁNH
+
+Số liệu so sánh là số liệu trên Báo cáo tài chính cho năm tài chính kết thúc ngày 31/12/2020 được kiểm toán bởi kiểm toán viên khác.
+
+TP. Hồ Chí Minh, ngày 05 tháng 03 năm 2022
+
+29

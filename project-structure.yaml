@@ -1,0 +1,82 @@
+# Project Structure for RAG Report System
+project_name: RAG_Report
+version: 1.0.0
+description: Hệ thống RAG sinh báo cáo tài chính sử dụng FPT Cloud Embedding & Reranker và LangGraph.
+
+structure:
+  .agents:
+    description: Quy tắc và workflow dành cho AI agent
+    children:
+      rules:
+        description: Quy tắc phát triển và debug dự án
+      workflows:
+        description: Hướng dẫn workflow
+  data:
+    description: Thư mục chứa dữ liệu đầu vào và kết quả đầu ra
+    children:
+      A32:
+        description: Dữ liệu tài chính Công ty CP 32 qua các năm
+        children:
+          2017:
+            description: Báo cáo tài chính năm 2017
+          2018:
+            description: Báo cáo tài chính năm 2018
+          2019:
+            description: Báo cáo tài chính năm 2019
+          2020:
+            description: Báo cáo tài chính năm 2020
+          2021:
+            description: Báo cáo tài chính năm 2021
+          2023:
+            description: Báo cáo tài chính năm 2023
+          2024:
+            description: Báo cáo tài chính năm 2024
+          2025:
+            description: Báo cáo tài chính năm 2025
+          question_eval.json:
+            description: Bộ câu hỏi kiểm thử hệ thống RAG gồm 30 mẫu
+      processed:
+        description: Dữ liệu tài chính trung gian được trích xuất (DuckDB, JSON và cấu hình chart)
+      reports:
+        description: Thư mục lưu trữ báo cáo HTML được kết xuất
+  plan:
+    description: Các Spec triển khai và kế hoạch thiết kế
+    children:
+      IMPLEMENTATION_SPEC_RAG_REPORT.md:
+        description: Hướng dẫn đặc tả kiến trúc RAG Report gốc
+  src:
+    description: Mã nguồn hệ thống RAG Report
+    children:
+      rag_report:
+        description: Module chính của hệ thống RAG
+        children:
+          config:
+            description: Cấu hình và logging
+          schemas:
+            description: Các Pydantic schemas định hình dữ liệu
+          ingestion:
+            description: Phân tích tài liệu, nhúng vector và đồng bộ DB/Qdrant
+          query:
+            description: Hệ thống LangGraph RAG truy vấn dữ liệu với cơ chế từ chối trả lời (Abstention)
+          evaluation:
+            description: Hệ thống đánh giá tự động (RAG Triad & Ground Truth) sử dụng Ragas
+          exporter:
+            description: Trích xuất biểu đồ Altair và kết xuất báo cáo tài chính HTML
+  flows:
+    description: Prefect flows để điều phối pipeline chạy định kỳ
+    children:
+      prefect_ingestion_flow.py:
+        description: Pipeline hoàn chỉnh chạy nạp tài liệu
+      generate_report_flow.py:
+        description: Pipeline tạo biểu đồ, truy vấn RAG và kết xuất báo cáo HTML
+  tests:
+    description: Các script smoke test kiểm thử hoạt động API và từng component độc lập
+  .env:
+    description: File môi trường cấu hình API Keys và URLs
+  .gitignore:
+    description: File cấu hình các thư mục và tập tin loại trừ khỏi Git
+  requirements.txt:
+    description: Danh sách thư viện Python phụ thuộc của dự án
+  project-structure.yaml:
+    description: File mô tả cấu trúc thư mục của dự án
+

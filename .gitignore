@@ -1,0 +1,34 @@
+# Environment configurations
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Agent & workflows
+.agents/
+
+# Testing
+tests/
+smoke_test_*.py
+
+# Document types to ignore
+*.docx
+*.pdf
+*.xlsx
+*.csv
+
+# Python caches and builds
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.prefect/
+.ipynb_checkpoints/
+
+# Data processing outputs & caches
+data/processed/
+data/reports/
+*.duckdb
+*.json
