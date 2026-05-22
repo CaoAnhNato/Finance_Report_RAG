@@ -110,6 +110,28 @@ class HTMLExporter:
                 
         return '\n'.join(p_html)
 
+    def _split_text_and_takeaway(self, md_text: str) -> tuple[str, str]:
+        """Split markdown into main body and chart takeaway based on headers."""
+        md_text = md_text.strip()
+        
+        # Search for explicit takeaway keywords
+        match = re.search(r"^###\s*(?:diễn giải|takeaway|ý nghĩa|kết luận ngắn).*$", md_text, flags=re.IGNORECASE | re.MULTILINE)
+        if match:
+            split_idx = match.start()
+            main_body = md_text[:split_idx].strip()
+            takeaway = md_text[split_idx:].strip()
+            return main_body, takeaway
+            
+        # Fallback to splitting at the last header if multiple exist
+        headers = list(re.finditer(r'^###\s+.*$', md_text, flags=re.MULTILINE))
+        if len(headers) >= 2:
+            split_idx = headers[-1].start()
+            main_body = md_text[:split_idx].strip()
+            takeaway = md_text[split_idx:].strip()
+            return main_body, takeaway
+            
+        return md_text, ""
+
     def compile_report(
         self,
         sections: Dict[str, str],
@@ -126,10 +148,71 @@ class HTMLExporter:
             else:
                 chart_specs[name] = {}
 
-        # Convert markdown sections to HTML
-        html_sections = {k: self._markdown_to_html(v) for k, v in sections.items()}
+        # Render sections using vertical story template helper
+        def render_story_section(section_id, tag, title, key, chart_id=None):
+            content = sections.get(key, "")
+            main_body_md, takeaway_md = self._split_text_and_takeaway(content)
+            
+            main_body_html = self._markdown_to_html(main_body_md)
+            takeaway_html = self._markdown_to_html(takeaway_md)
+            
+            chart_html = ""
+            if chart_id:
+                chart_html = f"""
+                <div class="chart-wrapper">
+                    <div class="chart-container" id="{chart_id}"></div>
+                </div>
+                """
+            
+            takeaway_block = ""
+            if takeaway_html:
+                takeaway_block = f"""
+                <div class="chart-takeaway">
+                    {takeaway_html}
+                </div>
+                """
+                
+            return f"""
+            <section id="{section_id}" class="report-section">
+                <span class="section-tag">{tag}</span>
+                <h2>{title}</h2>
+                <div class="section-block">
+                    <div class="section-text">
+                        {main_body_html}
+                    </div>
+                    {chart_html}
+                    {takeaway_block}
+                </div>
+            </section>
+            """
+
+        # Section HTML compilation
+        sec_exec_summary = render_story_section("tổng-quan", "Tổng quan", "Tóm tắt Điều hành", "executive_summary")
+        sec_business_performance = render_story_section("kết-quả-kd", "Phần I", "Kết quả Hoạt động Kinh doanh", "business_performance", "chart-rev-prof")
+        sec_assets_structure = render_story_section("cơ-cấu-ts", "Phần II - A", "Cơ cấu và Biến động Tài sản", "assets_structure", "chart-asset")
+        sec_working_capital = render_story_section("vốn-lưu-động", "Phần II - B", "Khả năng Quản lý Vốn lưu động", "working_capital", "chart-working-capital")
+        sec_capital_structure = render_story_section("nguồn-vốn", "Phần III - A", "Cơ cấu Nguồn vốn & Nợ phải trả", "capital_structure", "chart-capital")
+        sec_liquidity_ratios = render_story_section("thanh-khoản", "Phần III - B", "Khả năng Thanh khoản & Hệ số Thanh toán", "liquidity_ratios", "chart-liquidity")
+        sec_cash_flow = render_story_section("dòng-tiền", "Phần IV", "Phân tích Lưu chuyển Tiền tệ (Dòng tiền)", "cash_flow", "chart-cash-flow")
         
-        # Complete Premium HTML Template with responsive design, glassmorphism, and vertical charts layout
+        # Abstention section
+        abstention_content = sections.get("abstention_2022", "<p>Chưa thiết lập cơ chế từ chối.</p>")
+        abstention_html = self._markdown_to_html(abstention_content)
+        sec_abstention = f"""
+        <section id="cơ-chế-từ-chối" class="report-section">
+            <span class="section-tag">Kiểm soát chất lượng</span>
+            <h2>Cơ chế Từ chối Trả lời & Dữ liệu năm 2022</h2>
+            <div class="refusal-note">
+                <h4>Chính sách từ chối (Abstention Policy)</h4>
+                {abstention_html}
+            </div>
+        </section>
+        """
+        
+        # Conclusions with Net Margin chart
+        sec_conclusions = render_story_section("kết-luận", "Phần V", "Kết luận chung & Khuyến nghị", "conclusions", "chart-net-margin")
+
+        # Complete Premium HTML Template
         template = f"""<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -155,6 +238,7 @@ class HTMLExporter:
             --accent-blue: #3b82f6;
             --accent-green: #10b981;
             --accent-purple: #8b5cf6;
+            --accent-orange: #f59e0b;
             --accent-red: #ef4444;
             --accent-glow: rgba(59, 130, 246, 0.12);
         }}
@@ -350,16 +434,6 @@ class HTMLExporter:
             color: var(--accent-blue);
         }}
         
-        .report-section ul {{
-            margin-left: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-secondary);
-        }}
-        
-        .report-section li {{
-            margin-bottom: 0.5rem;
-        }}
-        
         /* Vertical block layout */
         .section-block {{
             display: flex;
@@ -369,6 +443,46 @@ class HTMLExporter:
         
         .section-text {{
             width: 100%;
+        }}
+        
+        .section-text h3 {{
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit', sans-serif;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.25rem;
+        }}
+        
+        .section-text h3:first-child {{
+            margin-top: 0;
+        }}
+
+        .section-text ul {{
+            list-style: none;
+            margin-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }}
+        
+        .section-text li {{
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 1.025rem;
+        }}
+        
+        .section-text li::before {{
+            content: "→";
+            color: var(--accent-blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.1rem;
         }}
         
         /* Chart container */
@@ -392,25 +506,57 @@ class HTMLExporter:
             min-height: 380px;
         }}
         
+        /* Takeaway styling */
+        .chart-takeaway {{
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.06), rgba(139, 92, 246, 0.03));
+            border-left: 4px solid var(--accent-blue);
+            padding: 1.5rem;
+            border-radius: 4px 12px 12px 4px;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }}
+        
+        .chart-takeaway h3 {{
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        
+        .chart-takeaway p {{
+            font-size: 1rem !important;
+            color: var(--text-primary) !important;
+            margin-bottom: 0 !important;
+            line-height: 1.6;
+        }}
+        
         /* Tables in reports */
         table {{
             width: 100%;
             border-collapse: collapse;
             margin: 1.5rem 0;
             font-size: 0.95rem;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
         }}
         
         th {{
             background: rgba(59, 130, 246, 0.1);
             color: var(--text-primary);
             text-align: left;
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1.2rem;
             font-weight: 600;
             border-bottom: 2px solid var(--border-color);
         }}
         
         td {{
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1.2rem;
             border-bottom: 1px solid var(--border-color);
             color: var(--text-secondary);
         }}
@@ -471,8 +617,9 @@ class HTMLExporter:
                     <li class="nav-item"><a href="#tổng-quan">Tóm tắt Điều hành</a></li>
                     <li class="nav-item"><a href="#kết-quả-kd">Doanh thu & LNST</a></li>
                     <li class="nav-item"><a href="#cơ-cấu-ts">Cơ cấu Tài sản</a></li>
-                    <li class="nav-item"><a href="#nguồn-vốn">Nguồn vốn & Cơ cấu</a></li>
-                    <li class="nav-item"><a href="#thanh-khoản">Thanh khoản & Vốn lưu động</a></li>
+                    <li class="nav-item"><a href="#vốn-lưu-động">Quản lý Vốn lưu động</a></li>
+                    <li class="nav-item"><a href="#nguồn-vốn">Cơ cấu Nguồn vốn</a></li>
+                    <li class="nav-item"><a href="#thanh-khoản">Khả năng Thanh khoản</a></li>
                     <li class="nav-item"><a href="#dòng-tiền">Dòng tiền tệ</a></li>
                     <li class="nav-item"><a href="#cơ-chế-từ-chối">Thông tin năm 2022</a></li>
                     <li class="nav-item"><a href="#kết-luận">Kết luận & Khuyến nghị</a></li>
@@ -482,7 +629,7 @@ class HTMLExporter:
         
         <div class="sidebar-footer">
             <p>Hệ thống RAG Financial</p>
-            <p>Version 1.1.0 (DeepSeek + FPT)</p>
+            <p>Version 1.2.0 (DeepSeek + FPT)</p>
         </div>
     </aside>
     
@@ -499,103 +646,15 @@ class HTMLExporter:
             </div>
         </header>
 
-        <!-- Section 0: Tóm tắt Điều hành (Executive Summary) -->
-        <section id="tổng-quan" class="report-section">
-            <span class="section-tag">Tổng quan</span>
-            <h2>Tóm tắt Điều hành</h2>
-            <div class="section-text">
-                {html_sections.get("executive_summary", "<p>Đang tải dữ liệu tóm tắt điều hành...</p>")}
-            </div>
-        </section>
-        
-        <!-- Section 1: Kết quả Kinh doanh -->
-        <section id="kết-quả-kd" class="report-section">
-            <span class="section-tag">Phần I</span>
-            <h2>Kết quả Hoạt động Kinh doanh</h2>
-            <div class="section-block">
-                <div class="section-text">
-                    {html_sections.get("business_performance", "<p>Đang tải dữ liệu phân tích kết quả kinh doanh...</p>")}
-                </div>
-                <div class="chart-wrapper">
-                    <div class="chart-container" id="chart-rev-prof"></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section 2: Cơ cấu Tài sản -->
-        <section id="cơ-cấu-ts" class="report-section">
-            <span class="section-tag">Phần II</span>
-            <h2>Cơ cấu và Biến động Tài sản</h2>
-            <div class="section-block">
-                <div class="section-text">
-                    {html_sections.get("assets_structure", "<p>Đang tải dữ liệu phân tích cơ cấu tài sản...</p>")}
-                </div>
-                <div class="chart-wrapper">
-                    <div class="chart-container" id="chart-asset"></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section 3: Nguồn vốn -->
-        <section id="nguồn-vốn" class="report-section">
-            <span class="section-tag">Phần III</span>
-            <h2>Cơ cấu Nguồn vốn & Nợ</h2>
-            <div class="section-block">
-                <div class="section-text">
-                    {html_sections.get("capital_debts", "<p>Đang tải dữ liệu phân tích nguồn vốn...</p>")}
-                </div>
-                <div class="chart-wrapper">
-                    <div class="chart-container" id="chart-capital"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Thanh khoản & Vốn lưu động -->
-        <section id="thanh-khoản" class="report-section">
-            <span class="section-tag">Phần IV</span>
-            <h2>Khả năng Thanh khoản & Vốn lưu động</h2>
-            <div class="section-block">
-                <div class="section-text">
-                    {html_sections.get("liquidity_working_capital", "<p>Đang tải dữ liệu phân tích khả năng thanh khoản...</p>")}
-                </div>
-                <div class="chart-wrapper">
-                    <div class="chart-container" id="chart-liquidity-wc"></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section 5: Dòng tiền -->
-        <section id="dòng-tiền" class="report-section">
-            <span class="section-tag">Phần V</span>
-            <h2>Phân tích Lưu chuyển Tiền tệ (Dòng tiền)</h2>
-            <div class="section-block">
-                <div class="section-text">
-                    {html_sections.get("cash_flow", "<p>Đang tải dữ liệu phân tích dòng tiền...</p>")}
-                </div>
-                <div class="chart-wrapper">
-                    <div class="chart-container" id="chart-cash-flow"></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section 6: Cơ chế từ chối -->
-        <section id="cơ-chế-từ-chối" class="report-section">
-            <span class="section-tag">Kiểm soát chất lượng</span>
-            <h2>Cơ chế Từ chối Trả lời & Dữ liệu năm 2022</h2>
-            <div class="refusal-note">
-                <h4>Chính sách từ chối (Abstention Policy)</h4>
-                {html_sections.get("abstention_2022", "<p>Chưa thiết lập cơ chế từ chối.</p>")}
-            </div>
-        </section>
-        
-        <!-- Section 7: Kết luận -->
-        <section id="kết-luận" class="report-section">
-            <span class="section-tag">Phần VI</span>
-            <h2>Kết luận chung & Khuyến nghị</h2>
-            <div class="section-text">
-                {html_sections.get("conclusions", "<p>Đang tải kết luận phân tích...</p>")}
-            </div>
-        </section>
+        {sec_exec_summary}
+        {sec_business_performance}
+        {sec_assets_structure}
+        {sec_working_capital}
+        {sec_capital_structure}
+        {sec_liquidity_ratios}
+        {sec_cash_flow}
+        {sec_abstention}
+        {sec_conclusions}
     </main>
 </div>
 
@@ -603,9 +662,11 @@ class HTMLExporter:
     // Vega-Lite chart specifications passed from Python
     const revProfSpec = {json.dumps(chart_specs.get("revenue_profit", {}))};
     const assetSpec = {json.dumps(chart_specs.get("asset_structure", {}))};
+    const workingCapitalSpec = {json.dumps(chart_specs.get("working_capital", {}))};
     const capitalSpec = {json.dumps(chart_specs.get("capital_structure", {}))};
-    const liquidityWCSpec = {json.dumps(chart_specs.get("liquidity_working_capital", {}))};
+    const liquiditySpec = {json.dumps(chart_specs.get("liquidity_ratios", {}))};
     const cashFlowSpec = {json.dumps(chart_specs.get("cash_flow", {}))};
+    const netMarginSpec = {json.dumps(chart_specs.get("net_margin", {}))};
     
     // Embed configurations
     const embedOpts = {{actions: false, theme: 'dark', renderer: 'svg'}};
@@ -627,9 +688,11 @@ class HTMLExporter:
     // Render all charts defensively
     safeEmbedChart('chart-rev-prof', revProfSpec, embedOpts);
     safeEmbedChart('chart-asset', assetSpec, embedOpts);
+    safeEmbedChart('chart-working-capital', workingCapitalSpec, embedOpts);
     safeEmbedChart('chart-capital', capitalSpec, embedOpts);
-    safeEmbedChart('chart-liquidity-wc', liquidityWCSpec, embedOpts);
+    safeEmbedChart('chart-liquidity', liquiditySpec, embedOpts);
     safeEmbedChart('chart-cash-flow', cashFlowSpec, embedOpts);
+    safeEmbedChart('chart-net-margin', netMarginSpec, embedOpts);
     
     // Scroll active link styling
     window.addEventListener('scroll', () => {{

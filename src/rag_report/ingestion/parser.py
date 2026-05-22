@@ -18,7 +18,8 @@ class FinancialReportParser:
         self.embed_model = embed_model or FPTCloudEmbedding()
         self.llm_client = OpenAI(
             api_key=settings.OPENAI_API_KEY,
-            base_url=settings.OPENAI_API_BASE
+            base_url=settings.OPENAI_API_BASE,
+            timeout=30.0
         )
 
     def extract_year_from_path(self, filepath: str) -> int:
@@ -67,8 +68,7 @@ class FinancialReportParser:
             response = self.llm_client.chat.completions.create(
                 model=settings.PLANNER_MODEL,
                 messages=[
-                    {"role": "system", "content": "Bạn chỉ trả về các chỉ số tài chính được trích xuất ngắn gọn, không giải thích dài dòng."},
-                    {"role": "user", "content": prompt}
+                    {"role": "user", "content": f"Bạn chỉ trả về các chỉ số tài chính được trích xuất ngắn gọn, không giải thích dài dòng.\n\n{prompt}"}
                 ],
                 max_tokens=150,
                 temperature=0.0

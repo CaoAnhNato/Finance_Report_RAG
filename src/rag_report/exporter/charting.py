@@ -34,20 +34,20 @@ class FinancialCharter:
 
     def generate_revenue_profit_chart(self, df: pd.DataFrame) -> alt.Chart:
         """Create a dual-axis line-bar chart for Revenue and Profit After Tax."""
-        # Enable dark/premium theme styling
         base = alt.Chart(df).encode(
             x=alt.X('year:O', title='Năm tài chính', axis=alt.Axis(labelAngle=0, grid=False))
         ).properties(
             width=550,
             height=320,
             title=alt.TitleParams(
-                text="Diễn biến Doanh thu & Lợi nhuận sau thuế",
+                text="Doanh thu thuần A32 lập kỷ lục mới năm 2025, LNST phục hồi sau cú sốc đại dịch",
                 subtitle="Đơn vị tính: Tỷ VND",
                 color='#F3F4F6',
                 subtitleColor='#9CA3AF',
-                fontSize=16,
+                fontSize=14,
                 fontWeight='bold',
-                anchor='start'
+                anchor='start',
+                limit=500
             )
         )
         
@@ -88,7 +88,6 @@ class FinancialCharter:
 
     def generate_asset_structure_chart(self, df: pd.DataFrame) -> alt.Chart:
         """Create a stacked bar chart for Asset Structure (Current vs Non-current)."""
-        # Melt dataframe for stacked representation
         df_melted = df.melt(
             id_vars=['year'],
             value_vars=['ts_ngan_han', 'ts_dai_han'],
@@ -96,7 +95,6 @@ class FinancialCharter:
             value_name='value'
         )
         
-        # Map labels
         type_mapping = {
             'ts_ngan_han': 'Tài sản ngắn hạn',
             'ts_dai_han': 'Tài sản dài hạn'
@@ -123,13 +121,14 @@ class FinancialCharter:
             width=550,
             height=320,
             title=alt.TitleParams(
-                text="Cơ cấu Tài sản qua các năm",
+                text="Tài sản ngắn hạn luôn chiếm tỷ trọng chủ đạo trên 74% trong cơ cấu tài sản",
                 subtitle="Đơn vị tính: Tỷ VND",
                 color='#F3F4F6',
                 subtitleColor='#9CA3AF',
-                fontSize=16,
+                fontSize=14,
                 fontWeight='bold',
-                anchor='start'
+                anchor='start',
+                limit=500
             )
         ).configure(
             background='transparent'
@@ -142,6 +141,60 @@ class FinancialCharter:
             domainColor='#374151'
         )
         
+        return chart
+
+    def generate_working_capital_chart(self, df: pd.DataFrame) -> alt.Chart:
+        """Create a line chart for Working Capital (Inventory & Receivables trend)."""
+        df_melted = df.melt(
+            id_vars=['year'],
+            value_vars=['hang_ton_kho', 'phai_thu_ngan_han'],
+            var_name='item_type',
+            value_name='value'
+        )
+        type_mapping = {
+            'hang_ton_kho': 'Hàng tồn kho',
+            'phai_thu_ngan_han': 'Phải thu ngắn hạn'
+        }
+        df_melted['item_type'] = df_melted['item_type'].map(type_mapping)
+        
+        chart = alt.Chart(df_melted).mark_line(
+            strokeWidth=3,
+            point=alt.OverlayMarkDef(size=50, filled=True)
+        ).encode(
+            x=alt.X('year:O', title='Năm tài chính', axis=alt.Axis(labelAngle=0, grid=False)),
+            y=alt.Y('value:Q', title='Giá trị (Tỷ VND)', axis=alt.Axis(gridColor='#374151')),
+            color=alt.Color(
+                'item_type:N',
+                title='Danh mục',
+                scale=alt.Scale(
+                    domain=['Hàng tồn kho', 'Phải thu ngắn hạn'],
+                    range=['#F59E0B', '#3B82F6'] # Amber vs Blue
+                ),
+                legend=alt.Legend(orient='bottom', labelColor='#9CA3AF', titleColor='#9CA3AF')
+            )
+        ).properties(
+            width=550,
+            height=320,
+            title=alt.TitleParams(
+                text="Tồn kho đạt đỉnh năm 2021 rồi giảm dần, phải thu ngắn hạn tăng mạnh năm 2025",
+                subtitle="Đơn vị tính: Tỷ VND",
+                color='#F3F4F6',
+                subtitleColor='#9CA3AF',
+                fontSize=14,
+                fontWeight='bold',
+                anchor='start',
+                limit=500
+            )
+        ).configure(
+            background='transparent'
+        ).configure_view(
+            strokeWidth=0
+        ).configure_axis(
+            labelColor='#9CA3AF',
+            titleColor='#9CA3AF',
+            tickColor='#374151',
+            domainColor='#374151'
+        )
         return chart
 
     def generate_capital_structure_chart(self, df: pd.DataFrame) -> alt.Chart:
@@ -179,13 +232,87 @@ class FinancialCharter:
             width=550,
             height=320,
             title=alt.TitleParams(
-                text="Cơ cấu Nguồn vốn qua các năm",
+                text="Nợ phải trả cao hơn vốn chủ sở hữu nhưng chủ yếu là nợ ngắn hạn vận hành",
                 subtitle="Đơn vị tính: Tỷ VND",
                 color='#F3F4F6',
                 subtitleColor='#9CA3AF',
-                fontSize=16,
+                fontSize=14,
                 fontWeight='bold',
-                anchor='start'
+                anchor='start',
+                limit=500
+            )
+        ).configure(
+            background='transparent'
+        ).configure_view(
+            strokeWidth=0
+        ).configure_axis(
+            labelColor='#9CA3AF',
+            titleColor='#9CA3AF',
+            tickColor='#374151',
+            domainColor='#374151'
+        )
+        
+        return chart
+
+    def generate_liquidity_ratios_chart(self, df: pd.DataFrame) -> alt.Chart:
+        """Create a line chart for Liquidity Ratios (Current and Quick ratios) with reference line y=1.0."""
+        df_calc = df.copy()
+        df_calc['current_ratio'] = df_calc.apply(
+            lambda r: r['ts_ngan_han'] / r['no_ngan_han'] if r['no_ngan_han'] > 0 else 0, axis=1
+        )
+        df_calc['quick_ratio'] = df_calc.apply(
+            lambda r: (r['ts_ngan_han'] - r['hang_ton_kho']) / r['no_ngan_han'] if r['no_ngan_han'] > 0 else 0, axis=1
+        )
+        
+        df_ratios = df_calc.melt(
+            id_vars=['year'],
+            value_vars=['current_ratio', 'quick_ratio'],
+            var_name='ratio_type',
+            value_name='ratio_val'
+        )
+        ratio_mapping = {
+            'current_ratio': 'Thanh toán hiện thời',
+            'quick_ratio': 'Thanh toán nhanh'
+        }
+        df_ratios['ratio_type'] = df_ratios['ratio_type'].map(ratio_mapping)
+        
+        lines = alt.Chart(df_ratios).mark_line(
+            strokeWidth=3,
+            point=alt.OverlayMarkDef(size=50, filled=True)
+        ).encode(
+            x=alt.X('year:O', title='Năm tài chính', axis=alt.Axis(labelAngle=0, grid=False)),
+            y=alt.Y('ratio_val:Q', title='Hệ số thanh toán (Lần)', axis=alt.Axis(gridColor='#374151')),
+            color=alt.Color(
+                'ratio_type:N',
+                title='Chỉ số thanh khoản',
+                scale=alt.Scale(
+                    domain=['Thanh toán hiện thời', 'Thanh toán nhanh'],
+                    range=['#10B981', '#EF4444'] # Green vs Red
+                ),
+                legend=alt.Legend(orient='bottom', labelColor='#9CA3AF', titleColor='#9CA3AF')
+            )
+        )
+        
+        rule = alt.Chart(pd.DataFrame({'y': [1.0]})).mark_rule(
+            color='#EF4444',
+            strokeDash=[4, 4],
+            strokeWidth=1.5
+        ).encode(
+            y='y:Q'
+        )
+        
+        chart = alt.layer(lines, rule).properties(
+            width=550,
+            height=320,
+            title=alt.TitleParams(
+                text="Thanh toán hiện thời vững chắc trên 1.0, thanh toán nhanh chịu áp lực dưới 1.0",
+                subtitle="Đơn vị tính: Lần (Đường đứt nét màu đỏ biểu diễn ngưỡng an toàn 1.0)",
+                color='#F3F4F6',
+                subtitleColor='#9CA3AF',
+                fontSize=14,
+                fontWeight='bold',
+                anchor='start',
+                limit=500
             )
         ).configure(
             background='transparent'
@@ -235,13 +362,14 @@ class FinancialCharter:
             width=550,
             height=320,
             title=alt.TitleParams(
-                text="Diễn biến Dòng tiền (CFO, CFI, CFF)",
+                text="Dòng tiền kinh doanh duy trì thặng dư dương lớn, dòng tiền tài chính âm do chi trả cổ tức",
                 subtitle="Đơn vị tính: Tỷ VND",
                 color='#F3F4F6',
                 subtitleColor='#9CA3AF',
-                fontSize=16,
+                fontSize=14,
                 fontWeight='bold',
-                anchor='start'
+                anchor='start',
+                limit=500
             )
         ).configure(
             background='transparent'
@@ -255,75 +383,33 @@ class FinancialCharter:
         )
         return chart
 
-    def generate_liquidity_working_capital_chart(self, df: pd.DataFrame) -> alt.Chart:
-        """Create a dual-axis chart for Working Capital (bars) and Liquidity Ratios (lines)."""
+    def generate_net_margin_chart(self, df: pd.DataFrame) -> alt.Chart:
+        """Create a line chart for Net Profit Margin."""
         df_calc = df.copy()
-        df_calc['working_capital'] = df_calc['ts_ngan_han'] - df_calc['no_ngan_han']
-        # Avoid division by zero
-        df_calc['current_ratio'] = df_calc.apply(
-            lambda r: r['ts_ngan_han'] / r['no_ngan_han'] if r['no_ngan_han'] > 0 else 0, axis=1
-        )
-        df_calc['quick_ratio'] = df_calc.apply(
-            lambda r: (r['ts_ngan_han'] - r['hang_ton_kho']) / r['no_ngan_han'] if r['no_ngan_han'] > 0 else 0, axis=1
+        df_calc['net_margin'] = df_calc.apply(
+            lambda r: (r['lnst'] / r['doanh_thu']) * 100 if r['doanh_thu'] > 0 else 0, axis=1
         )
         
-        base = alt.Chart(df_calc).encode(
-            x=alt.X('year:O', title='Năm tài chính', axis=alt.Axis(labelAngle=0, grid=False))
+        chart = alt.Chart(df_calc).mark_line(
+            color='#10B981',
+            strokeWidth=3,
+            point=alt.OverlayMarkDef(color='#10B981', size=50, filled=True)
+        ).encode(
+            x=alt.X('year:O', title='Năm tài chính', axis=alt.Axis(labelAngle=0, grid=False)),
+            y=alt.Y('net_margin:Q', title='Biên lợi nhuận ròng (%)', axis=alt.Axis(gridColor='#374151'))
         ).properties(
             width=550,
             height=320,
             title=alt.TitleParams(
-                text="Khả năng thanh khoản & Vốn lưu động",
-                subtitle="Vốn lưu động (Tỷ VND, Cột) vs Hệ số thanh toán (Đường)",
+                text="Biên lợi nhuận ròng phục hồi năm 2025 sau giai đoạn sụt giảm hiệu quả chi phí",
+                subtitle="Đơn vị tính: %",
                 color='#F3F4F6',
                 subtitleColor='#9CA3AF',
-                fontSize=16,
+                fontSize=14,
                 fontWeight='bold',
-                anchor='start'
+                anchor='start',
+                limit=500
             )
-        )
-        
-        bar = base.mark_bar(
-            color='#3B82F6',
-            opacity=0.6,
-            size=25,
-            cornerRadiusTopLeft=3,
-            cornerRadiusTopRight=3
-        ).encode(
-            y=alt.Y('working_capital:Q', title='Vốn lưu động ròng (Tỷ VND)', axis=alt.Axis(titleColor='#3B82F6', gridColor='#374151'))
-        )
-        
-        df_ratios = df_calc.melt(
-            id_vars=['year'],
-            value_vars=['current_ratio', 'quick_ratio'],
-            var_name='ratio_type',
-            value_name='ratio_val'
-        )
-        ratio_mapping = {
-            'current_ratio': 'Thanh toán hiện hành (Lần)',
-            'quick_ratio': 'Thanh toán nhanh (Lần)'
-        }
-        df_ratios['ratio_type'] = df_ratios['ratio_type'].map(ratio_mapping)
-        
-        line = alt.Chart(df_ratios).mark_line(
-            strokeWidth=3,
-            point=alt.OverlayMarkDef(size=50, filled=True)
-        ).encode(
-            x=alt.X('year:O', title='Năm tài chính'),
-            y=alt.Y('ratio_val:Q', title='Hệ số thanh toán (Lần)', axis=alt.Axis(titleColor='#10B981', grid=False)),
-            color=alt.Color(
-                'ratio_type:N',
-                title='Chỉ số thanh khoản',
-                scale=alt.Scale(
-                    domain=['Thanh toán hiện hành (Lần)', 'Thanh toán nhanh (Lần)'],
-                    range=['#10B981', '#F59E0B'] # Green vs Yellow/Amber
-                ),
-                legend=alt.Legend(orient='bottom', labelColor='#9CA3AF', titleColor='#9CA3AF')
-            )
-        )
-        
-        chart = alt.layer(bar, line).resolve_scale(
-            y='independent'
         ).configure(
             background='transparent'
         ).configure_view(
@@ -337,35 +423,33 @@ class FinancialCharter:
         return chart
 
     def export_charts_json(self, output_dir: str) -> dict:
-        """Export all charts to Vega-Lite JSON files."""
+        """Export all charts to Vega-Lite JSON files, handling missing fields gracefully."""
         os.makedirs(output_dir, exist_ok=True)
         df = self.load_data()
         
-        c1 = self.generate_revenue_profit_chart(df)
-        c2 = self.generate_asset_structure_chart(df)
-        c3 = self.generate_capital_structure_chart(df)
-        c4 = self.generate_cash_flow_chart(df)
-        c5 = self.generate_liquidity_working_capital_chart(df)
-        
-        paths = {
-            "revenue_profit": os.path.join(output_dir, "revenue_profit.json"),
-            "asset_structure": os.path.join(output_dir, "asset_structure.json"),
-            "capital_structure": os.path.join(output_dir, "capital_structure.json"),
-            "cash_flow": os.path.join(output_dir, "cash_flow.json"),
-            "liquidity_working_capital": os.path.join(output_dir, "liquidity_working_capital.json")
+        generators = {
+            "revenue_profit": self.generate_revenue_profit_chart,
+            "asset_structure": self.generate_asset_structure_chart,
+            "working_capital": self.generate_working_capital_chart,
+            "capital_structure": self.generate_capital_structure_chart,
+            "liquidity_ratios": self.generate_liquidity_ratios_chart,
+            "cash_flow": self.generate_cash_flow_chart,
+            "net_margin": self.generate_net_margin_chart
         }
         
-        with open(paths["revenue_profit"], "w", encoding="utf-8") as f:
-            f.write(c1.to_json())
-        with open(paths["asset_structure"], "w", encoding="utf-8") as f:
-            f.write(c2.to_json())
-        with open(paths["capital_structure"], "w", encoding="utf-8") as f:
-            f.write(c3.to_json())
-        with open(paths["cash_flow"], "w", encoding="utf-8") as f:
-            f.write(c4.to_json())
-        with open(paths["liquidity_working_capital"], "w", encoding="utf-8") as f:
-            f.write(c5.to_json())
-            
+        paths = {}
+        for key, generator in generators.items():
+            path = os.path.join(output_dir, f"{key}.json")
+            paths[key] = path
+            try:
+                chart = generator(df)
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(chart.to_json())
+            except Exception as e:
+                logger.warning(f"Error generating chart '{key}': {e}. Exporting empty configuration.")
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write("{}")
+                    
         logger.info(f"Exported interactive chart JSON specs to {output_dir}")
         return paths
 

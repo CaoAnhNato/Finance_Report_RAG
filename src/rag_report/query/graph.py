@@ -2,6 +2,7 @@ import logging
 from typing import TypedDict, List, Dict, Any, Optional
 from langgraph.graph import StateGraph, START, END
 from openai import OpenAI
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from src.rag_report.config import settings
 from src.rag_report.query.planner import QueryPlanner, QueryPlan
@@ -30,7 +31,8 @@ class FinancialRAGGraph:
         self.reranker = FPTCloudReranker()
         self.llm_client = OpenAI(
             api_key=settings.OPENAI_API_KEY,
-            base_url=settings.OPENAI_API_BASE
+            base_url=settings.OPENAI_API_BASE,
+            timeout=90.0
         )
         self.workflow = self._build_graph()
 
@@ -179,6 +181,26 @@ class FinancialRAGGraph:
             "abstain": True
         }
 
+    @retry(
+        retry=retry_if_exception_type(Exception),
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        reraise=True
+    )
+    def _call_generator_api(self, system_prompt: str, user_prompt: str) -> str:
+        """Call report LLM model with retry mechanism."""
+        response = self.llm_client.chat.completions.create(
+            model=settings.REPORT_MODEL,
+            messages=[
+                {"role": "user", "content": f"{system_prompt}\n\n{user_prompt}"}
+            ],
+            temperature=0.0
+        )
+        if isinstance(response, str):
+            return response.strip()
+        else:
+            return response.choices[0].message.content.strip()
+
     def generate_node(self, state: GraphState) -> GraphState:
         """LLM generates final answer with citations from the reranked contexts."""
         logger.info("--- GENERATE NODE ---")
@@ -217,25 +239,13 @@ class FinancialRAGGraph:
         )
         
         try:
-            response = self.llm_client.chat.completions.create(
-                model=settings.REPORT_MODEL,
-                messages=[
-                    {"role": "user", "content": f"{system_prompt}\n\n{user_prompt}"}
-                ],
-                temperature=0.0
-            )
-            
-            if isinstance(response, str):
-                answer = response.strip()
-            else:
-                answer = response.choices[0].message.content.strip()
-                
+            answer = self._call_generator_api(system_prompt, user_prompt)
             return {
                 **state,
                 "answer": answer
             }
         except Exception as e:
-            logger.error(f"Failed to generate answer: {str(e)}")
+            logger.error(f"Failed to generate answer after retries: {str(e)}")
             return {
                 **state,
                 "answer": "Đã xảy ra lỗi hệ thống khi sinh câu trả lời."

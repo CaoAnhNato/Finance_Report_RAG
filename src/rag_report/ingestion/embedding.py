@@ -33,7 +33,8 @@ class FPTCloudEmbedding(BaseEmbedding):
         
         self._client = OpenAI(
             api_key=self._api_key,
-            base_url=self._base_url
+            base_url=self._base_url,
+            timeout=30.0
         )
         
     @classmethod

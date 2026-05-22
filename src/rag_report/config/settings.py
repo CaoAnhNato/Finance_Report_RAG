@@ -3,7 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Load env variables
-load_dotenv()
+load_dotenv(override=True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
@@ -37,7 +37,7 @@ FPT_EMBEDDING_RPM = int(os.getenv("FPT_EMBEDDING_RPM", "50"))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_API_BASE = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1")
 PLANNER_MODEL = os.getenv("PLANNER_MODEL", "gpt-5.4-mini")
-REPORT_MODEL = os.getenv("REPORT_MODEL", "gpt-5.5")
+REPORT_MODEL = os.getenv("REPORT_MODEL", "deepseek-v4-pro")
 
 # Local paths
 RAW_OCR_DIR = os.getenv("RAW_OCR_DIR", "data/A32")

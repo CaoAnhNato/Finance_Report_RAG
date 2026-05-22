@@ -33,7 +33,7 @@ GPT 5.4 mini extraction/planning
     ↓
 Altair offline chart generation
     ↓
-GPT 5.5 report writer
+DeepSeek V4 Pro report writer
     ↓
 report validator + citation validator
     ↓
@@ -61,7 +61,7 @@ Pipeline chia thành 2 tầng:
 | Embedding multilingual | `BAAI/bge-m3` qua LlamaIndex Cloud HuggingFace API embedding | Embedding tiếng Việt + tiếng Anh |
 | Reranker multilingual | `bge-reranker-v2-m3` qua FPT Cloud API | Cross-encoder reranking |
 | LLM extraction/planning | GPT 5.4 mini | Trích xuất claim, lập plan, tạo chart plan, kiểm tra evidence |
-| LLM report writer | GPT 5.5 | Viết report cuối cùng |
+| LLM report writer | DeepSeek V4 Pro | Viết report cuối cùng |
 | API client | `openai`, `httpx` | Gọi GPT và rerank endpoint kiểu OpenAI-compatible |
 | Data processing | `pandas`, `numpy`, `python-dotenv`, `pydantic`, `orjson`, `duckdb` | Xử lý facts, schemas, env, JSON, local store |
 | Text processing | `regex`, `beautifulsoup4`, `lxml`, `rapidfuzz`, `unidecode` | Normalize OCR, parse table HTML, fuzzy matching |
@@ -208,7 +208,7 @@ FPT_RERANK_MODEL=bge-reranker-v2-m3
 # LLM
 OPENAI_API_KEY=replace_me
 PLANNER_MODEL=gpt-5.4-mini
-REPORT_MODEL=gpt-5.5
+REPORT_MODEL=deepseek-v4-pro
 
 # Local paths
 RAW_OCR_DIR=data/raw_ocr
@@ -871,7 +871,7 @@ if request_type == "qa":
 elif request_type == "report":
     build full financial insight report
 elif abstain == true:
-    return abstention answer, không gọi GPT 5.5 report writer
+    return abstention answer, không gọi DeepSeek V4 Pro report writer
 elif validation_errors contains unsupported numeric claim:
     retry evidence retrieval hoặc remove unsupported claim
 ```
@@ -1275,7 +1275,7 @@ Dùng `vl-convert-python` để export PNG/SVG offline. Không phụ thuộc bro
 
 ---
 
-## 20. GPT 5.5 — report writer
+## 20. DeepSeek V4 Pro — report writer
 
 ### 20.1 Input
 
@@ -1347,7 +1347,7 @@ Nếu export cho người đọc cuối, convert citation thành footnote:
 
 ### 20.4 Guardrails
 
-GPT 5.5 chỉ được viết lại nội dung từ `ReportPlan` và `EvidencePack`. Không được thêm claim mới ngoài plan. Nếu thêm insight mới, validator phải chặn.
+DeepSeek V4 Pro chỉ được viết lại nội dung từ `ReportPlan` và `EvidencePack`. Không được thêm claim mới ngoài plan. Nếu thêm insight mới, validator phải chặn.
 
 ---
 
@@ -1633,7 +1633,7 @@ If evidence is insufficient, set abstain=true.
 Do not infer missing years.
 ```
 
-### 24.3 Report writer prompt — GPT 5.5
+### 24.3 Report writer prompt — DeepSeek V4 Pro
 
 ```text
 You are a financial analyst writing a grounded Vietnamese report.
@@ -1764,7 +1764,7 @@ Deliverables:
 ```text
 report plan
 Altair chart rendering
-GPT 5.5 writer
+DeepSeek V4 Pro writer
 citation/numeric validator
 Markdown export
 ```
@@ -1810,7 +1810,7 @@ Hệ thống được xem là hoàn thành MVP nếu đạt các điều kiện:
 | Retrieve sai bảng | Chunk table thiếu header | Tạo table-row chunk có header |
 | Reranker chọn narrative thay vì row bảng | Document text đưa vào reranker thiếu metadata | Format rerank documents với năm + statement_type + row |
 | Không abstain năm 2022 | Hệ thống nội suy hoặc lấy cột năm trước | Thêm abstention guard theo available_years |
-| Report bịa insight | GPT 5.5 được phép thêm claim mới | Chỉ cho GPT 5.5 viết từ ReportPlan, thêm validator |
+| Report bịa insight | DeepSeek V4 Pro được phép thêm claim mới | Chỉ cho DeepSeek V4 Pro viết từ ReportPlan, thêm validator |
 | Chart sai | Chart dùng retrieved text thay vì fact table | Chart chỉ được lấy từ `FinancialFact` |
 | RAGAS cao nhưng số sai | Metric semantic không bắt lỗi số | Bắt buộc numeric accuracy riêng |
 
