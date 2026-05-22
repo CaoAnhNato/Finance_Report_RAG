@@ -1,0 +1,58 @@
+# HƯỚNG DẪN CHẠY CÁC PIPELINE VÀ SCRIPT TRONG HỆ THỐNG RAG REPORT
+
+Dưới đây là các câu lệnh CLI cần thiết để vận hành hệ thống RAG Báo cáo Tài chính của Công ty CP 32 (A32):
+
+## 1. Kích hoạt môi trường ảo (Virtual Environment)
+Đảm bảo bạn đã kích hoạt môi trường `.venv` trước khi chạy các lệnh sau:
+- Trên PowerShell:
+  ```powershell
+  .venv\Scripts\Activate.ps1
+  ```
+- Trên Command Prompt (cmd):
+  ```cmd
+  .venv\Scripts\activate.bat
+  ```
+
+## 2. Pipeline Nạp dữ liệu (Document Ingestion Pipeline)
+Quét toàn bộ các tệp văn bản báo cáo tài chính đã OCR ngắn hạn/dài hạn, trích xuất dữ liệu thô, chunking, tạo vector embedding (FPT Cloud Embedding) và đồng bộ lên cơ sở dữ liệu DuckDB (nội bộ) cùng Qdrant Cloud:
+```bash
+python flows/prefect_ingestion_flow.py
+```
+
+## 3. Pipeline Sinh báo cáo tài chính HTML (Report Generation Pipeline)
+Tạo các biểu đồ trực quan (Altair), thực hiện chuỗi truy vấn RAG qua các năm để phân tích chi tiết sức khỏe tài chính và xuất bản file báo cáo HTML động:
+- **Chạy bằng RAG engine thực tế** (sử dụng LLM mới `csu/pro/gpt-5.5` và cơ chế truy xuất tối ưu):
+  ```bash
+  python flows/generate_report_flow.py --no-fallback
+  ```
+- **Chạy ở chế độ fallback/mock** (sử dụng báo cáo mẫu đã được kiểm chứng tĩnh nhanh chóng):
+  ```bash
+  python flows/generate_report_flow.py
+  ```
+
+## 4. Chạy các bài kiểm thử nhanh (Smoke Tests)
+Để xác minh cấu hình API và tính kết nối của từng dịch vụ đơn lẻ:
+- **Kiểm tra kết nối Qdrant Cloud**:
+  ```bash
+  python tests/smoke_test_qdrant.py
+  ```
+- **Kiểm tra FPT Cloud Embedding API**:
+  ```bash
+  python tests/smoke_test_fpt_embedding.py
+  ```
+- **Kiểm tra FPT Cloud Reranker API**:
+  ```bash
+  python tests/smoke_test_fpt_reranker.py
+  ```
+- **Kiểm tra OpenAI/LLM API & Cấu hình**:
+  ```bash
+  python tests/smoke_test_openai.py
+  ```
+- **Kiểm tra RAG Engine (Query & Planner Graph)**:
+  ```bash
+  python tests/smoke_test_query.py
+  ```
+- **Kiểm tra Exporter sinh biểu đồ và kết xuất mẫu**:
+  ```bash
+  python tests/smoke_test_exporter.py
+  ```

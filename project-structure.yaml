@@ -79,4 +79,7 @@ structure:
     description: Danh sách thư viện Python phụ thuộc của dự án
   project-structure.yaml:
     description: File mô tả cấu trúc thư mục của dự án
+  run.txt:
+    description: Tập tin hướng dẫn các câu lệnh CLI chạy pipeline và smoke tests của dự án
+
 
