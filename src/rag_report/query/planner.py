@@ -22,7 +22,7 @@ class QueryPlanner:
         self.client = OpenAI(
             api_key=settings.OPENAI_API_KEY,
             base_url=settings.OPENAI_API_BASE,
-            timeout=30.0
+            timeout=300.0
         )
         
     def plan_query(self, query: str) -> QueryPlan:

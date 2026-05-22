@@ -2,7 +2,7 @@ import logging
 from typing import TypedDict, List, Dict, Any, Optional
 from langgraph.graph import StateGraph, START, END
 from openai import OpenAI
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
 
 from src.rag_report.config import settings
 from src.rag_report.query.planner import QueryPlanner, QueryPlan
@@ -32,7 +32,7 @@ class FinancialRAGGraph:
         self.llm_client = OpenAI(
             api_key=settings.OPENAI_API_KEY,
             base_url=settings.OPENAI_API_BASE,
-            timeout=90.0
+            timeout=300.0
         )
         self.workflow = self._build_graph()
 
@@ -90,6 +90,8 @@ class FinancialRAGGraph:
     def plan_node(self, state: GraphState) -> GraphState:
         """LLM generates query plan and extracts target fiscal year."""
         logger.info("--- PLAN NODE ---")
+        if getattr(self, "on_progress", None):
+            self.on_progress("Sinh plan", f"Đang lập kế hoạch phân tích cho: '{state['query'][:40]}...'")
         plan = self.planner.plan_query(state["query"])
         
         return {
@@ -126,6 +128,9 @@ class FinancialRAGGraph:
         # Determine default years to query
         years_to_query = analysis_years if (is_multi_year and analysis_years) else [state.get("fiscal_year")]
         
+        if getattr(self, "on_progress", None):
+            self.on_progress("Collect data", f"Đang truy xuất thông tin từ DuckDB/Qdrant cho các năm: {years_to_query}...")
+            
         logger.info(f"Retrieving contexts for years: {years_to_query} across sub-questions: {sub_questions}")
         
         # We query with a solid top-k to ensure good recall
@@ -173,6 +178,9 @@ class FinancialRAGGraph:
         # Take the top 40 RRF chunks to rerank
         chunks_to_rerank = retrieved[:40]
         
+        if getattr(self, "on_progress", None):
+            self.on_progress("Triển khai", f"Đang xếp hạng lại {len(chunks_to_rerank)} đoạn văn bản với FPT Cloud Reranker...")
+        
         reranked = self.reranker.rerank_contexts(
             query=state["query"],
             contexts=chunks_to_rerank,
@@ -207,6 +215,8 @@ class FinancialRAGGraph:
     def abstain_node(self, state: GraphState) -> GraphState:
         """Sets the standardized refusal/abstention response."""
         logger.info("--- ABSTAIN NODE ---")
+        if getattr(self, "on_progress", None):
+            self.on_progress("Sinh text", "Kích hoạt cơ chế từ chối trả lời do thiếu thông tin...")
         query_years = state.get("analysis_years", [])
         if not query_years and state.get("fiscal_year"):
             query_years = [state["fiscal_year"]]
@@ -224,23 +234,28 @@ class FinancialRAGGraph:
 
     @retry(
         retry=retry_if_exception_type(Exception),
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=2, max=10),
+        stop=stop_after_attempt(6),
+        wait=wait_exponential(multiplier=3, min=10, max=45),
+        before_sleep=before_sleep_log(logger, logging.WARNING),
         reraise=True
     )
     def _call_generator_api(self, system_prompt: str, user_prompt: str) -> str:
-        """Call report LLM model with retry mechanism."""
+        """Call report LLM model with retry mechanism using streaming to prevent proxy timeouts."""
         response = self.llm_client.chat.completions.create(
             model=settings.REPORT_MODEL,
             messages=[
                 {"role": "user", "content": f"{system_prompt}\n\n{user_prompt}"}
             ],
-            temperature=0.0
+            temperature=0.0,
+            stream=True
         )
-        if isinstance(response, str):
-            return response.strip()
-        else:
-            return response.choices[0].message.content.strip()
+        collected_chunks = []
+        for chunk in response:
+            if chunk.choices and len(chunk.choices) > 0:
+                delta = chunk.choices[0].delta.content
+                if delta:
+                    collected_chunks.append(delta)
+        return "".join(collected_chunks).strip()
 
     def generate_node(self, state: GraphState) -> GraphState:
         """LLM generates final answer with citations from the reranked contexts."""
@@ -256,6 +271,9 @@ class FinancialRAGGraph:
         if top_score < settings.ABSTAIN_MIN_RERANK_SCORE:
             logger.warning(f"Top rerank score {top_score} below minimum threshold {settings.ABSTAIN_MIN_RERANK_SCORE}. Routing to abstain.")
             return self.abstain_node(state)
+            
+        if getattr(self, "on_progress", None):
+            self.on_progress("Sinh text", f"Đang gọi LLM ({settings.REPORT_MODEL}) để phân tích và sinh câu trả lời...")
 
         # Build context string
         context_str = ""
@@ -317,8 +335,9 @@ class FinancialRAGGraph:
             return "abstain_node"
         return "generate_node"
 
-    def run(self, query: str) -> Dict[str, Any]:
+    def run(self, query: str, on_progress = None) -> Dict[str, Any]:
         """Invoke the RAG Graph flow for a given query."""
+        self.on_progress = on_progress
         initial_state: GraphState = {
             "query": query,
             "fiscal_year": None,

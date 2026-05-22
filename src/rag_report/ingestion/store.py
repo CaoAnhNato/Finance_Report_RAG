@@ -12,12 +12,14 @@ logger = logging.getLogger(__name__)
 class DuckDBStore:
     """Local storage using DuckDB to store document metadata and chunk text for fast keyword queries."""
     
-    def __init__(self, db_path: str = None) -> None:
+    def __init__(self, db_path: str = None, read_only: bool = False) -> None:
         self.db_path = db_path or settings.LOCAL_DB_PATH_ABS
         # Ensure parent directory exists
-        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
-        self.conn = duckdb.connect(self.db_path)
-        self._init_db()
+        if not read_only:
+            os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+        self.conn = duckdb.connect(self.db_path, read_only=read_only)
+        if not read_only:
+            self._init_db()
 
     def _init_db(self) -> None:
         """Create tables if they do not exist."""

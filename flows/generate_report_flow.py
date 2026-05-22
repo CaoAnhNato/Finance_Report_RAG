@@ -2,8 +2,22 @@ import os
 import sys
 import json
 import logging
+import codecs
+import time
 from pathlib import Path
 from prefect import flow, task
+
+# Configure standard streams for UTF-8 encoding on Windows/cross-platform
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
+if sys.stderr.encoding != 'utf-8':
+    try:
+        sys.stderr.reconfigure(encoding='utf-8')
+    except AttributeError:
+        pass
 
 # Add root folder to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -126,9 +140,50 @@ Hiệu quả sinh lời của A32 được bảo toàn ổn định nhờ sự h
 """
 }
 
+def show_progress(active_step: str, detail_msg: str = ""):
+    """Prints a beautiful CLI progress bar inspired by modern LLM research agents."""
+    steps = ["Collect data", "Sinh plan", "Triển khai", "Sinh text", "Sinh report", "Validate"]
+    
+    if active_step not in steps:
+        return
+        
+    active_idx = steps.index(active_step)
+    parts = []
+    
+    for i, name in enumerate(steps):
+        if i < active_idx:
+            parts.append(f"\033[92m🟢 {name}\033[0m")  # Green for completed
+        elif i == active_idx:
+            parts.append(f"\033[94m🔵 {name}\033[0m")  # Blue for active
+        else:
+            parts.append(f"\033[90m⚪ {name}\033[0m")  # Gray for pending
+            
+    progress_bar = " ➔ ".join(parts)
+    try:
+        print(f"\n[RAG FLOW] {progress_bar}", flush=True)
+        if detail_msg:
+            print(f"👉 \033[93m{detail_msg}\033[0m\n", flush=True)
+    except UnicodeEncodeError:
+        # Fallback to standard ASCII characters if terminal doesn't support emojis/unicode
+        ascii_parts = []
+        for i, name in enumerate(steps):
+            if i < active_idx:
+                ascii_parts.append(f"[v] {name}")
+            elif i == active_idx:
+                ascii_parts.append(f"[*] {name}")
+            else:
+                ascii_parts.append(f"[ ] {name}")
+        ascii_bar = " -> ".join(ascii_parts)
+        print(f"\n[RAG FLOW] {ascii_bar}", flush=True)
+        if detail_msg:
+            # Clean non-ASCII for pure ASCII terminal safety
+            cleaned_msg = detail_msg.encode('ascii', errors='replace').decode('ascii')
+            print(f"-> {cleaned_msg}\n", flush=True)
+
 @task(name="Generate Charts Task")
 def generate_charts():
     """Step 1: Generate Altair charts using FinancialCharter."""
+    show_progress("Collect data", "Đang khởi chạy bước vẽ biểu đồ Altair...")
     logger.info("Generating Altair charts...")
     charter = FinancialCharter()
     charts_dir = os.path.join(settings.PROCESSED_DIR, "charts")
@@ -142,6 +197,7 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
     
     if use_fallback:
         logger.info("Using pre-compiled verified financial analysis (fallback mode)...")
+        show_progress("Sinh text", "Chế độ fallback: Đang sử dụng dữ liệu tĩnh đã xác thực...")
         return FALLBACK_ANALYSIS
         
     logger.info("Initializing FinancialRAGGraph...")
@@ -210,10 +266,34 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
             )
         }
         
-        for key, query in queries.items():
+        section_titles = {
+            "executive_summary": "Tóm tắt Điều hành",
+            "business_performance": "Kết quả Hoạt động Kinh doanh",
+            "assets_structure": "Cơ cấu và Biến động Tài sản",
+            "working_capital": "Khả năng Quản lý Vốn lưu động",
+            "capital_structure": "Cơ cấu Nguồn vốn",
+            "liquidity_ratios": "Khả năng Thanh khoản",
+            "cash_flow": "Dòng tiền tệ",
+            "abstention_2022": "Thông tin năm 2022",
+            "conclusions": "Kết luận & Khuyến nghị"
+        }
+        
+        query_keys = list(queries.keys())
+        for idx, key in enumerate(query_keys):
+            query = queries[key]
+            title = section_titles.get(key, key)
             logger.info(f"Running RAG query for section: {key}...")
-            result = graph.run(query)
+            
+            def custom_progress(step, msg):
+                show_progress(step, f"[{title}] {msg}")
+                
+            result = graph.run(query, on_progress=custom_progress)
             sections[key] = result["answer"]
+            
+            # Cool down to avoid rate limits / 401 error from proxies on subsequent requests
+            if idx < len(query_keys) - 1:
+                logger.info("Cooling down for 25 seconds before next query...")
+                time.sleep(25)
             
         logger.info("Successfully queried RAG for all sections.")
         
@@ -226,6 +306,7 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
 @task(name="Compile HTML Report Task")
 def compile_html_report(sections: dict, chart_paths: dict):
     """Step 3: Compile into HTML using HTMLExporter."""
+    show_progress("Sinh report", "Đang biên dịch báo cáo tài chính sang định dạng HTML Premium...")
     logger.info("Compiling final HTML report...")
     exporter = HTMLExporter()
     output_path = exporter.compile_report(sections, chart_paths, "A32_Financial_Report.html")
@@ -235,6 +316,7 @@ def compile_html_report(sections: dict, chart_paths: dict):
 def run_report_generation_flow(use_fallback: bool = True):
     """Prefect orchestrator flow to generate the entire HTML financial report."""
     logger.info("Starting Prefect Report Generation Flow...")
+    show_progress("Collect data", "Bắt đầu thu thập dữ liệu và khởi tạo biểu đồ...")
     
     # 1. Generate financial charts
     chart_paths = generate_charts()
@@ -245,6 +327,7 @@ def run_report_generation_flow(use_fallback: bool = True):
     # 3. Export to HTML
     report_path = compile_html_report(sections, chart_paths)
     
+    show_progress("Validate", f"Báo cáo tài chính đã được sinh thành công tại: {report_path}")
     logger.info(f"Report Generation Flow completed successfully! Report output: {report_path}")
     return report_path
 

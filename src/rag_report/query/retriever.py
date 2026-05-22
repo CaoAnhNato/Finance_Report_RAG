@@ -13,7 +13,7 @@ class HybridRetriever:
     """Combines Qdrant Dense Vector Search and DuckDB Keyword Search using Reciprocal Rank Fusion (RRF)."""
     
     def __init__(self, db_path: str = None, collection_name: str = None) -> None:
-        self.db_store = DuckDBStore(db_path or settings.LOCAL_DB_PATH_ABS)
+        self.db_store = DuckDBStore(db_path or settings.LOCAL_DB_PATH_ABS, read_only=True)
         self.embed_model = FPTCloudEmbedding()
         self.collection_name = collection_name or settings.QDRANT_COLLECTION
         

@@ -24,7 +24,7 @@ class RAGEvaluator:
         self.llm_client = OpenAI(
             api_key=settings.OPENAI_API_KEY,
             base_url=settings.OPENAI_API_BASE,
-            timeout=30.0
+            timeout=300.0
         )
 
     def load_questions(self) -> List[Dict[str, Any]]:
