@@ -12,14 +12,62 @@ class HTMLExporter:
     """Compiles markdown analysis and interactive Vega-Lite charts into a premium HTML report."""
     
     def __init__(self, template_path: str = None) -> None:
-        # We can construct the template inline or load it from a file
         self.output_dir = settings.REPORT_OUTPUT_DIR
         os.makedirs(self.output_dir, exist_ok=True)
 
+    def _convert_table(self, table_lines) -> str:
+        if len(table_lines) < 2:
+            return "\n".join(table_lines)
+        
+        header_raw = table_lines[0]
+        sep_raw = table_lines[1]
+        
+        cleaned_sep = sep_raw.replace('|', '').replace('-', '').replace(':', '').replace(' ', '')
+        is_sep = (len(cleaned_sep) == 0)
+        
+        rows_start = 2 if is_sep else 1
+        
+        headers = [col.strip() for col in header_raw.split('|')[1:-1]]
+        header_html = "<thead><tr>" + "".join(f"<th>{h}</th>" for h in headers) + "</tr></thead>"
+        
+        body_html = "<tbody>"
+        for r in table_lines[rows_start:]:
+            cols = [col.strip() for col in r.split('|')[1:-1]]
+            body_html += "<tr>" + "".join(f"<td>{c}</td>" for c in cols) + "</tr>"
+        body_html += "</tbody>"
+        
+        return f"<table>{header_html}{body_html}</table>"
+
+    def _parse_markdown_tables(self, text: str) -> str:
+        lines = text.split('\n')
+        new_lines = []
+        in_table = False
+        table_lines = []
+        
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('|') and stripped.endswith('|'):
+                if not in_table:
+                    in_table = True
+                table_lines.append(stripped)
+            else:
+                if in_table:
+                    new_lines.append(self._convert_table(table_lines))
+                    table_lines = []
+                    in_table = False
+                new_lines.append(line)
+                
+        if in_table:
+            new_lines.append(self._convert_table(table_lines))
+            
+        return '\n'.join(new_lines)
+
     def _markdown_to_html(self, md_text: str) -> str:
-        """Simple and clean markdown parsing to HTML to avoid heavy external dependencies."""
+        """Simple and clean markdown parsing to HTML with support for markdown tables."""
+        # Clean tables first
+        html = self._parse_markdown_tables(md_text)
+        
         # Convert headers
-        html = md_text
         html = re.sub(r'^### (.*?)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
         html = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
         html = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
@@ -29,7 +77,6 @@ class HTMLExporter:
         html = re.sub(r'\*(.*?)\*', r'<em>\1</em>', html)
         
         # Convert bullet lists
-        # Group list items together and wrap in <ul>
         lines = html.split('\n')
         in_list = False
         new_lines = []
@@ -56,7 +103,7 @@ class HTMLExporter:
             p_stripped = p.strip()
             if not p_stripped:
                 continue
-            if p_stripped.startswith('<h') or p_stripped.startswith('<ul') or p_stripped.startswith('<li') or p_stripped.startswith('</ul'):
+            if p_stripped.startswith('<h') or p_stripped.startswith('<ul') or p_stripped.startswith('<li') or p_stripped.startswith('</ul') or p_stripped.startswith('<table'):
                 p_html.append(p_stripped)
             else:
                 p_html.append(f'<p>{p_stripped}</p>')
@@ -80,10 +127,9 @@ class HTMLExporter:
                 chart_specs[name] = {}
 
         # Convert markdown sections to HTML
-        import re
         html_sections = {k: self._markdown_to_html(v) for k, v in sections.items()}
         
-        # Complete Premium HTML Template with Glassmorphism and responsive design
+        # Complete Premium HTML Template with responsive design, glassmorphism, and vertical charts layout
         template = f"""<!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -110,7 +156,7 @@ class HTMLExporter:
             --accent-green: #10b981;
             --accent-purple: #8b5cf6;
             --accent-red: #ef4444;
-            --accent-glow: rgba(59, 130, 246, 0.15);
+            --accent-glow: rgba(59, 130, 246, 0.12);
         }}
         
         * {{
@@ -123,7 +169,7 @@ class HTMLExporter:
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
-            line-height: 1.6;
+            line-height: 1.65;
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
@@ -141,7 +187,7 @@ class HTMLExporter:
             width: 280px;
             background: rgba(10, 15, 26, 0.85);
             backdrop-filter: blur(20px);
-            border-right: 1px border-solid var(--border-color);
+            border-right: 1px solid var(--border-color);
             position: fixed;
             height: 100vh;
             padding: 2.5rem 1.5rem;
@@ -314,30 +360,36 @@ class HTMLExporter:
             margin-bottom: 0.5rem;
         }}
         
-        /* Grid layout for text & charts */
-        .section-grid {{
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 2.5rem;
-            align-items: center;
+        /* Vertical block layout */
+        .section-block {{
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }}
         
-        @media(max-width: 1024px) {{
-            .section-grid {{
-                grid-template-columns: 1fr;
-            }}
+        .section-text {{
+            width: 100%;
         }}
         
         /* Chart container */
+        .chart-wrapper {{
+            width: 100%;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+        }}
+        
         .chart-container {{
-            background: rgba(10, 15, 26, 0.5);
+            width: 100%;
+            max-width: 750px;
+            background: rgba(10, 15, 26, 0.4);
             border-radius: 12px;
             border: 1px solid var(--border-color);
             padding: 1.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 350px;
+            min-height: 380px;
         }}
         
         /* Tables in reports */
@@ -410,25 +462,27 @@ class HTMLExporter:
     <aside class="sidebar">
         <div>
             <div class="logo-section">
-                <div class="logo-badge">RAG</div>
-                <div class="logo-title">A32 Report</div>
+                <div class="logo-badge">A32</div>
+                <div class="logo-title">RAG Platform</div>
             </div>
             
             <nav>
                 <ul class="nav-list">
-                    <li class="nav-item"><a href="#kết-quả-kd">Doanh thu & Lợi nhuận</a></li>
+                    <li class="nav-item"><a href="#tổng-quan">Tóm tắt Điều hành</a></li>
+                    <li class="nav-item"><a href="#kết-quả-kd">Doanh thu & LNST</a></li>
                     <li class="nav-item"><a href="#cơ-cấu-ts">Cơ cấu Tài sản</a></li>
-                    <li class="nav-item"><a href="#nguồn-vốn">Nguồn vốn & Nợ</a></li>
+                    <li class="nav-item"><a href="#nguồn-vốn">Nguồn vốn & Cơ cấu</a></li>
+                    <li class="nav-item"><a href="#thanh-khoản">Thanh khoản & Vốn lưu động</a></li>
                     <li class="nav-item"><a href="#dòng-tiền">Dòng tiền tệ</a></li>
                     <li class="nav-item"><a href="#cơ-chế-từ-chối">Thông tin năm 2022</a></li>
-                    <li class="nav-item"><a href="#kết-luận">Kết luận & Đánh giá</a></li>
+                    <li class="nav-item"><a href="#kết-luận">Kết luận & Khuyến nghị</a></li>
                 </ul>
             </nav>
         </div>
         
         <div class="sidebar-footer">
             <p>Hệ thống RAG Financial</p>
-            <p>Version 1.0.0 (FPT Cloud)</p>
+            <p>Version 1.1.0 (DeepSeek + FPT)</p>
         </div>
     </aside>
     
@@ -441,19 +495,30 @@ class HTMLExporter:
             
             <div class="report-meta">
                 <span class="meta-item">Đối tượng phân tích: <strong>Báo cáo tài chính kiểm toán 8 năm</strong></span>
-                <span class="meta-item">Nhà phát triển: <strong>RAG Analyzer System</strong></span>
+                <span class="meta-item">Mô hình phân tích: <strong>DeepSeek v4 Pro + FPT Reranker</strong></span>
             </div>
         </header>
+
+        <!-- Section 0: Tóm tắt Điều hành (Executive Summary) -->
+        <section id="tổng-quan" class="report-section">
+            <span class="section-tag">Tổng quan</span>
+            <h2>Tóm tắt Điều hành</h2>
+            <div class="section-text">
+                {html_sections.get("executive_summary", "<p>Đang tải dữ liệu tóm tắt điều hành...</p>")}
+            </div>
+        </section>
         
         <!-- Section 1: Kết quả Kinh doanh -->
         <section id="kết-quả-kd" class="report-section">
             <span class="section-tag">Phần I</span>
             <h2>Kết quả Hoạt động Kinh doanh</h2>
-            <div class="section-grid">
+            <div class="section-block">
                 <div class="section-text">
                     {html_sections.get("business_performance", "<p>Đang tải dữ liệu phân tích kết quả kinh doanh...</p>")}
                 </div>
-                <div class="chart-container" id="chart-rev-prof"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-container" id="chart-rev-prof"></div>
+                </div>
             </div>
         </section>
         
@@ -461,50 +526,73 @@ class HTMLExporter:
         <section id="cơ-cấu-ts" class="report-section">
             <span class="section-tag">Phần II</span>
             <h2>Cơ cấu và Biến động Tài sản</h2>
-            <div class="section-grid">
+            <div class="section-block">
                 <div class="section-text">
                     {html_sections.get("assets_structure", "<p>Đang tải dữ liệu phân tích cơ cấu tài sản...</p>")}
                 </div>
-                <div class="chart-container" id="chart-asset"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-container" id="chart-asset"></div>
+                </div>
             </div>
         </section>
         
-        <!-- Section 3: Nguồn vốn và Nợ -->
+        <!-- Section 3: Nguồn vốn -->
         <section id="nguồn-vốn" class="report-section">
             <span class="section-tag">Phần III</span>
-            <h2>Cơ cấu Nguồn vốn & Khả năng Thanh toán</h2>
-            <div class="section-grid">
+            <h2>Cơ cấu Nguồn vốn & Nợ</h2>
+            <div class="section-block">
                 <div class="section-text">
                     {html_sections.get("capital_debts", "<p>Đang tải dữ liệu phân tích nguồn vốn...</p>")}
                 </div>
-                <div class="chart-container" id="chart-capital"></div>
+                <div class="chart-wrapper">
+                    <div class="chart-container" id="chart-capital"></div>
+                </div>
             </div>
         </section>
-        
-        <!-- Section 4: Dòng tiền -->
-        <section id="dòng-tiền" class="report-section">
+
+        <!-- Section 4: Thanh khoản & Vốn lưu động -->
+        <section id="thanh-khoản" class="report-section">
             <span class="section-tag">Phần IV</span>
-            <h2>Phân tích Lưu chuyển Tiền tệ (Dòng tiền)</h2>
-            <div>
-                {html_sections.get("cash_flow", "<p>Đang tải dữ liệu phân tích dòng tiền...</p>")}
+            <h2>Khả năng Thanh khoản & Vốn lưu động</h2>
+            <div class="section-block">
+                <div class="section-text">
+                    {html_sections.get("liquidity_working_capital", "<p>Đang tải dữ liệu phân tích khả năng thanh khoản...</p>")}
+                </div>
+                <div class="chart-wrapper">
+                    <div class="chart-container" id="chart-liquidity-wc"></div>
+                </div>
             </div>
         </section>
         
-        <!-- Section 5: Cơ chế từ chối -->
+        <!-- Section 5: Dòng tiền -->
+        <section id="dòng-tiền" class="report-section">
+            <span class="section-tag">Phần V</span>
+            <h2>Phân tích Lưu chuyển Tiền tệ (Dòng tiền)</h2>
+            <div class="section-block">
+                <div class="section-text">
+                    {html_sections.get("cash_flow", "<p>Đang tải dữ liệu phân tích dòng tiền...</p>")}
+                </div>
+                <div class="chart-wrapper">
+                    <div class="chart-container" id="chart-cash-flow"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 6: Cơ chế từ chối -->
         <section id="cơ-chế-từ-chối" class="report-section">
-            <span class="section-tag">Cảnh báo dữ liệu</span>
-            <h2>Kiểm soát chất lượng & Dữ liệu năm 2022</h2>
+            <span class="section-tag">Kiểm soát chất lượng</span>
+            <h2>Cơ chế Từ chối Trả lời & Dữ liệu năm 2022</h2>
             <div class="refusal-note">
-                <h4>Cơ chế Từ chối Trả lời (Abstention Policy)</h4>
+                <h4>Chính sách từ chối (Abstention Policy)</h4>
                 {html_sections.get("abstention_2022", "<p>Chưa thiết lập cơ chế từ chối.</p>")}
             </div>
         </section>
         
-        <!-- Section 6: Kết luận -->
+        <!-- Section 7: Kết luận -->
         <section id="kết-luận" class="report-section">
-            <span class="section-tag">Phần V</span>
+            <span class="section-tag">Phần VI</span>
             <h2>Kết luận chung & Khuyến nghị</h2>
-            <div>
+            <div class="section-text">
                 {html_sections.get("conclusions", "<p>Đang tải kết luận phân tích...</p>")}
             </div>
         </section>
@@ -512,17 +600,36 @@ class HTMLExporter:
 </div>
 
 <script>
-    // Embed interactive Vega-Lite charts
+    // Vega-Lite chart specifications passed from Python
     const revProfSpec = {json.dumps(chart_specs.get("revenue_profit", {}))};
     const assetSpec = {json.dumps(chart_specs.get("asset_structure", {}))};
     const capitalSpec = {json.dumps(chart_specs.get("capital_structure", {}))};
+    const liquidityWCSpec = {json.dumps(chart_specs.get("liquidity_working_capital", {}))};
+    const cashFlowSpec = {json.dumps(chart_specs.get("cash_flow", {}))};
     
     // Embed configurations
     const embedOpts = {{actions: false, theme: 'dark', renderer: 'svg'}};
     
-    vegaEmbed('#chart-rev-prof', revProfSpec, embedOpts).catch(console.error);
-    vegaEmbed('#chart-asset', assetSpec, embedOpts).catch(console.error);
-    vegaEmbed('#chart-capital', capitalSpec, embedOpts).catch(console.error);
+    // Defensive chart rendering wrapper
+    function safeEmbedChart(containerId, spec, opts) {{
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        if (!spec || Object.keys(spec).length === 0) {{
+            container.innerHTML = `<div style="color: var(--text-secondary); text-align: center; padding: 2rem;">Không có dữ liệu biểu đồ</div>`;
+            return;
+        }}
+        vegaEmbed('#' + containerId, spec, opts).catch(err => {{
+            console.error("Lỗi vẽ biểu đồ " + containerId + ":", err);
+            container.innerHTML = `<div style="color: var(--accent-red); text-align: center; padding: 2rem; font-size: 0.9rem;">Không thể hiển thị biểu đồ: ${{err.message}}</div>`;
+        }});
+    }}
+
+    // Render all charts defensively
+    safeEmbedChart('chart-rev-prof', revProfSpec, embedOpts);
+    safeEmbedChart('chart-asset', assetSpec, embedOpts);
+    safeEmbedChart('chart-capital', capitalSpec, embedOpts);
+    safeEmbedChart('chart-liquidity-wc', liquidityWCSpec, embedOpts);
+    safeEmbedChart('chart-cash-flow', cashFlowSpec, embedOpts);
     
     // Scroll active link styling
     window.addEventListener('scroll', () => {{

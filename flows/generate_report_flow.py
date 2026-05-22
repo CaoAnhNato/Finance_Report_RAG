@@ -16,8 +16,18 @@ from src.rag_report.exporter.exporter import HTMLExporter
 logger = logging.getLogger(__name__)
 
 # Predefined high-quality financial analysis paragraphs for CP 32 (A32)
-# used as a robust fallback if OpenAI API is rate-limited or out of quota.
+# used as a robust fallback if API is rate-limited or out of quota.
 FALLBACK_ANALYSIS = {
+    "executive_summary": """
+### 1. Tổng quan Doanh nghiệp
+Công ty Cổ phần 32 (Mã chứng khoán: A32) là một trong những đơn vị sản xuất da giày hàng đầu Việt Nam, phục vụ đắc lực cho cả nhu cầu quốc phòng và kinh tế dân sinh. Báo cáo này thực hiện phân tích chuyên sâu tình hình tài chính của công ty trong giai đoạn dài hạn từ năm 2017 đến 2025.
+
+### 2. Các điểm nhấn tài chính quan trọng
+- **Tăng trưởng phục hồi**: Doanh thu thuần năm 2025 đạt mức cao kỷ lục 778,3 tỷ đồng, tăng trưởng mạnh mẽ sau giai đoạn khó khăn năm 2021-2022.
+- **Năng lực tài chính lành mạnh**: Cơ cấu tài sản có tính thanh khoản cao (Tài sản ngắn hạn chiếm trên 74%). Doanh nghiệp hầu như không sử dụng nợ vay ngân hàng chịu lãi suất dài hạn, giảm thiểu tối đa rủi ro tài chính trước biến động lãi suất toàn cầu.
+- **Dòng tiền và cổ tức vững mạnh**: Dòng tiền từ hoạt động kinh doanh (CFO) liên tục dương qua các năm tài chính, đảm bảo việc duy trì chính sách trả cổ tức bằng tiền mặt đều đặn cho cổ đông.
+""",
+
     "business_performance": """
 ### 1. Diễn biến Doanh thu thuần
 Giai đoạn 2017-2025 chứng kiến sự tăng trưởng không đồng đều của Công ty CP 32 (A32). 
@@ -51,6 +61,16 @@ Quy cấu trúc tài sản của A32 đặc trưng bởi tỷ trọng **Tài s�
 ### 2. Đánh giá Khả năng Thanh toán
 - **Hệ số thanh toán hiện thời** (Tài sản ngắn hạn / Nợ ngắn hạn) năm 2025 đạt **1.43 lần**, nằm trong vùng an toàn (lớn hơn 1.0), đảm bảo khả năng chi trả các nghĩa vụ đến hạn bằng tài sản lưu động.
 - **Hệ số thanh toán nhanh** (loại bỏ hàng tồn kho) đạt **0.88 lần**, cho thấy áp lực thanh khoản nhất định nếu hàng tồn kho không giải phóng kịp thời, tuy nhiên lượng tiền mặt và tiền gửi ngân hàng dồi dào luôn duy trì ở mức ổn định.
+""",
+
+    "liquidity_working_capital": """
+### 1. Phân tích Các hệ số thanh toán
+Khả năng thanh toán của A32 được cải thiện rõ rệt trong giai đoạn 2023 - 2025:
+- **Hệ số thanh toán hiện thời**: Đạt mức **1.43 lần** vào năm 2025, phản ánh khả năng trang giải nợ ngắn hạn bằng tài sản ngắn hạn ở mức cực kỳ an toàn.
+- **Hệ số thanh toán nhanh**: Đạt mức **0.88 lần** vào năm 2025. Dù nhỏ hơn 1.0 nhưng đây là mức cải thiện lớn so với các năm trước đó (như năm 2023 chỉ đạt 0.65 lần). Nhờ chiến lược tối ưu lượng tiền mặt và thu hồi công nợ tốt, áp lực thanh khoản nhanh đã được giải tỏa phần lớn.
+
+### 2. Quản lý Vốn lưu động (Net Working Capital)
+- **Vốn lưu động ròng**: Duy trì ở trạng thái dương lớn và tăng mạnh từ **90,1 tỷ đồng (2023)** lên **110,2 tỷ đồng (2025)**. Điều này cho thấy nguồn vốn dài hạn của doanh nghiệp dư thừa để tài trợ cho tài sản ngắn hạn, tạo ra khoảng đệm tài chính an toàn để mở rộng quy mô sản xuất.
 """,
 
     "cash_flow": """
@@ -102,6 +122,10 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
         graph = FinancialRAGGraph()
         
         queries = {
+            "executive_summary": (
+                "Hãy viết tóm tắt điều hành (Executive Summary) cho báo cáo tài chính của Công ty Cổ phần 32 (A32), "
+                "nêu rõ mục tiêu báo cáo, tổng quan doanh nghiệp, và các kết quả tài chính nổi bật trong giai đoạn 2017-2025."
+            ),
             "business_performance": (
                 "Hãy phân tích chi tiết kết quả kinh doanh của A32 qua các năm (tập trung vào doanh thu thuần và lợi nhuận sau thuế, "
                 "bao gồm tốc độ tăng trưởng và sự biến động)."
@@ -113,6 +137,10 @@ def query_rag_sections(use_fallback: bool = False) -> dict:
             "capital_debts": (
                 "Hãy phân tích cơ cấu nguồn vốn và khả năng thanh toán của A32 (nợ phải trả, vốn chủ sở hữu, hệ số nợ/vốn chủ sở hữu, "
                 "khả năng thanh toán nhanh và thanh toán hiện thời)."
+            ),
+            "liquidity_working_capital": (
+                "Hãy phân tích chi tiết khả năng thanh khoản và vốn lưu động ròng (Net Working Capital) của A32 qua các năm, "
+                "bao gồm biến động hệ số thanh toán hiện thời, thanh toán nhanh và quản trị vốn lưu động."
             ),
             "cash_flow": (
                 "Hãy phân tích lưu chuyển tiền tệ (dòng tiền hoạt động kinh doanh, dòng tiền đầu tư, dòng tiền tài chính) của A32 qua các năm."

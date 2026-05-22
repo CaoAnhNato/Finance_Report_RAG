@@ -47,8 +47,7 @@ class QueryPlanner:
             response = self.client.chat.completions.create(
                 model=settings.PLANNER_MODEL,
                 messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": f"Câu hỏi: {query}"}
+                    {"role": "user", "content": f"{system_prompt}\n\nCâu hỏi: {query}"}
                 ],
                 max_tokens=250,
                 temperature=0.0

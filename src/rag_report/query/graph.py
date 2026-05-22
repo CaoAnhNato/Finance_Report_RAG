@@ -119,8 +119,8 @@ class FinancialRAGGraph:
                 year_results = self.retriever.retrieve_for_questions(
                     sub_questions,
                     fiscal_year=year,
-                    vector_top_k=20,
-                    keyword_top_k=20
+                    vector_top_k=8,
+                    keyword_top_k=8
                 )
                 for r in year_results:
                     if r["chunk_id"] not in seen_chunk_ids:
@@ -132,7 +132,9 @@ class FinancialRAGGraph:
             logger.info(f"Retrieving contexts for year: {fiscal_year}")
             retrieved = self.retriever.retrieve_for_questions(
                 sub_questions,
-                fiscal_year=fiscal_year
+                fiscal_year=fiscal_year,
+                vector_top_k=15,
+                keyword_top_k=15
             )
             
         logger.info(f"Total chunks retrieved: {len(retrieved)}")
@@ -218,8 +220,7 @@ class FinancialRAGGraph:
             response = self.llm_client.chat.completions.create(
                 model=settings.REPORT_MODEL,
                 messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
+                    {"role": "user", "content": f"{system_prompt}\n\n{user_prompt}"}
                 ],
                 temperature=0.0
             )
