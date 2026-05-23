@@ -134,8 +134,8 @@ class FinancialRAGGraph:
         logger.info(f"Retrieving contexts for years: {years_to_query} across sub-questions: {sub_questions}")
         
         # We query with a solid top-k to ensure good recall
-        vector_top_k = 15
-        keyword_top_k = 15
+        vector_top_k = settings.DEFAULT_VECTOR_TOP_K
+        keyword_top_k = settings.DEFAULT_KEYWORD_TOP_K
         
         for q in sub_questions:
             # Extract year from this sub-question if specified
@@ -159,8 +159,31 @@ class FinancialRAGGraph:
                         # Reward chunks that are matched by multiple sub-questions by summing RRF score
                         chunk_map[cid]["rrf_score"] += r.get("rrf_score", 0.0)
                         
-        # Sort globally by RRF score descending
-        retrieved = sorted(chunk_map.values(), key=lambda x: x["rrf_score"], reverse=True)
+        # Sort and select: For multi-year queries, we want to ensure we retrieve a balanced set of contexts across all target years.
+        if is_multi_year and len(years_to_query) > 1:
+            chunks_by_year = {}
+            for year in years_to_query:
+                chunks_by_year[year] = []
+            
+            for cid, chunk in chunk_map.items():
+                yr = chunk.get("fiscal_year")
+                if yr in chunks_by_year:
+                    chunks_by_year[yr].append(chunk)
+                else:
+                    if yr is not None:
+                        chunks_by_year[yr] = [chunk]
+            
+            selected_chunks = {}
+            for yr, y_chunks in chunks_by_year.items():
+                # Sort this year's chunks by RRF score descending
+                sorted_y = sorted(y_chunks, key=lambda x: x.get("rrf_score", 0.0), reverse=True)
+                # Take top 8 chunks for this year
+                for chunk in sorted_y[:8]:
+                    selected_chunks[chunk["chunk_id"]] = chunk
+            
+            retrieved = sorted(selected_chunks.values(), key=lambda x: x["rrf_score"], reverse=True)
+        else:
+            retrieved = sorted(chunk_map.values(), key=lambda x: x["rrf_score"], reverse=True)
         
         logger.info(f"Total unique chunks retrieved and globally sorted: {len(retrieved)}")
         return {
@@ -175,8 +198,10 @@ class FinancialRAGGraph:
             return state
             
         retrieved = state["retrieved_contexts"]
-        # Take the top 40 RRF chunks to rerank
-        chunks_to_rerank = retrieved[:40]
+        is_multi = state.get("is_multi_year", False)
+        # Take the top chunks to rerank: scale up for multi-year queries
+        max_rerank = 80 if is_multi else 40
+        chunks_to_rerank = retrieved[:max_rerank]
         
         if getattr(self, "on_progress", None):
             self.on_progress("Triển khai", f"Đang xếp hạng lại {len(chunks_to_rerank)} đoạn văn bản với FPT Cloud Reranker...")
@@ -203,8 +228,9 @@ class FinancialRAGGraph:
                 
         sorted_retrieved = sorted(retrieved, key=get_sort_key, reverse=True)
         
-        # Generator contexts: top DEFAULT_RERANK_TOP_N from the scored/reranked list
-        final_reranked = reranked[:settings.DEFAULT_RERANK_TOP_N]
+        # Generator contexts: top DEFAULT_RERANK_TOP_N or larger for multi-year queries
+        top_n = 28 if is_multi else settings.DEFAULT_RERANK_TOP_N
+        final_reranked = reranked[:top_n]
         
         return {
             **state,

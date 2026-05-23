@@ -811,7 +811,7 @@ class HTMLExporter:
             
             <div class="report-meta">
                 <span class="meta-item">Đối tượng phân tích: <strong>Báo cáo tài chính kiểm toán 8 năm</strong></span>
-                <span class="meta-item">Mô hình phân tích: <strong>GPT-5.5 Pro + FPT Reranker</strong></span>
+                <span class="meta-item">Mô hình phân tích: <strong>GPT-5.5 (CSU Pro) + FPT BGE Reranker v2</strong></span>
             </div>
         </header>
 

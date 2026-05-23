@@ -39,6 +39,11 @@ structure:
         description: Dữ liệu tài chính trung gian được trích xuất (DuckDB, JSON và cấu hình chart)
       reports:
         description: Thư mục lưu trữ báo cáo HTML được kết xuất
+        children:
+          A32_Financial_Report.html:
+            description: Báo cáo tài chính HTML chính thức phiên bản v1
+          A32_Financial_Report_v2.html:
+            description: Báo cáo tài chính HTML phiên bản v2 (RAG mode, rerank_top_n=10) để so sánh với v1
   plan:
     description: Các Spec triển khai và kế hoạch thiết kế
     children:
@@ -71,6 +76,9 @@ structure:
         description: Pipeline tạo biểu đồ, truy vấn RAG và kết xuất báo cáo HTML
   tests:
     description: Các script smoke test kiểm thử hoạt động API và từng component độc lập
+    children:
+      run_generate_v2.py:
+        description: Script sinh báo cáo phiên bản v2 với RAG mode (lưu riêng không ghi đè v1)
   .env:
     description: File môi trường cấu hình API Keys và URLs
   .gitignore:

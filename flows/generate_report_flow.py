@@ -314,7 +314,7 @@ def compile_html_report(sections: dict, chart_paths: dict):
     return output_path
 
 @flow(name="Prefect Report Generation Flow")
-def run_report_generation_flow(use_fallback: bool = True):
+def run_report_generation_flow(use_fallback: bool = False):
     """Prefect orchestrator flow to generate the entire HTML financial report."""
     logger.info("Starting Prefect Report Generation Flow...")
     show_progress("Collect data", "Bắt đầu thu thập dữ liệu và khởi tạo biểu đồ...")
@@ -337,8 +337,10 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     
     parser = argparse.ArgumentParser(description="Generate A32 Financial Report")
-    parser.add_argument("--no-fallback", action="store_true", help="Disable fallback mock data and query the real RAG engine")
+    parser.add_argument("--fallback", action="store_true", help="Enable fallback mock data and do not query the real RAG engine")
+    parser.add_argument("--no-fallback", action="store_true", help="Query the real RAG engine (default behavior)")
     args = parser.parse_args()
     
-    use_fallback = not args.no_fallback
+    # Default to False (RAG mode) unless --fallback is explicitly specified
+    use_fallback = args.fallback
     run_report_generation_flow(use_fallback=use_fallback)
