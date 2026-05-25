@@ -89,5 +89,7 @@ structure:
     description: File mô tả cấu trúc thư mục của dự án
   run.txt:
     description: Tập tin hướng dẫn các câu lệnh CLI chạy pipeline và smoke tests của dự án
+  README.md:
+    description: Tài liệu hướng dẫn sử dụng và giới thiệu tổng quan hệ thống RAG Report
 
 
