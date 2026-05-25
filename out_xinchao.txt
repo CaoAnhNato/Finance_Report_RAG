@@ -1,9 +1,0 @@
-PROMPT:
-Xin chào!
-
-CONTENT:
-Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?
-
-REASONING:
-Hỏi: Xin chào!
-Câu trả lời: Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?

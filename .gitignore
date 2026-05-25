@@ -32,3 +32,7 @@ data/processed/
 data/reports/
 *.duckdb
 *.json
+
+# RAG Output logs & text files
+out_*.txt
+deepseek_out.txt
