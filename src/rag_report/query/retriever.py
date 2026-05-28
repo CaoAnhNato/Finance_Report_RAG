@@ -25,7 +25,7 @@ class HybridRetriever:
             api_key=settings.QDRANT_API_KEY
         )
 
-    def retrieve_dense(self, query: str, fiscal_year: Optional[int] = None, top_k: int = 30) -> List[Dict[str, Any]]:
+    def retrieve_dense(self, query: str, fiscal_year: Optional[int] = None, top_k: int = 15) -> List[Dict[str, Any]]:
         """Dense Vector Retrieval using FPT Vietnamese Embedding and Qdrant Cloud."""
         # Get query embedding
         query_vector = self.embed_model.get_query_embedding(query)
@@ -71,7 +71,7 @@ class HybridRetriever:
             logger.error(f"Qdrant dense search failed: {str(e)}")
             return []
 
-    def retrieve_keyword(self, query: str, fiscal_year: Optional[int] = None, top_k: int = 30) -> List[Dict[str, Any]]:
+    def retrieve_keyword(self, query: str, fiscal_year: Optional[int] = None, top_k: int = 15) -> List[Dict[str, Any]]:
         """Keyword Search using DuckDB ILIKE on text content."""
         try:
             years = [fiscal_year] if fiscal_year else None
@@ -84,8 +84,8 @@ class HybridRetriever:
         self,
         query: str,
         fiscal_year: Optional[int] = None,
-        vector_top_k: int = 30,
-        keyword_top_k: int = 30,
+        vector_top_k: int = 15,
+        keyword_top_k: int = 15,
         rrf_constant: int = 60
     ) -> List[Dict[str, Any]]:
         """Reciprocal Rank Fusion (RRF) combining Dense and Keyword retrievals."""
@@ -126,8 +126,8 @@ class HybridRetriever:
         self,
         questions: List[str],
         fiscal_year: Optional[int] = None,
-        vector_top_k: int = 30,
-        keyword_top_k: int = 30
+        vector_top_k: int = 15,
+        keyword_top_k: int = 15
     ) -> List[Dict[str, Any]]:
         """Retrieve and merge context chunks for multiple sub-questions, removing duplicates."""
         all_results = []

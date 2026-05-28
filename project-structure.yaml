@@ -34,7 +34,7 @@ structure:
           2025:
             description: Báo cáo tài chính năm 2025
           question_eval.json:
-            description: Bộ câu hỏi kiểm thử hệ thống RAG gồm 30 mẫu
+            description: Bộ câu hỏi kiểm thử hệ thống RAG gồm 60 mẫu với đầy đủ trường Source và Page position.
       processed:
         description: Dữ liệu tài chính trung gian được trích xuất (DuckDB, JSON và cấu hình chart)
       reports:
@@ -79,6 +79,12 @@ structure:
     children:
       run_generate_v2.py:
         description: Script sinh báo cáo phiên bản v2 với RAG mode (lưu riêng không ghi đè v1)
+      smoke_test_evaluator.py:
+        description: Smoke test cho hệ thống đánh giá tự động (RAG Evaluator) với các chỉ số mới
+      smoke_test_failed.py:
+        description: Smoke test kiểm thử và phân tích các câu hỏi bị lỗi (Q042, Q043, Q054)
+      eval_retrieval.py:
+        description: Script đánh giá toàn bộ retrieval cho 60 câu hỏi với các metrics Precision, Recall, F1, P@k, MRR, MAP, nDCG, Context Relevance, Latency. Output lưu tại data/processed/retrieval_eval_results.json và retrieval_eval_summary.json
   .env:
     description: File môi trường cấu hình API Keys và URLs
   .gitignore:

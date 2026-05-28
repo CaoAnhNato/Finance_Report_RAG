@@ -192,7 +192,7 @@ class FinancialRAGGraph:
         }
 
     def rerank_node(self, state: GraphState) -> GraphState:
-        """Reranks retrieved contexts using FPT Cloud Reranker."""
+        """Reranks retrieved contexts using FPT Cloud Reranker and expands page siblings."""
         logger.info("--- RERANK NODE ---")
         if state.get("abstain", False) or not state.get("retrieved_contexts"):
             return state
@@ -232,10 +232,66 @@ class FinancialRAGGraph:
         top_n = 28 if is_multi else settings.DEFAULT_RERANK_TOP_N
         final_reranked = reranked[:top_n]
         
+        # --- Page Sibling Expansion ---
+        # Extract unique (fiscal_year, page_num) pairs from final_reranked
+        # Group by page to reconstruct complete document pages in original reading order
+        max_unique_pages = 8 if is_multi else 4
+        unique_pages = []
+        for ctx in final_reranked:
+            fy = ctx.get("fiscal_year")
+            pn = ctx.get("page_num")
+            if fy is not None and pn is not None:
+                pair = (fy, pn)
+                if pair not in unique_pages:
+                    unique_pages.append(pair)
+                    if len(unique_pages) >= max_unique_pages:
+                        break
+                        
+        logger.info(f"Expanding page siblings for {len(unique_pages)} unique pages: {unique_pages}")
+        
+        expanded_contexts = []
+        seen_chunks = set()
+        
+        for fy, pn in unique_pages:
+            try:
+                # Query all chunks on this page sorted by chunk_index to reconstruct original document layout
+                cursor = self.retriever.db_store.conn.execute(
+                    "SELECT chunk_id, doc_id, company_id, fiscal_year, report_type, page_num, chunk_index, text_content, chunk_type, extracted_facts, metadata "
+                    "FROM chunks WHERE fiscal_year = ? AND page_num = ? ORDER BY chunk_index",
+                    (fy, pn)
+                )
+                rows = cursor.fetchall()
+                for r in rows:
+                    cid = r[0]
+                    score = rerank_scores.get(cid, 0.0)
+                    import json
+                    chunk_data = {
+                        "chunk_id": cid,
+                        "doc_id": r[1],
+                        "company_id": r[2],
+                        "fiscal_year": r[3],
+                        "report_type": r[4],
+                        "page_num": r[5],
+                        "chunk_index": r[6],
+                        "text_content": r[7],
+                        "chunk_type": r[8],
+                        "extracted_facts": r[9],
+                        "metadata": json.loads(r[10]) if r[10] else {},
+                        "rerank_score": score
+                    }
+                    if cid not in seen_chunks:
+                        seen_chunks.add(cid)
+                        expanded_contexts.append(chunk_data)
+            except Exception as e:
+                logger.error(f"Error expanding page siblings for year={fy}, page={pn}: {str(e)}")
+                
+        # If page expansion failed or returned empty for some reason, fallback to original final_reranked
+        final_contexts = expanded_contexts if expanded_contexts else final_reranked
+        
         return {
             **state,
             "retrieved_contexts": sorted_retrieved,
-            "reranked_contexts": final_reranked
+            "reranked_contexts": final_contexts
         }
 
     def abstain_node(self, state: GraphState) -> GraphState:
@@ -243,18 +299,9 @@ class FinancialRAGGraph:
         logger.info("--- ABSTAIN NODE ---")
         if getattr(self, "on_progress", None):
             self.on_progress("Sinh text", "Kích hoạt cơ chế từ chối trả lời do thiếu thông tin...")
-        query_years = state.get("analysis_years", [])
-        if not query_years and state.get("fiscal_year"):
-            query_years = [state["fiscal_year"]]
-            
-        if 2022 in query_years or "2022" in state["query"]:
-            answer = "Xin lỗi, tôi không tìm thấy tài liệu báo cáo tài chính của Công ty Cổ phần 32 cho năm 2022 để thực hiện phân tích này."
-        else:
-            answer = "Xin lỗi, tôi không tìm thấy đầy đủ tài liệu báo cáo tài chính liên quan để trả lời chính xác câu hỏi này."
-            
         return {
             **state,
-            "answer": answer,
+            "answer": "Không tìm thấy số liệu để trả lời",
             "abstain": True
         }
 
@@ -295,7 +342,7 @@ class FinancialRAGGraph:
             logger.warning("Context count below minimum. Routing to abstain.")
             return self.abstain_node(state)
             
-        top_score = reranked[0].get("rerank_score", 0.0)
+        top_score = max([c.get("rerank_score", 0.0) for c in reranked]) if reranked else 0.0
         if top_score < settings.ABSTAIN_MIN_RERANK_SCORE:
             logger.warning(f"Top rerank score {top_score} below minimum threshold {settings.ABSTAIN_MIN_RERANK_SCORE}. Routing to abstain.")
             return self.abstain_node(state)
@@ -313,9 +360,9 @@ class FinancialRAGGraph:
             "Bạn là một trợ lý tài chính cao cấp cực kỳ cẩn thận và chính xác của Công ty Cổ phần 32.\n"
             "Hãy trả lời câu hỏi dưới đây một cách chi tiết, phân tích số liệu rõ ràng hoàn toàn dựa vào ngữ cảnh được cung cấp.\n\n"
             "Các quy tắc bắt buộc:\n"
-            "1. Chỉ sử dụng thông tin trong phần 'Ngữ cảnh' được cung cấp để trả lời. Không giả định hay suy đoán số liệu nằm ngoài ngữ cảnh.\n"
+            "1. Chỉ sử dụng thông tin trong phần 'Ngữ cảnh' được cung cấp để trả lời. Không giả định hay suy đoán số liệu nằm ngoài ngữ cảnh. Nếu không có dữ liệu để trả lời đầy đủ câu hỏi, bạn BẮT BUỘC phải trả lời duy nhất câu sau: 'Không tìm thấy số liệu để trả lời'.\n"
             "2. Với mỗi số liệu, bảng biểu hay nhận định quan trọng trích dẫn được, bạn BẮT BUỘC phải dẫn nguồn ở cuối câu bằng định dạng [BCTC <năm>, trang <số trang>] (ví dụ: [BCTC 2018, trang 15]).\n"
-            "3. Nếu ngữ cảnh không có thông tin hoặc thông tin không đủ để tính toán/trả lời đầy đủ, hãy nêu rõ thông tin nào bị thiếu, không cố gắng tạo ra câu trả lời sai lệch.\n"
+            "3. Nếu ngữ cảnh không có thông tin hoặc thông tin không đủ để tính toán/trả lời đầy đủ câu hỏi, bạn BẮT BUỘC phải trả lời duy nhất câu sau: 'Không tìm thấy số liệu để trả lời'. Tuyệt đối không tự suy luận, bịa đặt, giải thích phần thiếu hoặc thêm bất kỳ thông tin nào khác.\n"
             "4. Câu trả lời viết bằng tiếng Việt, cấu trúc mạch lạc, sử dụng bảng biểu markdown nếu cần biểu diễn so sánh số liệu.\n"
             "5. ĐẶC BIỆT LƯU Ý đối với câu hỏi về dư nợ phải thu khách hàng từ các đơn vị không liên quan hoặc liên quan của các năm 2024 hoặc 2025:\n"
             "   Hãy trích xuất trực tiếp số liệu từ dòng 'Phải thu khách hàng' trong bảng 'Tổng giá trị các khoản phải thu quá hạn thanh toán' (Nợ xấu):\n"
@@ -334,6 +381,30 @@ class FinancialRAGGraph:
         )
         
         answer = self._call_generator_api(system_prompt, user_prompt)
+        
+        # Enforce strict refusal format
+        clean_ans = answer.strip().strip('.').strip('"').strip("'").lower()
+        refusal_keywords = [
+            "không tìm thấy số liệu", "không tìm thấy thông tin", "không tìm thấy dữ liệu",
+            "không có số liệu", "không có thông tin", "không có dữ liệu",
+            "chưa công bố", "chưa được công bố", "không được đề cập", "không được cung cấp",
+            "không thể trả lời", "không thể xác định", "không thể tìm thấy",
+            "không đề cập"
+        ]
+        
+        is_refusal = False
+        if "không tìm thấy số liệu để trả lời" in clean_ans:
+            is_refusal = True
+        else:
+            # If the response contains any of the refusal keywords and is relatively short (likely a refusal sentence)
+            for kw in refusal_keywords:
+                if kw in clean_ans and len(clean_ans) < 150:
+                    is_refusal = True
+                    break
+                    
+        if is_refusal:
+            answer = "Không tìm thấy số liệu để trả lời"
+            
         return {
             **state,
             "answer": answer
