@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 
 MetricFlag = Literal["green", "yellow", "red", "insufficient_data"]
+SignalAlertLevel = Literal["green", "yellow", "red", "gray"]
 TaskType = Literal["planner", "extraction", "financial_reasoning", "chart_planning"]
 
 
@@ -148,12 +149,35 @@ class IntroMetricPack(BaseModel):
     records: List[MetricRecord] = Field(default_factory=list)
 
 
+class SignalNumber(BaseModel):
+    label: str
+    value: str
+    source: str
+
+
+class KeySignalItem(BaseModel):
+    id: str
+    question: str
+    conclusion: str
+    main_numbers: List[SignalNumber] = Field(default_factory=list)
+    plain_explanation: str
+    alert_level: SignalAlertLevel
+    alert_label: str
+    alert_reason: str
+    source_refs: List[str] = Field(default_factory=list)
+
+
 class ChartPlanItem(BaseModel):
     chart_id: str
+    question: str = ""
     title: str
     subtitle: str
+    reading_guide: str = ""
+    caption_insight: str = ""
+    data_fields_required: List[str] = Field(default_factory=list)
     insight_line: str
     enabled: bool
+    is_main_chart: bool = True
     priority: int = 0
     skip_reason: Optional[str] = None
 
@@ -161,6 +185,29 @@ class ChartPlanItem(BaseModel):
 class IntroChartPlan(BaseModel):
     company_id: str
     items: List[ChartPlanItem] = Field(default_factory=list)
+
+
+class ExecutiveVerdict(BaseModel):
+    source_reliability: str
+    financial_signal: str
+    main_message: str
+    focus_areas: List[str] = Field(default_factory=list)
+
+
+class AppendixIndicator(BaseModel):
+    name: str
+    formula: str
+    input_values: List[SignalNumber] = Field(default_factory=list)
+    result: str
+    source_refs: List[str] = Field(default_factory=list)
+    notes: List[str] = Field(default_factory=list)
+
+
+class IntroReportContract(BaseModel):
+    executive_verdict: ExecutiveVerdict
+    key_signals: List[KeySignalItem] = Field(default_factory=list)
+    chart_plan: List[ChartPlanItem] = Field(default_factory=list)
+    appendix_indicators: List[AppendixIndicator] = Field(default_factory=list)
 
 
 class IntroNarrative(BaseModel):
@@ -175,6 +222,7 @@ class IntroNarrative(BaseModel):
     verdict_needs_deep_check: Optional[str] = None
     audit_intro: Optional[str] = None
     audit_conclusion: Optional[str] = None
+    report_contract: Optional[IntroReportContract] = None
 
 
 class RenderedChart(BaseModel):

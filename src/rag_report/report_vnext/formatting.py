@@ -5,7 +5,7 @@ import unicodedata
 from pathlib import Path
 
 STATEMENT_LABELS = {
-    "processed_financials": "Dữ liệu tổng hợp A32",
+    "processed_financials": "Dữ liệu tài chính tổng hợp",
     "cash_flow": "Lưu chuyển tiền tệ",
     "notes_receivables": "Thuyết minh phải thu",
     "notes_inventory": "Thuyết minh hàng tồn kho",
@@ -29,9 +29,9 @@ def normalize_statement_label(statement_or_note: str | None) -> str | None:
     val = statement_or_note.strip()
     norm_key = val.lower().replace("_", " ").replace("-", " ").strip()
     mapping = {
-        "processed_financials": "Dữ liệu tổng hợp A32",
-        "processed financials": "Dữ liệu tổng hợp A32",
-        "du lieu tong hop a32": "Dữ liệu tổng hợp A32",
+        "processed_financials": "Dữ liệu tài chính tổng hợp",
+        "processed financials": "Dữ liệu tài chính tổng hợp",
+        "du lieu tong hop a32": "Dữ liệu tài chính tổng hợp",
         
         "cash_flow": "Lưu chuyển tiền tệ",
         "cash flow": "Lưu chuyển tiền tệ",
@@ -76,7 +76,7 @@ def public_source_label(
     statement_label = normalize_statement_label(statement_or_note)
     if page is not None:
         parts.append(f"trang {page}")
-    if statement_label and statement_label not in {"Dữ liệu tổng hợp A32", "Nguồn không xác định"}:
+    if statement_label and statement_label not in {"Dữ liệu tài chính tổng hợp", "Nguồn không xác định"}:
         parts.append(statement_label)
     if not parts:
         return "Nguồn nội bộ"

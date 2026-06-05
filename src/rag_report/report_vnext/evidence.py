@@ -27,7 +27,7 @@ from src.rag_report.report_vnext.models import (
 
 PAGE_PATTERN = re.compile(r"=====\s*PAGE\s+(\d+)\s*=====")
 INT_PATTERN = re.compile(r"\(?-?\d[\d\.\,\s]{2,}\)?")
-FORMULA_SOURCE_PATH = "Khung tính toán nội bộ A32"
+FORMULA_SOURCE_PATH = "Khung tính toán nội bộ"
 
 
 @dataclass(frozen=True)

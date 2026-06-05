@@ -94,7 +94,7 @@ class TestReportVNextExporter(unittest.TestCase):
         self.assertIn("Nhận định nhanh", html_text)
         self.assertIn("CFO am nhung LNST duong.", html_text)
         self.assertIn("Danh gia do tin cay so lieu va chat luong loi nhuan", html_text)
-        self.assertEqual(html_text.count("Chỉ tiêu trọng yếu"), 1)
+        self.assertEqual(html_text.count("chỉ tiêu trọng yếu"), 1)
         self.assertNotIn("C:\\Users\\Admin", html_text)
         self.assertNotIn("source_file", html_text)
         self.assertNotIn("Company:", html_text)

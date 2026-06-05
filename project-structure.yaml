@@ -113,6 +113,8 @@ structure:
         description: Unit tests for metric calculations and provenance records in the vNext path.
       test_report_vnext_exporter.py:
         description: Unit tests for the vNext HTML exporter and hover tooltip provenance.
+      test_report_vnext_charts.py:
+        description: Unit tests for the vNext chart generation and rendering specifications.
   .env:
     description: Local environment variables and provider configuration.
   .gitignore:

@@ -73,7 +73,7 @@ def _vega_base(title: str, subtitle: str) -> dict:
     return {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
         "width": 520,
-        "height": 280,
+        "height": 200,
         "title": {"text": title, "subtitle": subtitle, "anchor": "start", "fontSize": 16, "color": "#10213d"},
         "config": {
             "view": {"stroke": None},
@@ -194,6 +194,35 @@ def _trend_word(current: float | None, previous: float | None) -> str:
     return "đi ngang"
 
 
+def _chart_item(
+    *,
+    chart_id: str,
+    question: str,
+    title: str,
+    reading_guide: str,
+    caption_insight: str,
+    data_fields_required: list[str],
+    enabled: bool,
+    priority: int,
+    is_main_chart: bool,
+    skip_reason: str | None = None,
+) -> ChartPlanItem:
+    return ChartPlanItem(
+        chart_id=chart_id,
+        question=question,
+        title=title,
+        subtitle=reading_guide,
+        reading_guide=reading_guide,
+        caption_insight=caption_insight,
+        data_fields_required=data_fields_required,
+        insight_line=caption_insight,
+        enabled=enabled,
+        is_main_chart=is_main_chart,
+        priority=priority,
+        skip_reason=skip_reason,
+    )
+
+
 def _chart_year_span(years: list[int]) -> str:
     if not years:
         return ""
@@ -225,13 +254,17 @@ def _build_audit_chart(evidence_pack: IntroEvidencePack) -> ChartPlanItem | None
         insight = f"Năm {latest.fiscal_year} có snapshot kiểm toán nhưng chưa trích xuất được ý kiến rõ ràng."
     if latest.severity_flag != "green":
         insight += f" Mức cảnh báo hiện ở trạng thái {latest.severity_flag}."
-    return ChartPlanItem(
+    guide = "Đọc trục năm từ trái sang phải, xem ý kiến kiểm toán có đổi sang trạng thái an toàn hay xuất hiện ngoại trừ không."
+    return _chart_item(
         chart_id="audit_timeline",
+        question="Báo cáo có nguồn kiểm toán đủ dùng không?",
         title=title,
-        subtitle=" ".join(subtitle_parts),
-        insight_line=insight,
+        reading_guide=guide,
+        caption_insight=insight,
+        data_fields_required=["year", "opinion", "severity", "source_summary"],
         enabled=True,
         priority=100,
+        is_main_chart=True,
     )
 
 
@@ -264,13 +297,16 @@ def _build_earnings_cash_chart(evidence_pack: IntroEvidencePack) -> ChartPlanIte
             f" So với năm {previous_lnst.fiscal_year}, LNST {_trend_word(latest_lnst.value if latest_lnst else None, previous_lnst.value)}"
             f" và CFO {_trend_word(latest_cfo.value if latest_cfo else None, previous_cfo.value)}."
         )
-    return ChartPlanItem(
-        chart_id="earnings_cash",
+    return _chart_item(
+        chart_id="profit_vs_cfo_cash",
+        question="Lợi nhuận có chuyển thành tiền không?",
         title=title,
-        subtitle=subtitle,
-        insight_line=insight,
+        reading_guide="Đọc hai cột LNST và CFO theo năm, rồi nhìn đường tiền cuối kỳ để thấy lợi nhuận có đi cùng dòng tiền hay không.",
+        caption_insight=insight,
+        data_fields_required=["year", "lnst", "cfo", "ending_cash"],
         enabled=True,
-        priority=90,
+        priority=95,
+        is_main_chart=True,
     )
 
 
@@ -299,45 +335,45 @@ def _build_accrual_dashboard_chart(metric_pack: IntroMetricPack) -> ChartPlanIte
             f" So với {previous_qoe.fiscal_year}, quality of earnings {_trend_word(latest_qoe.computed_value if latest_qoe else None, previous_qoe.computed_value)}"
             f" và accrual ratio {_trend_word(latest_accrual.computed_value if latest_accrual else None, previous_accrual.computed_value)}."
         )
-    return ChartPlanItem(
+    return _chart_item(
         chart_id="accrual_dashboard",
+        question="Lợi nhuận đang nghiêng về dồn tích hay tiền mặt?",
         title=title,
-        subtitle=subtitle,
-        insight_line=insight,
+        reading_guide="Đọc đồng thời quality of earnings và accrual ratio để xem lợi nhuận có đang dựa nhiều vào ghi nhận kế toán hay không.",
+        caption_insight=insight,
+        data_fields_required=["year", "quality_of_earnings", "accrual_ratio"],
         enabled=True,
-        priority=85,
+        priority=30,
+        is_main_chart=False,
     )
 
 
 def _build_receivables_chart(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> ChartPlanItem | None:
     facts = _group_facts_by_item(evidence_pack)
-    metrics = _group_metrics_by_id(metric_pack)
     revenue_rows = facts.get("doanh_thu", [])
     receivables_rows = facts.get("phai_thu_ngan_han", [])
-    dsri_rows = metrics.get("dsri", [])
-    if not (revenue_rows and receivables_rows and dsri_rows):
+    if not (revenue_rows and receivables_rows):
         return None
-    years = sorted({row.fiscal_year for row in revenue_rows + receivables_rows + dsri_rows})
+    years = sorted({row.fiscal_year for row in revenue_rows + receivables_rows})
     latest_year = years[-1]
     latest_revenue = _latest_item([row for row in revenue_rows if row.fiscal_year == latest_year])
     latest_receivables = _latest_item([row for row in receivables_rows if row.fiscal_year == latest_year])
-    latest_dsri = _latest_item([row for row in dsri_rows if row.fiscal_year == latest_year])
-    previous_dsri = _previous_item(dsri_rows)
     title = f"Phải thu và doanh thu {_chart_year_span(years)}"
-    subtitle = f"Đối chiếu tăng trưởng doanh thu với nhịp tăng của phải thu và DSRI trong giai đoạn {_chart_year_span(years)}."
+    subtitle = f"Đối chiếu doanh thu với nhịp tăng của khoản phải thu trong giai đoạn {_chart_year_span(years)}."
     insight = (
-        f"Năm {latest_year}, phải thu ngắn hạn ở mức {_fmt_vnd_billion(latest_receivables.value if latest_receivables else None)} "
-        f"trên doanh thu {_fmt_vnd_billion(latest_revenue.value if latest_revenue else None)}; DSRI đạt {_fmt_ratio(latest_dsri.computed_value if latest_dsri else None)}."
+        f"Năm {latest_year}, khoản phải thu ngắn hạn ở mức {_fmt_vnd_billion(latest_receivables.value if latest_receivables else None)} "
+        f"trên doanh thu {_fmt_vnd_billion(latest_revenue.value if latest_revenue else None)}."
     )
-    if previous_dsri:
-        insight += f" So với {previous_dsri.fiscal_year}, DSRI {_trend_word(latest_dsri.computed_value if latest_dsri else None, previous_dsri.computed_value)}."
-    return ChartPlanItem(
-        chart_id="receivables_revenue",
+    return _chart_item(
+        chart_id="receivables_vs_revenue",
+        question="Doanh thu có bị kẹt ở khoản phải thu không?",
         title=title,
-        subtitle=subtitle,
-        insight_line=insight,
+        reading_guide="Đọc cột doanh thu và khoản phải thu theo năm, rồi xem phải thu có tăng nhanh hơn nhịp bán hàng không.",
+        caption_insight=insight,
+        data_fields_required=["year", "doanh_thu", "phai_thu_ngan_han"],
         enabled=True,
-        priority=80,
+        priority=90,
+        is_main_chart=True,
     )
 
 
@@ -357,22 +393,24 @@ def _build_provision_chart(metric_pack: IntroMetricPack) -> ChartPlanItem | None
         f"Năm {latest_year}, allowance coverage đạt {_fmt_ratio(latest_allowance.computed_value if latest_allowance else None)} "
         f"và inventory coverage đạt {_fmt_ratio(latest_inventory.computed_value if latest_inventory else None)}."
     )
-    return ChartPlanItem(
-        chart_id="provision_risk",
+    return _chart_item(
+        chart_id="inventory_working_capital",
+        question="Tồn kho và lớp đệm vốn lưu động có đang căng không?",
         title=title,
-        subtitle=subtitle,
-        insight_line=insight,
+        reading_guide="Đọc xu hướng tồn kho cùng lớp dự phòng để thấy phần đệm bảo vệ hàng tồn kho dày hay mỏng.",
+        caption_insight=insight,
+        data_fields_required=["year", "inventory_provision_coverage"],
         enabled=True,
-        priority=75,
+        priority=20,
+        is_main_chart=False,
     )
 
 
 def _build_dividend_chart(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> ChartPlanItem | None:
     facts = _group_facts_by_item(evidence_pack)
-    metrics = _group_metrics_by_id(metric_pack)
     dividends_rows = facts.get("dividends_paid", [])
     cfo_rows = facts.get("cfo", [])
-    cash_rows = metrics.get("cash_buffer_ratio", [])
+    cash_rows = facts.get("ending_cash", [])
     if not (dividends_rows and cfo_rows and cash_rows):
         return None
     years = sorted({row.fiscal_year for row in dividends_rows + cfo_rows + cash_rows})
@@ -381,18 +419,54 @@ def _build_dividend_chart(evidence_pack: IntroEvidencePack, metric_pack: IntroMe
     latest_cfo = _latest_item([row for row in cfo_rows if row.fiscal_year == latest_year])
     latest_cash = _latest_item([row for row in cash_rows if row.fiscal_year == latest_year])
     title = f"Cổ tức, CFO và đệm tiền {_chart_year_span(years)}"
-    subtitle = f"Đặt dòng tiền hoạt động cạnh cổ tức đã trả và cash buffer để đo áp lực thanh khoản trong giai đoạn {_chart_year_span(years)}."
+    subtitle = f"Đặt dòng tiền hoạt động cạnh cổ tức đã trả và tiền cuối kỳ để đo áp lực thanh khoản trong giai đoạn {_chart_year_span(years)}."
     insight = (
         f"Năm {latest_year}, cổ tức đã trả {_fmt_vnd_billion(latest_dividends.value if latest_dividends else None)} "
-        f"so với CFO {_fmt_vnd_billion(latest_cfo.value if latest_cfo else None)}; cash buffer ở mức {_fmt_ratio(latest_cash.computed_value if latest_cash else None)}."
+        f"so với CFO {_fmt_vnd_billion(latest_cfo.value if latest_cfo else None)}; tiền cuối kỳ ở mức {_fmt_vnd_billion(latest_cash.value if latest_cash else None)}."
     )
-    return ChartPlanItem(
-        chart_id="dividend_liquidity",
+    return _chart_item(
+        chart_id="dividend_cfo_cash",
+        question="Cổ tức và CFO có làm mỏng tiền mặt không?",
         title=title,
-        subtitle=subtitle,
-        insight_line=insight,
+        reading_guide="Đọc cột cổ tức đã trả song song với CFO và tiền cuối kỳ để xem doanh nghiệp còn giữ được đệm tiền hay không.",
+        caption_insight=insight,
+        data_fields_required=["year", "dividends_paid", "cfo", "ending_cash"],
         enabled=True,
-        priority=70,
+        priority=85,
+        is_main_chart=True,
+    )
+
+
+def _build_liquidity_debt_chart(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> ChartPlanItem | None:
+    facts = _group_facts_by_item(evidence_pack)
+    metrics = _group_metrics_by_id(metric_pack)
+    cash_rows = facts.get("ending_cash", [])
+    debt_rows = facts.get("no_ngan_han", [])
+    buffer_rows = metrics.get("cash_buffer_ratio", [])
+    if not (cash_rows and debt_rows):
+        return None
+    years = sorted({row.fiscal_year for row in cash_rows + debt_rows + buffer_rows})
+    latest_year = years[-1]
+    latest_cash = _latest_item([row for row in cash_rows if row.fiscal_year == latest_year])
+    latest_debt = _latest_item([row for row in debt_rows if row.fiscal_year == latest_year])
+    latest_buffer = _latest_item(buffer_rows)
+    title = f"Tiền mặt và nợ ngắn hạn {_chart_year_span(years)}"
+    subtitle = f"So sánh đệm tiền mặt với nợ ngắn hạn để nhìn nhanh phần an toàn thanh khoản trong giai đoạn {_chart_year_span(years)}."
+    insight = (
+        f"Năm {latest_year}, tiền cuối kỳ ở mức {_fmt_vnd_billion(latest_cash.value if latest_cash else None)} "
+        f"trong khi nợ ngắn hạn là {_fmt_vnd_billion(latest_debt.value if latest_debt else None)}; "
+        f"cash buffer đạt {_fmt_ratio(latest_buffer.computed_value if latest_buffer else None)}."
+    )
+    return _chart_item(
+        chart_id="liquidity_cash_debt",
+        question="Doanh nghiệp còn đệm tiền mặt đủ không?",
+        title=title,
+        reading_guide="Đọc tiền cuối kỳ và nợ ngắn hạn trên cùng trục năm, rồi xem đường cash buffer để biết đệm an toàn đang dày hay mỏng.",
+        caption_insight=insight,
+        data_fields_required=["year", "ending_cash", "no_ngan_han", "cash_buffer_ratio"],
+        enabled=True,
+        priority=15,
+        is_main_chart=False,
     )
 
 
@@ -420,14 +494,25 @@ def _build_heatmap_chart(metric_pack: IntroMetricPack) -> ChartPlanItem | None:
         f"Trong chuỗi đến năm {latest_year}, có {red_count} chỉ số đỏ và {yellow_count} chỉ số vàng; "
         f"trục năm vẫn giữ nguyên tất cả mốc dữ liệu, bao gồm 2020 nếu bộ số liệu có sẵn."
     )
-    return ChartPlanItem(
+    return _chart_item(
         chart_id="red_flag_heatmap",
+        question="Mảng tín hiệu nào đang nổi bật theo năm?",
         title=title,
-        subtitle=subtitle,
-        insight_line=insight,
+        reading_guide="Đọc theo hàng để xem từng nhóm chỉ số chuyển màu như thế nào qua các năm.",
+        caption_insight=insight,
+        data_fields_required=["year", "metric", "flag"],
         enabled=True,
-        priority=60,
+        priority=10,
+        is_main_chart=False,
     )
+
+
+def _build_profit_vs_cfo_cash_chart(evidence_pack: IntroEvidencePack) -> ChartPlanItem | None:
+    return _build_earnings_cash_chart(evidence_pack)
+
+
+def _build_inventory_working_capital_chart(metric_pack: IntroMetricPack) -> ChartPlanItem | None:
+    return _build_provision_chart(metric_pack)
 
 
 def build_default_intro_chart_plan(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> IntroChartPlan:
@@ -435,16 +520,16 @@ def build_default_intro_chart_plan(evidence_pack: IntroEvidencePack, metric_pack
         item
         for item in [
             _build_audit_chart(evidence_pack),
-            _build_earnings_cash_chart(evidence_pack),
-            _build_accrual_dashboard_chart(metric_pack),
+            _build_profit_vs_cfo_cash_chart(evidence_pack),
             _build_receivables_chart(evidence_pack, metric_pack),
-            _build_provision_chart(metric_pack),
             _build_dividend_chart(evidence_pack, metric_pack),
+            _build_inventory_working_capital_chart(metric_pack),
+            _build_liquidity_debt_chart(evidence_pack, metric_pack),
             _build_heatmap_chart(metric_pack),
         ]
         if item is not None
     ]
-    items.sort(key=lambda item: (-item.priority, item.chart_id))
+    items.sort(key=lambda item: (not item.is_main_chart, -item.priority, item.chart_id))
     return IntroChartPlan(company_id=evidence_pack.company_id, items=items)
 
 
@@ -544,272 +629,439 @@ def render_intro_charts(
     metric_pack: IntroMetricPack,
     chart_plan: IntroChartPlan,
 ) -> list[RenderedChart]:
+    def audit_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        if not evidence_pack.audit_snapshots:
+            return None
+        values = sorted(
+            [
+                {
+                    "year": snapshot.fiscal_year,
+                    "opinion": snapshot.audit_opinion or "Chưa rõ",
+                    "severity": {"green": 0, "yellow": 1, "red": 2, "insufficient_data": 3}[snapshot.severity_flag],
+                    "status": {"green": "Bình thường", "yellow": "Cần theo dõi", "red": "Cảnh báo cao", "insufficient_data": "Thiếu dữ liệu"}[snapshot.severity_flag],
+                    "source_summary": public_source_label(
+                        snapshot.source_file,
+                        fiscal_year=snapshot.fiscal_year,
+                        page=snapshot.page,
+                        statement_or_note="notes_audit",
+                    ),
+                }
+                for snapshot in evidence_pack.audit_snapshots
+            ],
+            key=lambda row: row["year"],
+        )
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "mark": {"type": "line", "point": True, "strokeWidth": 3},
+            "encoding": {
+                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                "y": {"field": "severity", "type": "quantitative", "title": "Mức cảnh báo"},
+                "color": {
+                    "field": "status",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Bình thường", "Cần theo dõi", "Cảnh báo cao", "Thiếu dữ liệu"],
+                        "range": ["#0f766e", "#d97706", "#dc2626", "#94a3b8"],
+                    },
+                    "legend": {"title": "Trạng thái"},
+                },
+                "tooltip": [{"field": "year"}, {"field": "opinion"}, {"field": "source_summary", "title": "Nguồn"}],
+            },
+        }
+
+    def profit_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _fact_table(evidence_pack, "lnst"):
+            values.append({"year": row["year"], "metric": "Lợi nhuận sau thuế (LNST)", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "cfo"):
+            values.append({"year": row["year"], "metric": "Dòng tiền từ HĐKD (CFO)", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "ending_cash"):
+            values.append({"year": row["year"], "metric": "Tiền cuối kỳ", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "encoding": {
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Lợi nhuận sau thuế (LNST)", "Dòng tiền từ HĐKD (CFO)", "Tiền cuối kỳ"],
+                        "range": ["#2f6fed", "#f59e0b", "#0f766e"],
+                    },
+                    "legend": {"title": "Chỉ tiêu"},
+                }
+            },
+            "layer": [
+                {
+                    "transform": [{"filter": "datum.metric === 'Lợi nhuận sau thuế (LNST)' || datum.metric === 'Dòng tiền từ HĐKD (CFO)'"}],
+                    "mark": {"type": "bar"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND"}},
+                        "xOffset": {"field": "metric", "type": "nominal"},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+                {
+                    "transform": [{"filter": "datum.metric === 'Tiền cuối kỳ'"}],
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": None}},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
+        }
+
+    def receivables_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _fact_table(evidence_pack, "doanh_thu"):
+            values.append({"year": row["year"], "metric": "Doanh thu", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "phai_thu_ngan_han"):
+            values.append({"year": row["year"], "metric": "Phải thu ngắn hạn", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _metric_table(metric_pack, "dsri"):
+            values.append({"year": row["year"], "metric": "Chỉ số DSRI", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "encoding": {
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Doanh thu", "Phải thu ngắn hạn", "Chỉ số DSRI"],
+                        "range": ["#cbd5e1", "#2f6fed", "#dc2626"],
+                    },
+                    "legend": {"title": "Chỉ tiêu"},
+                }
+            },
+            "resolve": {"scale": {"y": "independent"}},
+            "layer": [
+                {
+                    "transform": [{"filter": "datum.metric === 'Doanh thu' || datum.metric === 'Phải thu ngắn hạn'"}],
+                    "mark": {"type": "bar"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
+                        "xOffset": {"field": "metric", "type": "nominal"},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+                {
+                    "transform": [{"filter": "datum.metric === 'Chỉ số DSRI'"}],
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Chỉ số DSRI", "orient": "right"}},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
+        }
+
+    def dividend_liquidity_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _fact_table(evidence_pack, "dividends_paid"):
+            values.append({"year": row["year"], "metric": "Cổ tức đã trả", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "cfo"):
+            values.append({"year": row["year"], "metric": "Dòng tiền từ HĐKD (CFO)", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _metric_table(metric_pack, "cash_buffer_ratio"):
+            values.append({"year": row["year"], "metric": "Hệ số đệm tiền mặt", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "encoding": {
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Cổ tức đã trả", "Dòng tiền từ HĐKD (CFO)", "Hệ số đệm tiền mặt"],
+                        "range": ["#0f766e", "#dc2626", "#2f6fed"],
+                    },
+                    "legend": {"title": "Chỉ tiêu"},
+                }
+            },
+            "resolve": {"scale": {"y": "independent"}},
+            "layer": [
+                {
+                    "transform": [{"filter": "datum.metric === 'Cổ tức đã trả' || datum.metric === 'Dòng tiền từ HĐKD (CFO)'"}],
+                    "mark": {"type": "bar"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
+                        "xOffset": {"field": "metric", "type": "nominal"},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+                {
+                    "transform": [{"filter": "datum.metric === 'Hệ số đệm tiền mặt'"}],
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Hệ số đệm tiền mặt", "orient": "right"}},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
+        }
+
+    def dividend_cfo_cash_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _fact_table(evidence_pack, "dividends_paid"):
+            values.append({"year": row["year"], "metric": "Cổ tức đã trả", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "cfo"):
+            values.append({"year": row["year"], "metric": "Dòng tiền từ HĐKD (CFO)", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "ending_cash"):
+            values.append({"year": row["year"], "metric": "Tiền cuối kỳ", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "encoding": {
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {"domain": ["Cổ tức đã trả", "Dòng tiền từ HĐKD (CFO)", "Tiền cuối kỳ"], "range": ["#0f766e", "#dc2626", "#2f6fed"]},
+                    "legend": {"title": "Chỉ tiêu"},
+                }
+            },
+            "resolve": {"scale": {"y": "independent"}},
+            "layer": [
+                {
+                    "transform": [{"filter": "datum.metric === 'Cổ tức đã trả' || datum.metric === 'Dòng tiền từ HĐKD (CFO)'"}],
+                    "mark": {"type": "bar"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
+                        "xOffset": {"field": "metric", "type": "nominal"},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+                {
+                    "transform": [{"filter": "datum.metric === 'Tiền cuối kỳ'"}],
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tiền cuối kỳ", "orient": "right"}},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
+        }
+
+    def provision_risk_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _metric_table(metric_pack, "allowance_coverage_receivables"):
+            values.append({"year": row["year"], "metric": "Bao phủ phải thu", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _metric_table(metric_pack, "inventory_provision_coverage"):
+            values.append({"year": row["year"], "metric": "Bao phủ hàng tồn kho", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "mark": {"type": "bar"},
+            "encoding": {
+                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                "y": {"field": "value", "type": "quantitative", "title": "Coverage"},
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Bao phủ phải thu", "Bao phủ hàng tồn kho"],
+                        "range": ["#dc2626", "#0f766e"],
+                    },
+                    "legend": {"title": "Chỉ tiêu"},
+                },
+                "xOffset": {"field": "metric"},
+                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value"}, {"field": "source_summary", "title": "Nguồn"}],
+            },
+        }
+
+    def inventory_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _fact_table(evidence_pack, "hang_ton_kho"):
+            values.append({"year": row["year"], "metric": "Hàng tồn kho", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "no_ngan_han"):
+            values.append({"year": row["year"], "metric": "Nợ ngắn hạn", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _metric_table(metric_pack, "inventory_provision_coverage"):
+            values.append({"year": row["year"], "metric": "Bao phủ dự phòng", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "encoding": {
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {"domain": ["Hàng tồn kho", "Nợ ngắn hạn", "Bao phủ dự phòng"], "range": ["#0f766e", "#dc2626", "#2f6fed"]},
+                    "legend": {"title": "Chỉ tiêu"},
+                }
+            },
+            "resolve": {"scale": {"y": "independent"}},
+            "layer": [
+                {
+                    "transform": [{"filter": "datum.metric === 'Hàng tồn kho' || datum.metric === 'Nợ ngắn hạn'"}],
+                    "mark": {"type": "bar"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
+                        "xOffset": {"field": "metric", "type": "nominal"},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+                {
+                    "transform": [{"filter": "datum.metric === 'Bao phủ dự phòng'"}],
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Bao phủ", "orient": "right"}},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
+        }
+
+    def liquidity_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _fact_table(evidence_pack, "ending_cash"):
+            values.append({"year": row["year"], "metric": "Tiền cuối kỳ", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _fact_table(evidence_pack, "no_ngan_han"):
+            values.append({"year": row["year"], "metric": "Nợ ngắn hạn", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _metric_table(metric_pack, "cash_buffer_ratio"):
+            values.append({"year": row["year"], "metric": "Cash buffer", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "encoding": {
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {"domain": ["Tiền cuối kỳ", "Nợ ngắn hạn", "Cash buffer"], "range": ["#0f766e", "#dc2626", "#2f6fed"]},
+                    "legend": {"title": "Chỉ tiêu"},
+                }
+            },
+            "resolve": {"scale": {"y": "independent"}},
+            "layer": [
+                {
+                    "transform": [{"filter": "datum.metric === 'Tiền cuối kỳ' || datum.metric === 'Nợ ngắn hạn'"}],
+                    "mark": {"type": "bar"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
+                        "xOffset": {"field": "metric", "type": "nominal"},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+                {
+                    "transform": [{"filter": "datum.metric === 'Cash buffer'"}],
+                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "value", "type": "quantitative", "axis": {"title": "Cash buffer", "orient": "right"}},
+                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
+        }
+
+    def accrual_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = []
+        for row in _metric_table(metric_pack, "quality_of_earnings"):
+            values.append({"year": row["year"], "metric": "Chất lượng lợi nhuận", "value": row["value"], "source_summary": row.get("source_summary")})
+        for row in _metric_table(metric_pack, "accrual_ratio"):
+            values.append({"year": row["year"], "metric": "Tỷ lệ dồn tích", "value": row["value"], "source_summary": row.get("source_summary")})
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "mark": {"type": "line", "point": True, "strokeWidth": 3},
+            "encoding": {
+                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                "y": {"field": "value", "type": "quantitative", "title": "Tỷ lệ"},
+                "color": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": ["Chất lượng lợi nhuận", "Tỷ lệ dồn tích"],
+                        "range": ["#2f6fed", "#dc2626"],
+                    },
+                    "legend": {"title": "Chỉ tiêu"},
+                },
+                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value"}, {"field": "source_summary", "title": "Nguồn"}],
+            },
+        }
+
+    def heatmap_spec(item: ChartPlanItem) -> dict[str, Any] | None:
+        values = sorted(
+            [
+                {
+                    "year": record.fiscal_year,
+                    "metric": record.metric_name,
+                    "flag": record.flag,
+                    "source_summary": _metric_source_summary(record),
+                }
+                for record in metric_pack.records
+                if record.metric_id
+                in {
+                    "quality_of_earnings",
+                    "accrual_ratio",
+                    "dsri",
+                    "allowance_coverage_receivables",
+                    "inventory_provision_coverage",
+                    "dividend_stress_ratio",
+                    "cash_buffer_ratio",
+                }
+            ],
+            key=lambda row: (row["year"], row["metric"]),
+        )
+        if not values:
+            return None
+        return _vega_base(item.title, item.subtitle) | {
+            "data": {"values": values},
+            "mark": {"type": "rect", "cornerRadius": 4},
+            "encoding": {
+                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                "y": {"field": "metric", "type": "nominal", "title": "Chỉ số"},
+                "color": {
+                    "field": "flag",
+                    "type": "nominal",
+                    "scale": {"domain": list(COLOR_SCALE), "range": ["#bbf7d0", "#fde68a", "#fecaca", "#e2e8f0"]},
+                },
+                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "flag"}, {"field": "source_summary", "title": "Nguồn"}],
+            },
+        }
+
     rendered: list[RenderedChart] = []
     for item in chart_plan.items:
         if not item.enabled:
             continue
         spec = None
-        if item.chart_id == "audit_timeline" and evidence_pack.audit_snapshots:
-            values = sorted(
-                [
-                    {
-                        "year": snapshot.fiscal_year,
-                        "opinion": snapshot.audit_opinion or "Chưa rõ",
-                        "severity": {"green": 0, "yellow": 1, "red": 2, "insufficient_data": 3}[snapshot.severity_flag],
-                        "Trạng thái": {"green": "An toàn", "yellow": "Chú ý", "red": "Cảnh báo", "insufficient_data": "Thiếu dữ liệu"}[snapshot.severity_flag],
-                        "source_summary": public_source_label(
-                            snapshot.source_file,
-                            fiscal_year=snapshot.fiscal_year,
-                            page=snapshot.page,
-                            statement_or_note="notes_audit",
-                        ),
-                    }
-                    for snapshot in evidence_pack.audit_snapshots
-                ],
-                key=lambda row: row["year"],
-            )
-            spec = _vega_base(item.title, item.subtitle) | {
-                "data": {"values": values},
-                "mark": {"type": "line", "point": True, "strokeWidth": 3},
-                "encoding": {
-                    "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                    "y": {"field": "severity", "type": "quantitative", "title": "Mức cảnh báo"},
-                    "color": {
-                        "field": "Trạng thái",
-                        "type": "nominal",
-                        "scale": {
-                            "domain": ["An toàn", "Chú ý", "Cảnh báo", "Thiếu dữ liệu"],
-                            "range": ["#0f766e", "#d97706", "#dc2626", "#94a3b8"]
-                        },
-                        "legend": {"title": "Mức cảnh báo"}
-                    },
-                    "tooltip": [{"field": "year"}, {"field": "opinion"}, {"field": "source_summary", "title": "Nguồn"}],
-                },
-            }
-        elif item.chart_id == "earnings_cash":
-            values = []
-            for row in _fact_table(evidence_pack, "lnst"):
-                values.append({"year": row["year"], "metric": "Lợi nhuận sau thuế (LNST)", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _fact_table(evidence_pack, "cfo"):
-                values.append({"year": row["year"], "metric": "Dòng tiền từ HĐKD (CFO)", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _fact_table(evidence_pack, "ending_cash"):
-                values.append({"year": row["year"], "metric": "Tiền cuối kỳ", "value": row["value"], "source_summary": row.get("source_summary")})
-            if values:
-                spec = _vega_base(item.title, item.subtitle) | {
-                    "data": {"values": values},
-                    "encoding": {
-                        "color": {
-                            "field": "metric",
-                            "type": "nominal",
-                            "scale": {
-                                "domain": ["Lợi nhuận sau thuế (LNST)", "Dòng tiền từ HĐKD (CFO)", "Tiền cuối kỳ"],
-                                "range": ["#2f6fed", "#f59e0b", "#0f766e"]
-                            },
-                            "legend": {"title": "Chỉ tiêu"}
-                        }
-                    },
-                    "layer": [
-                        {
-                            "transform": [{"filter": "datum.metric === 'Lợi nhuận sau thuế (LNST)' || datum.metric === 'Dòng tiền từ HĐKD (CFO)'"}],
-                            "mark": {"type": "bar"},
-                            "encoding": {
-                                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                                "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND"}},
-                                "xOffset": {"field": "metric", "type": "nominal"},
-                                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
-                            },
-                        },
-                        {
-                            "transform": [{"filter": "datum.metric === 'Tiền cuối kỳ'"}],
-                            "mark": {"type": "line", "point": True, "strokeWidth": 3},
-                            "encoding": {
-                                "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
-                                "y": {"field": "value", "type": "quantitative", "axis": {"title": None}},
-                                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
-                            },
-                        },
-                    ],
-                }
-        elif item.chart_id == "accrual_dashboard":
-            values = []
-            for row in _metric_table(metric_pack, "quality_of_earnings"):
-                values.append({"year": row["year"], "metric": "Chất lượng lợi nhuận", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _metric_table(metric_pack, "accrual_ratio"):
-                values.append({"year": row["year"], "metric": "Tỷ lệ dồn tích", "value": row["value"], "source_summary": row.get("source_summary")})
-            if values:
-                spec = _vega_base(item.title, item.subtitle) | {
-                    "data": {"values": values},
-                    "mark": {"type": "line", "point": True, "strokeWidth": 3},
-                    "encoding": {
-                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                        "y": {"field": "value", "type": "quantitative", "title": "Tỷ lệ"},
-                        "color": {
-                            "field": "metric",
-                            "type": "nominal",
-                            "scale": {
-                                "domain": ["Chất lượng lợi nhuận", "Tỷ lệ dồn tích"],
-                                "range": ["#2f6fed", "#dc2626"]
-                            },
-                            "legend": {"title": "Chỉ tiêu"}
-                        },
-                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value"}, {"field": "source_summary", "title": "Nguồn"}],
-                    },
-                }
-        elif item.chart_id == "receivables_revenue":
-            values = []
-            for row in _fact_table(evidence_pack, "doanh_thu"):
-                values.append({"year": row["year"], "metric": "Doanh thu", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _fact_table(evidence_pack, "phai_thu_ngan_han"):
-                values.append({"year": row["year"], "metric": "Phải thu ngắn hạn", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _metric_table(metric_pack, "dsri"):
-                values.append({"year": row["year"], "metric": "Chỉ số DSRI", "value": row["value"], "source_summary": row.get("source_summary")})
-            if values:
-                spec = _vega_base(item.title, item.subtitle) | {
-                    "data": {"values": values},
-                    "encoding": {
-                        "color": {
-                            "field": "metric",
-                            "type": "nominal",
-                            "scale": {
-                                "domain": ["Doanh thu", "Phải thu ngắn hạn", "Chỉ số DSRI"],
-                                "range": ["#cbd5e1", "#2f6fed", "#dc2626"]
-                            },
-                            "legend": {"title": "Chỉ tiêu"}
-                        }
-                    },
-                    "resolve": {"scale": {"y": "independent"}},
-                    "layer": [
-                        {
-                            "transform": [{"filter": "datum.metric === 'Doanh thu' || datum.metric === 'Phải thu ngắn hạn'"}],
-                            "mark": {"type": "bar"},
-                            "encoding": {
-                                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                                "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
-                                "xOffset": {"field": "metric", "type": "nominal"},
-                                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
-                            },
-                        },
-                        {
-                            "transform": [{"filter": "datum.metric === 'Chỉ số DSRI'"}],
-                            "mark": {"type": "line", "point": True, "strokeWidth": 3},
-                            "encoding": {
-                                "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
-                                "y": {"field": "value", "type": "quantitative", "axis": {"title": "Chỉ số DSRI", "orient": "right"}},
-                                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
-                            },
-                        },
-                    ],
-                }
-        elif item.chart_id == "provision_risk":
-            values = []
-            for row in _metric_table(metric_pack, "allowance_coverage_receivables"):
-                values.append({"year": row["year"], "metric": "Bao phủ phải thu", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _metric_table(metric_pack, "inventory_provision_coverage"):
-                values.append({"year": row["year"], "metric": "Bao phủ hàng tồn kho", "value": row["value"], "source_summary": row.get("source_summary")})
-            if values:
-                spec = _vega_base(item.title, item.subtitle) | {
-                    "data": {"values": values},
-                    "mark": {"type": "bar"},
-                    "encoding": {
-                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                        "y": {"field": "value", "type": "quantitative", "title": "Coverage"},
-                        "color": {
-                            "field": "metric",
-                            "type": "nominal",
-                            "scale": {
-                                "domain": ["Bao phủ phải thu", "Bao phủ hàng tồn kho"],
-                                "range": ["#dc2626", "#0f766e"]
-                            },
-                            "legend": {"title": "Chỉ tiêu"}
-                        },
-                        "xOffset": {"field": "metric"},
-                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value"}, {"field": "source_summary", "title": "Nguồn"}],
-                    },
-                }
+        if item.chart_id == "audit_timeline":
+            spec = audit_spec(item)
+        elif item.chart_id in {"profit_vs_cfo_cash", "earnings_cash"}:
+            spec = profit_spec(item)
+        elif item.chart_id in {"receivables_vs_revenue", "receivables_revenue"}:
+            spec = receivables_spec(item)
         elif item.chart_id == "dividend_liquidity":
-            values = []
-            for row in _fact_table(evidence_pack, "dividends_paid"):
-                values.append({"year": row["year"], "metric": "Cổ tức đã trả", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _fact_table(evidence_pack, "cfo"):
-                values.append({"year": row["year"], "metric": "Dòng tiền từ HĐKD (CFO)", "value": row["value"], "source_summary": row.get("source_summary")})
-            for row in _metric_table(metric_pack, "cash_buffer_ratio"):
-                values.append({"year": row["year"], "metric": "Hệ số đệm tiền mặt", "value": row["value"], "source_summary": row.get("source_summary")})
-            if values:
-                spec = _vega_base(item.title, item.subtitle) | {
-                    "data": {"values": values},
-                    "encoding": {
-                        "color": {
-                            "field": "metric",
-                            "type": "nominal",
-                            "scale": {
-                                "domain": ["Cổ tức đã trả", "Dòng tiền từ HĐKD (CFO)", "Hệ số đệm tiền mặt"],
-                                "range": ["#0f766e", "#dc2626", "#2f6fed"]
-                            },
-                            "legend": {"title": "Chỉ tiêu"}
-                        }
-                    },
-                    "resolve": {"scale": {"y": "independent"}},
-                    "layer": [
-                        {
-                            "transform": [{"filter": "datum.metric === 'Cổ tức đã trả' || datum.metric === 'Dòng tiền từ HĐKD (CFO)'"}],
-                            "mark": {"type": "bar"},
-                            "encoding": {
-                                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                                "y": {"field": "value", "type": "quantitative", "axis": {"title": "Tỷ VND", "orient": "left"}},
-                                "xOffset": {"field": "metric", "type": "nominal"},
-                                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
-                            },
-                        },
-                        {
-                            "transform": [{"filter": "datum.metric === 'Hệ số đệm tiền mặt'"}],
-                            "mark": {"type": "line", "point": True, "strokeWidth": 3},
-                            "encoding": {
-                                "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
-                                "y": {"field": "value", "type": "quantitative", "axis": {"title": "Hệ số đệm tiền mặt", "orient": "right"}},
-                                "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "value", "title": "Giá trị"}, {"field": "source_summary", "title": "Nguồn"}],
-                            },
-                        },
-                    ],
-                }
+            spec = dividend_liquidity_spec(item)
+        elif item.chart_id == "dividend_cfo_cash":
+            spec = dividend_cfo_cash_spec(item)
+        elif item.chart_id == "provision_risk":
+            spec = provision_risk_spec(item)
+        elif item.chart_id == "inventory_working_capital":
+            spec = inventory_spec(item)
+        elif item.chart_id == "liquidity_cash_debt":
+            spec = liquidity_spec(item)
+        elif item.chart_id == "accrual_dashboard":
+            spec = accrual_spec(item)
         elif item.chart_id == "red_flag_heatmap":
-            values = sorted(
-                [
-                    {
-                        "year": record.fiscal_year,
-                        "metric": record.metric_name,
-                        "flag": record.flag,
-                        "source_summary": _metric_source_summary(record),
-                    }
-                    for record in metric_pack.records
-                    if record.metric_id
-                    in {
-                        "quality_of_earnings",
-                        "accrual_ratio",
-                        "dsri",
-                        "allowance_coverage_receivables",
-                        "inventory_provision_coverage",
-                        "dividend_stress_ratio",
-                        "cash_buffer_ratio",
-                    }
-                ],
-                key=lambda row: (row["year"], row["metric"]),
-            )
-            if values:
-                spec = _vega_base(item.title, item.subtitle) | {
-                    "data": {"values": values},
-                    "mark": {"type": "rect", "cornerRadius": 4},
-                    "encoding": {
-                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                        "y": {"field": "metric", "type": "nominal", "title": "Chỉ số"},
-                        "color": {
-                            "field": "flag",
-                            "type": "nominal",
-                            "scale": {"domain": list(COLOR_SCALE), "range": ["#bbf7d0", "#fde68a", "#fecaca", "#e2e8f0"]},
-                        },
-                        "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "flag"}, {"field": "source_summary", "title": "Nguồn"}],
-                    },
-                }
+            spec = heatmap_spec(item)
+
         if spec is not None:
             rendered.append(RenderedChart(chart_id=item.chart_id, spec=spec))
     return rendered
-

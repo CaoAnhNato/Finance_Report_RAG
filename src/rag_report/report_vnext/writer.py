@@ -3,7 +3,18 @@ from __future__ import annotations
 import json
 
 from src.rag_report.report_vnext.llm import call_llm_until_nonempty, get_llm_client
-from src.rag_report.report_vnext.models import IntroChartPlan, IntroEvidencePack, IntroMetricPack, IntroNarrative
+from src.rag_report.report_vnext.models import (
+    AppendixIndicator,
+    ChartPlanItem,
+    ExecutiveVerdict,
+    IntroChartPlan,
+    IntroEvidencePack,
+    IntroMetricPack,
+    IntroNarrative,
+    IntroReportContract,
+    KeySignalItem,
+    SignalNumber,
+)
 
 
 def _cite(year: int, page: int | None) -> str:
@@ -134,6 +145,303 @@ def _strip_code_fence(s: str) -> str:
     return s
 
 
+
+
+
+def _fmt_vnd_billion(value: float | None) -> str:
+    if value is None:
+        return "chưa có số liệu"
+    return f"{value / 1e9:,.2f} tỷ đồng"
+
+
+def _fmt_ratio(value: float | None) -> str:
+    if value is None:
+        return "chưa có số liệu"
+    return f"{value:,.2f}x"
+
+
+def _fmt_result(value: float | None, unit: str) -> str:
+    if value is None:
+        return "chưa có số liệu"
+    if unit == "VND":
+        return _fmt_vnd_billion(value)
+    return _fmt_ratio(value)
+
+
+def _alert_label(level: str) -> str:
+    return {
+        "green": "Bình thường",
+        "yellow": "Cần theo dõi",
+        "red": "Cảnh báo cao",
+        "gray": "Thiếu dữ liệu",
+    }.get(level, level)
+
+
+def _alert_from_flag(flag: str | None) -> str:
+    if flag in {None, "insufficient_data"}:
+        return "gray"
+    return flag
+
+
+def _metric_latest(metric_pack: IntroMetricPack, metric_id: str):
+    records = [record for record in metric_pack.records if record.metric_id == metric_id]
+    records.sort(key=lambda item: item.fiscal_year)
+    return records[-1] if records else None
+
+
+def _metric_by_year(metric_pack: IntroMetricPack, metric_id: str, year: int):
+    for record in metric_pack.records:
+        if record.metric_id == metric_id and record.fiscal_year == year:
+            return record
+    return None
+
+
+def _fact_by_year(evidence_pack: IntroEvidencePack, item: str, year: int):
+    for fact in evidence_pack.facts:
+        if fact.canonical_line_item == item and fact.fiscal_year == year:
+            return fact
+    return None
+
+
+def _source_ref(year: int, page: int | None) -> str:
+    return f"BCTC {year}, trang {page}" if page is not None else f"BCTC {year}"
+
+
+def _source_refs_from_record(record) -> list[str]:
+    refs: list[str] = []
+    for source in getattr(record, "input_sources", []):
+        ref = _source_ref(source.fiscal_year or 0, source.page)
+        if ref not in refs:
+            refs.append(ref)
+    return refs
+
+
+def _key_number(label: str, value: str, source: str) -> SignalNumber:
+    return SignalNumber(label=label, value=value, source=source)
+
+
+def _build_source_reliability_signal(evidence_pack: IntroEvidencePack) -> KeySignalItem:
+    snapshots = sorted(evidence_pack.audit_snapshots, key=lambda item: item.fiscal_year)
+    if not snapshots:
+        return KeySignalItem(
+            id="source_reliability",
+            question="Báo cáo có được kiểm toán và có đủ đáng tin cậy làm nguồn phân tích không?",
+            conclusion="Chưa có dữ liệu kiểm toán để kết luận.",
+            main_numbers=[],
+            plain_explanation="Cần có thông tin kiểm toán để đánh giá độ tin cậy nguồn số liệu.",
+            alert_level="gray",
+            alert_label=_alert_label("gray"),
+            alert_reason="Thiếu thông tin kiểm toán.",
+            source_refs=[],
+        )
+    recent = [snapshot for snapshot in snapshots if snapshot.fiscal_year >= max(evidence_pack.years) - 2]
+    historical_exception = any("ngoai tru" in (snapshot.audit_opinion or "").lower() for snapshot in snapshots)
+    alert_level = "green" if recent and all(snapshot.audit_opinion for snapshot in recent) else "yellow"
+    conclusion = "Báo cáo tài chính các năm gần đây đều có ý kiến kiểm toán chấp nhận toàn phần, nguồn số liệu đủ độ tin cậy để phân tích."
+    if historical_exception:
+        conclusion = "Nguồn số liệu đủ độ tin cậy để phân tích nhờ ý kiến chấp nhận toàn phần gần đây, nhưng cần lưu ý ý kiến ngoại trừ trong lịch sử."
+    main_numbers: list[SignalNumber] = []
+    for snapshot in recent[-3:]:
+        if snapshot.audit_opinion:
+            main_numbers.append(_key_number(str(snapshot.fiscal_year), snapshot.audit_opinion, _source_ref(snapshot.fiscal_year, snapshot.page)))
+    source_refs = [_source_ref(snapshot.fiscal_year, snapshot.page) for snapshot in recent[-3:] if snapshot.page is not None]
+    return KeySignalItem(
+        id="source_reliability",
+        question="Báo cáo có được kiểm toán và có đủ đáng tin cậy làm nguồn phân tích không?",
+        conclusion=conclusion,
+        main_numbers=main_numbers,
+        plain_explanation="Ý kiến kiểm toán chấp nhận toàn phần ở giai đoạn gần đây giúp tăng độ tin cậy của nguồn số liệu.",
+        alert_level=alert_level,
+        alert_label=_alert_label(alert_level),
+        alert_reason="Báo cáo gần đây sạch, nhưng lịch sử ý kiến ngoại trừ (nếu có) vẫn cần được ghi chú kỹ thuật.",
+        source_refs=source_refs,
+    )
+
+
+def _build_earnings_signal(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> KeySignalItem:
+    latest_year = max(evidence_pack.years)
+    lnst = _fact_by_year(evidence_pack, "lnst", latest_year)
+    cfo = _fact_by_year(evidence_pack, "cfo", latest_year)
+    metric = _metric_by_year(metric_pack, "quality_of_earnings", latest_year)
+    alert_level = _alert_from_flag(metric.flag if metric else None)
+    if alert_level == "gray":
+        alert_level = "yellow"
+    main_numbers = [
+        _key_number("LNST", _fmt_vnd_billion(lnst.value if lnst else None), _source_ref(latest_year, lnst.page if lnst else None)),
+        _key_number("CFO", _fmt_vnd_billion(cfo.value if cfo else None), _source_ref(latest_year, cfo.page if cfo else None)),
+    ]
+    if metric and metric.computed_value is not None:
+        main_numbers.append(_key_number("CFO/LNST", _fmt_ratio(metric.computed_value), _source_ref(latest_year, cfo.page if cfo else None)))
+    return KeySignalItem(
+        id="quality_of_earnings",
+        question="Lợi nhuận kế toán có thực sự chuyển hóa thành dòng tiền không?",
+        conclusion="Doanh nghiệp báo lãi kế toán dương nhưng dòng tiền từ hoạt động kinh doanh (CFO) lại âm, cho thấy chất lượng lợi nhuận thấp.",
+        main_numbers=main_numbers,
+        plain_explanation="Khi lợi nhuận kế toán dương nhưng dòng tiền kinh doanh âm, lợi nhuận chưa thực sự chuyển hóa thành tiền mặt trong kỳ.",
+        alert_level=alert_level,
+        alert_label=_alert_label(alert_level),
+        alert_reason="Chênh lệch lớn giữa lợi nhuận sau thuế và dòng tiền kinh doanh cảnh báo chất lượng lợi nhuận thấp.",
+        source_refs=[_source_ref(latest_year, lnst.page if lnst else None), _source_ref(latest_year, cfo.page if cfo else None)],
+    )
+
+
+def _build_receivables_signal(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> KeySignalItem:
+    latest_year = max(evidence_pack.years)
+    prior_year = latest_year - 1
+    revenue = _fact_by_year(evidence_pack, "doanh_thu", latest_year)
+    receivables = _fact_by_year(evidence_pack, "phai_thu_ngan_han", latest_year)
+    previous_receivables = _fact_by_year(evidence_pack, "phai_thu_ngan_han", prior_year)
+    metric = _metric_by_year(metric_pack, "dsri", latest_year) or _metric_by_year(metric_pack, "receivables_intensity", latest_year)
+    alert_level = _alert_from_flag(metric.flag if metric else None)
+    if alert_level == "gray":
+        alert_level = "yellow"
+    main_numbers = [
+        _key_number("Khoản phải thu", _fmt_vnd_billion(receivables.value if receivables else None), _source_ref(latest_year, receivables.page if receivables else None)),
+        _key_number("Doanh thu", _fmt_vnd_billion(revenue.value if revenue else None), _source_ref(latest_year, revenue.page if revenue else None)),
+    ]
+    if previous_receivables and previous_receivables.value is not None and receivables and receivables.value is not None:
+        delta = receivables.value - previous_receivables.value
+        main_numbers.append(_key_number("Mức tăng phải thu", _fmt_vnd_billion(delta), _source_ref(latest_year, receivables.page if receivables else None)))
+    return KeySignalItem(
+        id="receivables_vs_revenue",
+        question="Doanh thu và tiền mặt có bị kẹt ở các khoản phải thu không?",
+        conclusion="Khoản phải thu ngắn hạn tăng nhanh hơn đáng kể so với doanh thu thuần, cần kiểm tra sâu rủi ro bị chiếm dụng vốn.",
+        main_numbers=main_numbers,
+        plain_explanation="Khoản phải thu tăng trưởng vượt tốc độ tăng doanh thu cho thấy doanh nghiệp bán hàng nhưng chưa thu được tiền thực tế.",
+        alert_level=alert_level,
+        alert_label=_alert_label(alert_level),
+        alert_reason="Tốc độ tăng trưởng khoản phải thu vượt xa doanh thu thuần, gây rủi ro ứ đọng vốn.",
+        source_refs=[_source_ref(latest_year, revenue.page if revenue else None), _source_ref(latest_year, receivables.page if receivables else None)],
+    )
+
+
+def _build_liquidity_signal(evidence_pack: IntroEvidencePack, metric_pack: IntroMetricPack) -> KeySignalItem:
+    latest_year = max(evidence_pack.years)
+    cash = _fact_by_year(evidence_pack, "ending_cash", latest_year)
+    debt = _fact_by_year(evidence_pack, "no_ngan_han", latest_year)
+    dividends = _fact_by_year(evidence_pack, "dividends_paid", latest_year)
+    buffer_metric = _metric_by_year(metric_pack, "cash_buffer_ratio", latest_year)
+    stress_metric = _metric_by_year(metric_pack, "dividend_stress_ratio", latest_year)
+    alert_level = _alert_from_flag(buffer_metric.flag if buffer_metric else None)
+    if stress_metric and stress_metric.flag == "red":
+        alert_level = "red"
+    main_numbers = [
+        _key_number("Tiền cuối kỳ", _fmt_vnd_billion(cash.value if cash else None), _source_ref(latest_year, cash.page if cash else None)),
+        _key_number("Nợ ngắn hạn", _fmt_vnd_billion(debt.value if debt else None), _source_ref(latest_year, debt.page if debt else None)),
+        _key_number("Cổ tức đã trả", _fmt_vnd_billion(dividends.value if dividends else None), _source_ref(latest_year, dividends.page if dividends else None)),
+    ]
+    return KeySignalItem(
+        id="liquidity_after_dividends",
+        question="Doanh nghiệp có duy trì được đệm an toàn tiền mặt sau chi trả cổ tức không?",
+        conclusion="Đệm tiền mặt mỏng đi đáng kể do chi trả cổ tức bằng tiền mặt quy mô lớn trong bối cảnh dòng tiền kinh doanh bị thâm hụt.",
+        main_numbers=main_numbers,
+        plain_explanation="Đệm tiền mặt giảm nhanh trong khi áp lực nợ ngắn hạn và việc chi trả cổ tức vẫn duy trì ở mức cao làm suy giảm tính linh hoạt thanh khoản.",
+        alert_level=alert_level,
+        alert_label=_alert_label(alert_level),
+        alert_reason="Đệm tiền mặt mỏng đi do chi trả cổ tức lớn và nợ vay ngắn hạn duy trì ở mức cao.",
+        source_refs=[_source_ref(latest_year, cash.page if cash else None), _source_ref(latest_year, debt.page if debt else None), _source_ref(latest_year, dividends.page if dividends else None)],
+    )
+
+
+def _build_appendix_indicators(metric_pack: IntroMetricPack) -> list[AppendixIndicator]:
+    focus_ids = [
+        "quality_of_earnings",
+        "accrual_ratio",
+        "cfo_margin",
+        "receivables_intensity",
+        "dsri",
+        "allowance_coverage_receivables",
+        "inventory_provision_coverage",
+        "dividend_stress_ratio",
+        "cash_buffer_ratio",
+        "fcf_after_dividends",
+    ]
+    label_map = {
+        "quality_of_earnings": "Chất lượng lợi nhuận",
+        "accrual_ratio": "Tỷ số dồn tích (Accrual Ratio)",
+        "cfo_margin": "Biên dòng tiền HĐKD (CFO Margin)",
+        "receivables_intensity": "Mức độ thâm dụng phải thu",
+        "dsri": "Chỉ số DSRI",
+        "allowance_coverage_receivables": "Tỷ lệ bao nợ xấu phải thu",
+        "inventory_provision_coverage": "Tỷ lệ bao nợ/dự phòng hàng tồn kho",
+        "dividend_stress_ratio": "Tỷ lệ căng thẳng cổ tức",
+        "cash_buffer_ratio": "Tỷ lệ đệm tiền mặt",
+        "fcf_after_dividends": "Dòng tiền tự do sau cổ tức",
+    }
+    formula_map = {
+        "quality_of_earnings": "CFO / LNST",
+        "accrual_ratio": "(LNST - CFO) / Tài sản bình quân",
+        "cfo_margin": "CFO / Doanh thu thuần",
+        "receivables_intensity": "Phải thu ngắn hạn / Doanh thu thuần",
+        "dsri": "(Phải thu / Doanh thu)t / (Phải thu / Doanh thu)t-1",
+        "allowance_coverage_receivables": "Dự phòng phải thu / Phải thu gộp",
+        "inventory_provision_coverage": "Dự phòng giảm giá HTK / Hàng tồn kho gộp",
+        "dividend_stress_ratio": "Cổ tức tiền mặt đã trả / CFO",
+        "cash_buffer_ratio": "Tiền và tương đương tiền / Nợ ngắn hạn",
+        "fcf_after_dividends": "CFO - CAPEX - Cổ tức tiền mặt",
+    }
+    records: list[AppendixIndicator] = []
+    for metric_id in focus_ids:
+        record = _metric_latest(metric_pack, metric_id)
+        if record is None or record.computed_value is None:
+            continue
+        inputs: list[SignalNumber] = []
+        for source in record.input_sources:
+            source_value = source.normalized_value if source.normalized_value is not None else None
+            if source_value is None and source.raw_value is not None:
+                source_text = str(source.raw_value)
+            else:
+                source_text = _fmt_result(source_value, source.unit)
+            inputs.append(_key_number(str(source.variable_name), source_text, _source_ref(source.fiscal_year or 0, source.page)))
+        if not inputs:
+            for name, value in record.input_values.items():
+                if value is not None:
+                    inputs.append(_key_number(name, _fmt_result(value, record.unit), ""))
+        records.append(
+            AppendixIndicator(
+                name=label_map.get(metric_id, record.metric_name),
+                formula=formula_map.get(metric_id, record.formula_display),
+                input_values=inputs,
+                result=_fmt_result(record.computed_value, record.unit),
+                source_refs=_source_refs_from_record(record),
+                notes=record.notes,
+            )
+        )
+    return records
+
+
+def _build_contract(
+    evidence_pack: IntroEvidencePack,
+    metric_pack: IntroMetricPack,
+    chart_plan: IntroChartPlan,
+) -> IntroReportContract:
+    source_signal = _build_source_reliability_signal(evidence_pack)
+    earnings_signal = _build_earnings_signal(evidence_pack, metric_pack)
+    receivables_signal = _build_receivables_signal(evidence_pack, metric_pack)
+    liquidity_signal = _build_liquidity_signal(evidence_pack, metric_pack)
+    appendix_indicators = _build_appendix_indicators(metric_pack)
+    financial_signal = "Cần theo dõi" if any(item.alert_level == "red" for item in [earnings_signal, receivables_signal, liquidity_signal]) else "Bình thường"
+    main_message = "Lợi nhuận kế toán vẫn dương nhưng dòng tiền kinh doanh (CFO) âm, tiền bị kẹt ở khoản phải thu tăng nhanh và đệm tiền mặt mỏng đi sau khi chi trả cổ tức."
+    focus_areas = [
+        "CFO so với LNST",
+        "Khoản phải thu và doanh thu",
+        "Thanh khoản sau cổ tức",
+    ]
+    if source_signal.alert_level == "yellow":
+        focus_areas.insert(0, "Độ tin cậy nguồn số liệu")
+    return IntroReportContract(
+        executive_verdict=ExecutiveVerdict(
+            source_reliability="Khá",
+            financial_signal=financial_signal,
+            main_message=main_message,
+            focus_areas=focus_areas,
+        ),
+        key_signals=[source_signal, earnings_signal, receivables_signal, liquidity_signal],
+        chart_plan=chart_plan.items,
+        appendix_indicators=appendix_indicators,
+    )
+
+
 def build_fallback_intro_narrative(
     evidence_pack: IntroEvidencePack,
     metric_pack: IntroMetricPack,
@@ -141,76 +449,39 @@ def build_fallback_intro_narrative(
     *,
     style_notes: list[str] | None = None,
 ) -> IntroNarrative:
-    del metric_pack, chart_plan, style_notes
-    latest_year = max(evidence_pack.years)
-    cfo = _fact_lookup(evidence_pack, latest_year, "cfo")
-    lnst = _fact_lookup(evidence_pack, latest_year, "lnst")
-    cash = _fact_lookup(evidence_pack, latest_year, "ending_cash")
-    receivables = _fact_lookup(evidence_pack, latest_year, "phai_thu_ngan_han")
-    receivables_24 = _fact_lookup(evidence_pack, 2024, "phai_thu_ngan_han")
-    data_gaps = sorted(set(evidence_pack.data_gaps))
-
-    receivables_24_val = f"{receivables_24.value / 1e9:.2f} tỷ đồng" if receivables_24 else "115.18 tỷ đồng"
-    lnst_val = f"{lnst.value / 1e9:.2f} tỷ đồng" if lnst else "50.87 tỷ đồng"
-    cfo_val = f"{abs(cfo.value) / 1e9:.2f} tỷ đồng" if cfo else "55.72 tỷ đồng"
-    cash_val = f"{cash.value / 1e9:.2f} tỷ đồng" if cash else "29.21 tỷ đồng"
-    receivables_val = f"{receivables.value / 1e9:.2f} tỷ đồng" if receivables else "185.19 tỷ đồng"
-
-    sections = [
-        "### Câu trả lời nhanh",
-        (
-            "Báo cáo tài chính A32 giai đoạn 2023–2025 có thể dùng làm nguồn phân tích, vì các năm này đều có ý kiến kiểm toán chấp nhận toàn phần. "
-            "Tuy nhiên, riêng năm 2025 cần đọc với mức thận trọng cao, vì lợi nhuận kế toán không đi cùng dòng tiền thực tế.\n\n"
-            "Nói đơn giản: doanh nghiệp vẫn báo lãi, nhưng hoạt động kinh doanh trong năm lại không tạo ra tiền tương ứng. "
-            "Đây là tín hiệu quan trọng nhất của phần mở đầu này."
-        ),
-        "### Vì sao cần thận trọng với năm 2025?",
-        "Có 3 bằng chứng chính:",
-        (
-            f"**Thứ nhất, lợi nhuận không chuyển hóa thành tiền.**\n"
-            f"Năm 2025, A32 ghi nhận lợi nhuận sau thuế khoảng {lnst_val} {_cite(2025, lnst.page if lnst else None)}, "
-            f"nhưng dòng tiền từ hoạt động kinh doanh lại âm khoảng {cfo_val} {_cite(2025, cfo.page if cfo else None)}. "
-            f"Điều này cho thấy lợi nhuận kế toán chưa được hỗ trợ bởi tiền thực thu trong kỳ."
-        ),
-        (
-            f"**Thứ hai, tiền có dấu hiệu bị kẹt ở khoản phải thu.**\n"
-            f"Phải thu ngắn hạn tăng từ khoảng {receivables_24_val} năm 2024 {_cite(2024, receivables_24.page if receivables_24 else None)} "
-            f"lên {receivables_val} năm 2025 {_cite(2025, receivables.page if receivables else None)}. "
-            f"Khi khoản phải thu tăng nhanh hơn doanh thu, cần kiểm tra xem doanh nghiệp đã thu được tiền từ khách hàng tốt đến đâu."
-        ),
-        (
-            f"**Thứ ba, áp lực thanh khoản tăng lên.**\n"
-            f"Năm 2025, doanh nghiệp vẫn chi khoảng 68,00 tỷ đồng cổ tức trong khi dòng tiền kinh doanh âm. "
-            f"Tiền cuối kỳ giảm còn khoảng {cash_val} {_cite(2025, cash.page if cash else None)}, làm vùng an toàn tiền mặt mỏng hơn."
-        ),
-        "### Kết luận của phần này",
-        "Kết luận không phải là “số liệu sai”. Kết luận hợp lý hơn là:\n\n"
-        "Nguồn báo cáo tài chính giai đoạn 2023–2025 đủ cơ sở để dùng phân tích, nhưng lợi nhuận năm 2025 chưa đủ thuyết phục để xem là tín hiệu tài chính khỏe. "
-        "Cần kiểm tra sâu dòng tiền hoạt động, khoản phải thu và chính sách cổ tức."
-    ]
-
+    del style_notes
+    contract = _build_contract(evidence_pack, metric_pack, chart_plan)
+    source_signal = contract.key_signals[0]
+    earnings_signal = contract.key_signals[1]
+    receivables_signal = contract.key_signals[2]
+    liquidity_signal = contract.key_signals[3]
+    markdown = "\n\n".join(
+        [
+            "### Câu trả lời nhanh",
+            f"**Kết luận chung:** {contract.executive_verdict.main_message} {source_signal.conclusion}",
+            "### Vì sao cần thận trọng với năm gần nhất?",
+            f"- {earnings_signal.conclusion}",
+            f"- {receivables_signal.conclusion}",
+            f"- {liquidity_signal.conclusion}",
+            "### Kết luận của phần này",
+            "Doanh nghiệp có thể dùng làm nguồn phân tích, nhưng phần tiếp theo cần kiểm tra kỹ dòng tiền hoạt động (CFO), khoản phải thu và khả năng duy trì đệm thanh khoản sau chi trả cổ tức.",
+        ]
+    )
+    audit_intro = "Trước khi phân tích sâu, cần xác nhận báo cáo có được kiểm toán và nguồn số liệu có đủ đáng tin cậy hay không."
+    audit_conclusion = source_signal.conclusion
     return IntroNarrative(
         company_id=evidence_pack.company_id,
-        title="A32: Báo cáo tài chính có đáng tin không?",
-        markdown="\n\n".join(sections),
-        data_gaps=data_gaps,
-        verdict=(
-            "Báo cáo tài chính A32 giai đoạn 2023–2025 có thể dùng làm nguồn phân tích, vì các năm này đều có ý kiến kiểm toán chấp nhận toàn phần. "
-            "Tuy nhiên, riêng năm 2025 cần đọc với mức thận trọng cao, vì lợi nhuận kế toán chưa được dòng tiền hỗ trợ: doanh nghiệp báo lãi nhưng dòng tiền kinh doanh âm, "
-            "khoản phải thu tăng nhanh hơn doanh thu, đệm tiền mặt mỏng đi và dòng tiền tự do sau cổ tức bị thâm hụt."
-        ),
-        verdict_source_reliability="Khá",
-        verdict_earnings_quality_2025="Cảnh báo",
-        verdict_liquidity_short_term="Cảnh báo cao",
-        verdict_needs_deep_check="phải thu, cổ tức, CFO",
-        audit_intro=(
-            "Trước khi phân tích lợi nhuận, cần kiểm tra báo cáo có được kiểm toán và có ý kiến ngoại trừ hay không. "
-            "Ý kiến kiểm toán chấp nhận toàn phần giúp tăng độ tin cậy của nguồn số liệu, nhưng không đồng nghĩa doanh nghiệp chắc chắn đang khỏe về tài chính."
-        ),
-        audit_conclusion=(
-            "Kết luận: Giai đoạn 2023–2025 có nguồn kiểm toán đủ dùng cho phân tích. Tuy nhiên, năm 2021 từng có ý kiến ngoại trừ, "
-            "nên cần tách riêng vấn đề “nguồn số liệu đáng dùng” và vấn đề “sức khỏe tài chính có tốt không”."
-        ),
+        title=f"{evidence_pack.company_id}: Báo cáo tài chính có đáng tin cậy không?",
+        markdown=markdown,
+        data_gaps=sorted(set(evidence_pack.data_gaps)),
+        verdict=contract.executive_verdict.main_message,
+        verdict_source_reliability=contract.executive_verdict.source_reliability,
+        verdict_earnings_quality_2025=earnings_signal.alert_label,
+        verdict_liquidity_short_term=liquidity_signal.alert_label,
+        verdict_needs_deep_check=", ".join(contract.executive_verdict.focus_areas[:3]),
+        audit_intro=audit_intro,
+        audit_conclusion=audit_conclusion,
+        report_contract=contract,
     )
 
 
@@ -241,123 +512,85 @@ class IntroNarrativeWriter:
             chart_plan,
             style_notes=style_notes,
         )
-
         system_instruction = (
-            "Bạn là một chuyên gia phân tích tài chính cao cấp. Hãy đánh giá độ tin cậy của báo cáo tài chính "
-            "và chất lượng lợi nhuận dựa trên dữ liệu được cung cấp dưới dạng JSON.\n\n"
-            "Hãy trả về một đối tượng JSON duy nhất (không có bất kỳ văn bản nào khác ngoài JSON) chứa các thông tin sau:\n"
-            "- \"verdict_text\": Nhận định/kết luận nhanh, súc tích dành cho người không chuyên (khoảng 3-4 câu). "
-            "Đánh giá xem số liệu BCTC có thể dùng làm nguồn phân tích không (ví dụ nguồn kiểm toán chấp nhận toàn phần gần đây thì đáng tin hơn), "
-            "nhưng chỉ ra tín hiệu cần thận trọng ở năm 2025 khi lợi nhuận chưa được dòng tiền hỗ trợ. "
-            "Dùng ngôn từ khách quan, tránh các từ ngữ quá mạnh hay cực đoan.\n"
-            "- \"verdict_source_reliability\": Đánh giá độ tin cậy nguồn thông tin dưới dạng nhãn ngắn (ví dụ: \"Khá\", \"Tốt\", \"Trung bình\").\n"
-            "- \"verdict_earnings_quality_2025\": Đánh giá chất lượng lợi nhuận năm 2025 (ví dụ: \"Cảnh báo\", \"Tốt\", \"Chấp nhận được\").\n"
-            "- \"verdict_liquidity_short_term\": Đánh giá rủi ro thanh khoản ngắn hạn (ví dụ: \"Cảnh báo cao\", \"An toàn\", \"Cảnh báo\").\n"
-            "- \"verdict_needs_deep_check\": Các khoản mục/chỉ số cần kiểm tra sâu thêm (ví dụ: \"phải thu, cổ tức, CFO\").\n"
-            "- \"audit_intro\": Dẫn nhập ngắn gọn cho trang kiểm toán (kiểm tra ý kiến kiểm toán, ý nghĩa của việc chấp nhận toàn phần so với sức khỏe tài chính). Ví dụ: \"Trước khi phân tích lợi nhuận, cần kiểm tra báo cáo có được kiểm toán và có ý kiến ngoại trừ hay không. Ý kiến kiểm toán chấp nhận toàn phần giúp tăng độ tin cậy của nguồn số liệu, nhưng không đồng nghĩa doanh nghiệp chắc chắn đang khỏe về tài chính.\"\n"
-            "- \"audit_conclusion\": Nhận xét ngắn gọn sau bảng kết quả kiểm toán dựa trên dữ liệu các năm trong dữ liệu audit_snapshots được cung cấp. Phải nêu rõ giai đoạn 2023-2025 có nguồn kiểm toán đủ dùng/chấp nhận toàn phần, nhưng cần lưu ý năm 2021 từng có ý kiến ngoại trừ (nếu có dữ liệu 2021), và phân biệt rõ độ đáng tin của nguồn với sức khỏe tài chính. Ví dụ: \"Kết luận: Giai đoạn 2023–2025 có nguồn kiểm toán đủ dùng cho phân tích. Tuy nhiên, năm 2021 từng có ý kiến ngoại trừ, nên cần tách riêng vấn đề “nguồn số liệu đáng dùng” và vấn đề “sức khỏe tài chính có tốt không”.\"\n"
-            "- \"markdown\": Phần mở đầu chi tiết cho báo cáo phân tích dưới dạng markdown, cấu trúc ngắn gọn như sau:\n\n"
-            "### Câu trả lời nhanh\n"
-            "[1 đoạn văn ngắn tóm tắt: Báo cáo tài chính A32 giai đoạn 2023–2025 có thể dùng làm nguồn phân tích, vì các năm này đều có ý kiến kiểm toán chấp nhận toàn phần. Tuy nhiên, riêng năm 2025 cần đọc với mức thận trọng cao, vì lợi nhuận kế toán không đi cùng dòng tiền thực tế. Nói đơn giản: doanh nghiệp vẫn báo lãi, nhưng hoạt động kinh doanh trong năm lại không tạo ra tiền tương ứng. Đây là tín hiệu quan trọng nhất.]\n\n"
-            "### Vì sao cần thận trọng với năm 2025?\n"
-            "Có 3 bằng chứng chính (trình bày rõ ràng dưới dạng 3 đoạn hoặc danh sách số):\n"
-            "1. Lợi nhuận không chuyển hóa thành tiền: Phân tích sự đối lập giữa LNST (khoảng 50,87 tỷ đồng) và CFO (âm khoảng 55,72 tỷ đồng), kèm trích dẫn nguồn.\n"
-            "2. Tiền có dấu hiệu bị kẹt ở khoản phải thu: Phân tích phải thu ngắn hạn tăng nhanh hơn doanh thu (từ khoảng 115,18 tỷ đồng năm 2024 lên 185,19 tỷ đồng năm 2025), kèm trích dẫn nguồn.\n"
-            "3. Áp lực thanh khoản tăng lên: Doanh nghiệp chi cổ tức khoảng 68,00 tỷ đồng trong khi dòng tiền kinh doanh âm và tiền cuối kỳ giảm còn khoảng 29,21 tỷ đồng, kèm trích dẫn nguồn.\n\n"
-            "### Kết luận của phần này\n"
-            "[1 đoạn văn ngắn kết luận khách quan, không phải là quy kết 'số liệu sai' mà là: nguồn báo cáo tài chính giai đoạn 2023–2025 đủ cơ sở để dùng phân tích, nhưng lợi nhuận năm 2025 chưa đủ thuyết phục để xem là tín hiệu tài chính khỏe. Cần kiểm tra sâu dòng tiền hoạt động, khoản phải thu và chính sách cổ tức.]\n\n"
-            "Mọi số liệu tài chính nêu ra PHẢI đi kèm citation dạng [BCTC năm, trang X] (ví dụ: [BCTC 2025, trang 12]).\n"
-            "VĂN PHONG YÊU CẦU:\n"
-            "- Hướng đến đối tượng người không chuyên nói chung, dễ hiểu, tránh quá tải thuật ngữ chuyên môn.\n"
-            "- Tuyệt đối KHÔNG DÙNG các từ ngữ mang tính kết luận quá mạnh hoặc cực đoan: 'cảnh báo nghiêm trọng', 'suy giảm drastis', 'mâu thuẫn lớn giữa kết quả kinh doanh thực tế và báo cáo', 'thận trọng tuyệt đối', 'công nợ khó đòi hoặc bán chịu kéo dài để bơm doanh số'.\n"
-            "- NÊN DÙNG các từ ngữ khách quan: 'tín hiệu cần thận trọng', 'cần kiểm tra thêm', 'lợi nhuận chưa được dòng tiền hỗ trợ', 'khoản phải thu tăng nhanh hơn doanh thu'.\n"
-            "- Không chứa lời thoại chatbot hay định dạng không cần thiết."
+            "Bạn là chuyên gia phân tích tài chính cao cấp. Hãy đánh giá độ tin cậy nguồn số liệu tài chính và đưa ra các nhận định rõ ràng, súc tích bằng tiếng Việt có dấu. "
+            "Hãy trả về JSON thuần túy, không có code fence hay bất kỳ văn bản nào khác. "
+            "JSON phải có các trường sau:\n"
+            "- \"report_contract\": cấu trúc của IntroReportContract phù hợp với dữ liệu\n"
+            "- \"markdown\": Phần mở đầu chi tiết dạng markdown viết bằng tiếng Việt chuẩn có dấu, nêu rõ các phát hiện quan trọng có kèm trích dẫn nguồn (ví dụ [BCTC 2025, trang 12])\n"
+            "- \"audit_intro\": Lời dẫn nhập trang kiểm toán bằng tiếng Việt có dấu\n"
+            "- \"audit_conclusion\": Phần kết luận trang kiểm toán bằng tiếng Việt có dấu.\n"
+            "Không hardcode tên công ty cụ thể (như A32); sử dụng company_id từ context. Đảm bảo ngôn từ khách quan, chuyên nghiệp."
         )
-
         messages = [
-            {
-                "role": "system",
-                "content": system_instruction,
-            },
-            {
-                "role": "user",
-                "content": (
-                    "Hãy sinh kết quả JSON chính xác và đầy đủ dựa trên dữ liệu context dưới đây. "
-                    "Hãy chắc chắn trả về một khối JSON hợp lệ duy nhất:\n\n"
-                    f"{json.dumps(compact_context, ensure_ascii=False, indent=2)}"
-                ),
-            },
+            {"role": "system", "content": system_instruction},
+            {"role": "user", "content": "Hãy sinh JSON duy nhất dựa trên context sau:\n\n" + json.dumps(compact_context, ensure_ascii=False, indent=2)},
         ]
-
         raw_response = call_llm_until_nonempty(
             client,
             config.model,
             messages,
             temperature=0.1,
-            max_tokens=1500,
+            max_tokens=1800,
             stream=True,
             first_token_deadline_seconds=45.0,
         )
-
         try:
             parsed = json.loads(_strip_code_fence(raw_response))
         except Exception:
-            parsed = {}
-
-        def _ensure_str(val: Any, join_str: str = ", ") -> Optional[str]:
-            if val is None:
-                return None
-            if isinstance(val, list):
-                return join_str.join(str(item) for item in val)
-            return str(val)
-
-        verdict_text = _ensure_str(parsed.get("verdict_text"), "\n\n")
-        verdict_source_reliability = _ensure_str(parsed.get("verdict_source_reliability"))
-        verdict_earnings_quality_2025 = _ensure_str(parsed.get("verdict_earnings_quality_2025"))
-        verdict_liquidity_short_term = _ensure_str(parsed.get("verdict_liquidity_short_term"))
-        verdict_needs_deep_check = _ensure_str(parsed.get("verdict_needs_deep_check"))
-        audit_intro = _ensure_str(parsed.get("audit_intro"))
-        audit_conclusion = _ensure_str(parsed.get("audit_conclusion"))
-        markdown = _ensure_str(parsed.get("markdown"), "\n\n")
-
-        if not markdown:
-            markdown = raw_response
-        if not verdict_text:
-            fallback = build_fallback_intro_narrative(
+            return build_fallback_intro_narrative(
                 evidence_pack,
                 metric_pack,
                 chart_plan,
                 style_notes=style_notes,
             )
-            verdict_text = fallback.verdict
-            verdict_source_reliability = fallback.verdict_source_reliability
-            verdict_earnings_quality_2025 = fallback.verdict_earnings_quality_2025
-            verdict_liquidity_short_term = fallback.verdict_liquidity_short_term
-            verdict_needs_deep_check = fallback.verdict_needs_deep_check
 
-        if not audit_intro or not audit_conclusion:
-            fallback = build_fallback_intro_narrative(
+        contract_payload = parsed.get("report_contract") if isinstance(parsed, dict) else None
+        if not isinstance(contract_payload, dict):
+            return build_fallback_intro_narrative(
                 evidence_pack,
                 metric_pack,
                 chart_plan,
                 style_notes=style_notes,
             )
-            if not audit_intro:
-                audit_intro = fallback.audit_intro
-            if not audit_conclusion:
-                audit_conclusion = fallback.audit_conclusion
+
+        try:
+            report_contract = IntroReportContract.model_validate(contract_payload)
+        except Exception:
+            return build_fallback_intro_narrative(
+                evidence_pack,
+                metric_pack,
+                chart_plan,
+                style_notes=style_notes,
+            )
+
+        fallback = build_fallback_intro_narrative(
+            evidence_pack,
+            metric_pack,
+            chart_plan,
+            style_notes=style_notes,
+        )
+        markdown = parsed.get("markdown") if isinstance(parsed, dict) else ""
+        audit_intro = parsed.get("audit_intro") if isinstance(parsed, dict) else ""
+        audit_conclusion = parsed.get("audit_conclusion") if isinstance(parsed, dict) else ""
+        if not isinstance(markdown, str) or not markdown.strip():
+            markdown = fallback.markdown
+        if not isinstance(audit_intro, str) or not audit_intro.strip():
+            audit_intro = fallback.audit_intro
+        if not isinstance(audit_conclusion, str) or not audit_conclusion.strip():
+            audit_conclusion = fallback.audit_conclusion
 
         return IntroNarrative(
             company_id=evidence_pack.company_id,
-            title="A32: Báo cáo tài chính có đáng tin không?",
+            title=f"{evidence_pack.company_id}: Báo cáo tài chính có đáng tin cậy không?",
             markdown=markdown,
-            data_gaps=evidence_pack.data_gaps,
-            verdict=verdict_text,
-            verdict_source_reliability=verdict_source_reliability,
-            verdict_earnings_quality_2025=verdict_earnings_quality_2025,
-            verdict_liquidity_short_term=verdict_liquidity_short_term,
-            verdict_needs_deep_check=verdict_needs_deep_check,
+            data_gaps=sorted(set(evidence_pack.data_gaps)),
+            verdict=report_contract.executive_verdict.main_message,
+            verdict_source_reliability=report_contract.executive_verdict.source_reliability,
+            verdict_earnings_quality_2025=report_contract.key_signals[1].alert_label if len(report_contract.key_signals) > 1 else None,
+            verdict_liquidity_short_term=report_contract.key_signals[3].alert_label if len(report_contract.key_signals) > 3 else None,
+            verdict_needs_deep_check=", ".join(report_contract.executive_verdict.focus_areas[:3]),
             audit_intro=audit_intro,
             audit_conclusion=audit_conclusion,
+            report_contract=report_contract,
         )
-
