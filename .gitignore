@@ -33,6 +33,43 @@ data/reports/
 *.duckdb
 *.json
 
+!.agents/
+.agents/*
+!.agents/subagents/
+.agents/subagents/*
+!.agents/subagents/analyze.md
+!.agents/subagents/implement.md
+!.agents/subagents/review.md
+!.agents/manifests/
+.agents/manifests/*
+!.agents/manifests/coding-workflow.json
+!.agents/state/
+.agents/state/*
+!.agents/state/.gitignore
+!.agents/state/coding_workflow_init.template.json
+!.agents/workflows/
+.agents/workflows/*
+!.agents/workflows/coding-multi-agent.md
+!tests/
+tests/*
+!tests/test_coding_workflow_contracts.py
+!tests/test_coding_workflow_manifest_guardrails.py
+!tests/test_report_vnext_llm.py
+!tests/test_report_vnext_metrics.py
+!tests/test_report_vnext_exporter.py
+
 # RAG Output logs & text files
 out_*.txt
 deepseek_out.txt
+
+# IDEs and OS junk
+.vscode/
+desktop.ini
+**/desktop.ini
+.DS_Store
+
+# Temporary / Scratch files
+scratch/
+tmp/
+extract.py
+scratch_test.py

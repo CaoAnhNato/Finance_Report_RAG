@@ -1,101 +1,127 @@
 # Project Structure for RAG Report System
 project_name: RAG_Report
 version: 1.0.0
-description: Hệ thống RAG sinh báo cáo tài chính sử dụng FPT Cloud Embedding & Reranker và LangGraph.
+description: RAG-based financial report generation system using FPT Cloud embedding/reranking and LangGraph.
 
 structure:
   .agents:
-    description: Quy tắc và workflow dành cho AI agent
+    description: Agent workflows, manifests, and local coordination rules.
     children:
+      manifests:
+        description: Locked model, reasoning, tool-scope, and schema manifests for coding workflow.
+      state:
+        description: Coordinator state templates and local runtime artifacts.
+      subagents:
+        description: File-defined specialist prompts for Analyze, Implement, and Review roles.
       rules:
-        description: Quy tắc phát triển và debug dự án
+        description: Repository development and debugging rules.
       workflows:
-        description: Hướng dẫn workflow
+        description: Workflow playbooks for agent execution.
   data:
-    description: Thư mục chứa dữ liệu đầu vào và kết quả đầu ra
+    description: Input data, processed artifacts, and generated reports.
     children:
       A32:
-        description: Dữ liệu tài chính Công ty CP 32 qua các năm
+        description: Financial source material for Company 32 across fiscal years.
         children:
           2017:
-            description: Báo cáo tài chính năm 2017
+            description: Audited financial report for 2017.
           2018:
-            description: Báo cáo tài chính năm 2018
+            description: Audited financial report for 2018.
           2019:
-            description: Báo cáo tài chính năm 2019
+            description: Audited financial report for 2019.
           2020:
-            description: Báo cáo tài chính năm 2020
+            description: Audited financial report for 2020.
           2021:
-            description: Báo cáo tài chính năm 2021
+            description: Audited financial report for 2021.
           2023:
-            description: Báo cáo tài chính năm 2023
+            description: Audited financial report for 2023.
           2024:
-            description: Báo cáo tài chính năm 2024
+            description: Audited financial report for 2024.
           2025:
-            description: Báo cáo tài chính năm 2025
+            description: Audited financial report for 2025.
           question_eval.json:
-            description: Bộ câu hỏi kiểm thử hệ thống RAG gồm 60 mẫu với đầy đủ trường Source và Page position.
+            description: Evaluation question set for retrieval and grounded-answer testing.
       processed:
-        description: Dữ liệu tài chính trung gian được trích xuất (DuckDB, JSON và cấu hình chart)
+        description: Processed financial JSON, DuckDB outputs, and other intermediate artifacts.
       reports:
-        description: Thư mục lưu trữ báo cáo HTML được kết xuất
+        description: Exported HTML reports and report-side assets.
         children:
           A32_Financial_Report.html:
-            description: Báo cáo tài chính HTML chính thức phiên bản v1
+            description: Primary v1 HTML report.
           A32_Financial_Report_v2.html:
-            description: Báo cáo tài chính HTML phiên bản v2 (RAG mode, rerank_top_n=10) để so sánh với v1
+            description: Alternate HTML report generated from the older RAG path.
+          html:
+            description: Generated HTML test reports (e.g. smoke_test_vnext_output.html).
   plan:
-    description: Các Spec triển khai và kế hoạch thiết kế
+    description: Architecture notes, framework documents, and implementation plans.
     children:
       IMPLEMENTATION_SPEC_RAG_REPORT.md:
-        description: Hướng dẫn đặc tả kiến trúc RAG Report gốc
+        description: Original implementation spec for the RAG report system.
+      framework_nhung_con_so_co_dang_tin_khong_A32.md:
+        description: Source-of-truth framework for the vNext opening section refactor.
   src:
-    description: Mã nguồn hệ thống RAG Report
+    description: Application source code.
     children:
       rag_report:
-        description: Module chính của hệ thống RAG
+        description: Main Python package for ingestion, retrieval, evaluation, and export.
         children:
           config:
-            description: Cấu hình và logging
+            description: Environment settings and shared configuration.
           schemas:
-            description: Các Pydantic schemas định hình dữ liệu
+            description: Pydantic schemas for core ingestion and query models.
           ingestion:
-            description: Phân tích tài liệu, nhúng vector và đồng bộ DB/Qdrant
+            description: OCR parsing, embedding, and vector/DB sync logic.
           query:
-            description: Hệ thống LangGraph RAG truy vấn dữ liệu với cơ chế từ chối trả lời (Abstention)
+            description: LangGraph-based RAG query path and report generation graph.
           evaluation:
-            description: Hệ thống đánh giá tự động (RAG Triad & Ground Truth) sử dụng Ragas
+            description: Automatic evaluation for retrieval and answer quality.
           exporter:
-            description: Trích xuất biểu đồ Altair và kết xuất báo cáo tài chính HTML
+            description: Deterministic chart export and legacy HTML report assembly.
+          coding_workflow:
+            description: Multi-agent coding workflow contracts, manifest loaders, and state routing helpers.
+          report_vnext:
+            description: Parallel vNext opening-section pipeline with evidence packs, metric provenance, chart planning, and bright HTML export.
   flows:
-    description: Prefect flows để điều phối pipeline chạy định kỳ
+    description: Prefect orchestration flows.
     children:
       prefect_ingestion_flow.py:
-        description: Pipeline hoàn chỉnh chạy nạp tài liệu
+        description: End-to-end ingestion flow for source reports.
       generate_report_flow.py:
-        description: Pipeline tạo biểu đồ, truy vấn RAG và kết xuất báo cáo HTML
+        description: Current production report flow that queries RAG sections and exports HTML.
+      generate_report_vnext_flow.py:
+        description: Parallel vNext flow that generates the opening section HTML skeleton for the refactored report.
   tests:
-    description: Các script smoke test kiểm thử hoạt động API và từng component độc lập
+    description: Focused smoke tests and unit tests.
     children:
       run_generate_v2.py:
-        description: Script sinh báo cáo phiên bản v2 với RAG mode (lưu riêng không ghi đè v1)
+        description: Script to generate the v2 report without overwriting v1 output.
       smoke_test_evaluator.py:
-        description: Smoke test cho hệ thống đánh giá tự động (RAG Evaluator) với các chỉ số mới
+        description: Smoke test for evaluator components.
+      smoke_test_vnext.py:
+        description: Smoke test for the refactored vNext report generation pipeline.
       smoke_test_failed.py:
-        description: Smoke test kiểm thử và phân tích các câu hỏi bị lỗi (Q042, Q043, Q054)
+        description: Smoke test for previously failing evaluation questions.
       eval_retrieval.py:
-        description: Script đánh giá toàn bộ retrieval cho 60 câu hỏi với các metrics Precision, Recall, F1, P@k, MRR, MAP, nDCG, Context Relevance, Latency. Output lưu tại data/processed/retrieval_eval_results.json và retrieval_eval_summary.json
+        description: Retrieval evaluation script with ranking and context metrics.
+      test_coding_workflow_contracts.py:
+        description: Contract tests for the coding workflow schemas and state transitions.
+      test_coding_workflow_manifest_guardrails.py:
+        description: Guardrail tests that lock coordinator and sub-agent model/reasoning defaults.
+      test_report_vnext_llm.py:
+        description: Unit tests for provider/model routing and retry helper behavior in the vNext path.
+      test_report_vnext_metrics.py:
+        description: Unit tests for metric calculations and provenance records in the vNext path.
+      test_report_vnext_exporter.py:
+        description: Unit tests for the vNext HTML exporter and hover tooltip provenance.
   .env:
-    description: File môi trường cấu hình API Keys và URLs
+    description: Local environment variables and provider configuration.
   .gitignore:
-    description: File cấu hình các thư mục và tập tin loại trừ khỏi Git
+    description: Git ignore rules for data, outputs, and local runtime files.
   requirements.txt:
-    description: Danh sách thư viện Python phụ thuộc của dự án
+    description: Python dependency manifest.
   project-structure.yaml:
-    description: File mô tả cấu trúc thư mục của dự án
+    description: This project-structure description file.
   run.txt:
-    description: Tập tin hướng dẫn các câu lệnh CLI chạy pipeline và smoke tests của dự án
+    description: Handy CLI commands for running flows and smoke tests.
   README.md:
-    description: Tài liệu hướng dẫn sử dụng và giới thiệu tổng quan hệ thống RAG Report
-
-
+    description: Repository overview and usage instructions.

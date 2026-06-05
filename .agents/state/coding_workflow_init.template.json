@@ -1,0 +1,24 @@
+{
+  "task_id": "example-task-001",
+  "objective": "Describe the current coding task objective here.",
+  "status": "pending",
+  "active_phase": "bootstrap",
+  "todo_items": [
+    {
+      "id": "todo-1",
+      "title": "Bootstrap coordinator state",
+      "status": "pending"
+    }
+  ],
+  "decisions_locked": [],
+  "files_in_scope": [],
+  "files_touched": [],
+  "analysis_brief_ref": null,
+  "implementation_brief_ref": null,
+  "review_brief_ref": null,
+  "test_commands": [],
+  "test_status": "not_run",
+  "open_questions": [],
+  "next_action": "run_analyze",
+  "compact_brief": "Coordinator writes a short resume brief here after each milestone."
+}

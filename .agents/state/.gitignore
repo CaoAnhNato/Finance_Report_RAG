@@ -1,0 +1,4 @@
+# Runtime state for the coding workflow stays local.
+coding_workflow_init.json
+runs/
+*.log

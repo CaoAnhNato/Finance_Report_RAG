@@ -38,6 +38,46 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_API_BASE = os.getenv("OPENAI_API_BASE", "https://api.openai.com/v1")
 PLANNER_MODEL = os.getenv("PLANNER_MODEL", "gpt-5.4-mini")
 REPORT_MODEL = os.getenv("REPORT_MODEL", "deepseek-v4-pro")
+PLANNER_API_KEY = os.getenv("PLANNER_API_KEY", OPENAI_API_KEY)
+PLANNER_API_BASE = os.getenv("PLANNER_API_BASE", OPENAI_API_BASE)
+
+# vNext task-specific LLM routing
+EXTRACTION_MODEL = os.getenv("EXTRACTION_MODEL", "gemini-2.5-flash")
+EXTRACTION_API_KEY = os.getenv(
+    "EXTRACTION_API_KEY",
+    os.getenv(
+        "SHOPAPI_LLM_API_KEY",
+        os.getenv("SHOPAIKEY_API_KEY", ""),
+    ),
+)
+EXTRACTION_API_BASE = os.getenv(
+    "EXTRACTION_API_BASE",
+    os.getenv("SHOPAPI_LLM_API_BASE", "https://direct.shopaikey.com/v1"),
+)
+
+FINANCIAL_REASONING_MODEL = os.getenv("FINANCIAL_REASONING_MODEL", "qwen3-235b-a22b-thinking-2507")
+FINANCIAL_REASONING_API_KEY = os.getenv(
+    "FINANCIAL_REASONING_API_KEY",
+    os.getenv(
+        "SHOPAPI_LLM_API_KEY",
+        os.getenv("SHOPAIKEY_API_KEY", ""),
+    ),
+)
+FINANCIAL_REASONING_API_BASE = os.getenv(
+    "FINANCIAL_REASONING_API_BASE",
+    "https://api.shopaikey.com/v1",
+)
+
+CHART_PLANNING_MODEL = os.getenv("CHART_PLANNING_MODEL", "qwen3-235b-a22b-thinking-2507")
+CHART_PLANNING_API_KEY = os.getenv("CHART_PLANNING_API_KEY", FINANCIAL_REASONING_API_KEY)
+CHART_PLANNING_API_BASE = os.getenv("CHART_PLANNING_API_BASE", FINANCIAL_REASONING_API_BASE)
+VNEXT_REPORT_FILENAME = os.getenv("VNEXT_REPORT_FILENAME", "A32_Financial_Report_vNext.html")
+VNEXT_AUDIT_THRESHOLD = float(os.getenv("VNEXT_AUDIT_THRESHOLD", "0.88"))
+VNEXT_MAX_ATTEMPTS = int(os.getenv("VNEXT_MAX_ATTEMPTS", "3"))
+REPORT_BENCHMARK_REFERENCE_HTML = os.getenv(
+    "REPORT_BENCHMARK_REFERENCE_HTML",
+    "data/reports/A32_Financial_Report_v2.html",
+)
 
 # Local paths
 RAW_OCR_DIR = os.getenv("RAW_OCR_DIR", "data/A32")

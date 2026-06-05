@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "workflow_name": "coding-multi-agent",
+  "override_allowed": false,
+  "result_schema_version": "1.0.0",
+  "coordinator": {
+    "model": "gpt-5.4",
+    "reasoning": "high",
+    "tool_permissions": [
+      "read",
+      "search",
+      "route",
+      "persist_state",
+      "create_todo"
+    ],
+    "max_output_chars": 4000,
+    "can_edit": false
+  },
+  "subagents": {
+    "default_model": "gpt-5.4-mini",
+    "default_reasoning": "high",
+    "roles": {
+      "analyze": {
+        "model": "gpt-5.4-mini",
+        "reasoning": "high",
+        "tool_permissions": [
+          "read",
+          "search",
+          "list"
+        ],
+        "max_output_chars": 3000,
+        "can_edit": false
+      },
+      "implement": {
+        "model": "gpt-5.4-mini",
+        "reasoning": "high",
+        "tool_permissions": [
+          "read",
+          "search",
+          "edit",
+          "test"
+        ],
+        "max_output_chars": 3500,
+        "can_edit": true
+      },
+      "review": {
+        "model": "gpt-5.4-mini",
+        "reasoning": "high",
+        "tool_permissions": [
+          "read",
+          "search",
+          "inspect_test_output"
+        ],
+        "max_output_chars": 3000,
+        "can_edit": false
+      }
+    }
+  }
+}
