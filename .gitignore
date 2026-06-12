@@ -29,7 +29,11 @@ __pycache__/
 
 # Data processing outputs & caches
 data/processed/
-data/reports/
+data/reports/*
+!data/reports/A32_Financial_Report_v2.html
+!data/reports/html/
+data/reports/html/*
+!data/reports/html/A32_Financial_Report_vNext.html
 *.duckdb
 *.json
 
@@ -54,9 +58,8 @@ data/reports/
 tests/*
 !tests/test_coding_workflow_contracts.py
 !tests/test_coding_workflow_manifest_guardrails.py
-!tests/test_report_vnext_llm.py
-!tests/test_report_vnext_metrics.py
-!tests/test_report_vnext_exporter.py
+!tests/test_report_vnext_*.py
+!tests/smoke_test_vnext.py
 
 # RAG Output logs & text files
 out_*.txt

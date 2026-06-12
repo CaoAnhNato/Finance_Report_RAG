@@ -111,6 +111,7 @@ AUDIT_OPINION_PATTERNS = {
     ],
     "unqualified": [
         r"y\s*kien(?:\s+kiem\s+toan)?\s+chap\s+nhan\s+toan\s+phan",
+        r"phan\s+anh\s+trung\s+thuc\s+va\s+hop\s+ly",
     ],
 }
 
@@ -563,14 +564,14 @@ def _collect_snippet_for_item(doc: OCRDocument, canonical_line_item: str) -> lis
 def _detect_audit_opinion(page_texts: Iterable[tuple[int, str]]) -> tuple[Optional[str], str, Optional[int]]:
     for page_number, page_text in page_texts:
         normalized_page = _normalize_for_match(page_text)
-        if re.search(_normalize_for_match(AUDIT_OPINION_PATTERNS["qualified"][0]), normalized_page, flags=re.IGNORECASE) or re.search(
-            _normalize_for_match(AUDIT_OPINION_PATTERNS["qualified"][1]), normalized_page, flags=re.IGNORECASE
-        ):
-            return "Ý kiến kiểm toán ngoại trừ", "red", page_number
+        for pat in AUDIT_OPINION_PATTERNS["qualified"]:
+            if re.search(_normalize_for_match(pat), normalized_page, flags=re.IGNORECASE):
+                return "Ý kiến kiểm toán ngoại trừ", "red", page_number
     for page_number, page_text in page_texts:
         normalized_page = _normalize_for_match(page_text)
-        if re.search(_normalize_for_match(AUDIT_OPINION_PATTERNS["unqualified"][0]), normalized_page, flags=re.IGNORECASE):
-            return "Ý kiến chấp nhận toàn phần", "green", page_number
+        for pat in AUDIT_OPINION_PATTERNS["unqualified"]:
+            if re.search(_normalize_for_match(pat), normalized_page, flags=re.IGNORECASE):
+                return "Ý kiến chấp nhận toàn phần", "green", page_number
     return None, "insufficient_data", None
 
 
@@ -587,6 +588,8 @@ def _extract_audit_snapshot(doc: OCRDocument) -> AuditSnapshot:
             return "Công ty TNHH Kiểm toán và Định giá Việt Nam"
         if "an viet" in norm:
             return "Công ty TNHH Kiểm toán An Việt"
+        if "aascs" in norm or "phia nam" in norm:
+            return "Công ty TNHH Dịch vụ Tư vấn Tài chính Kế toán và Kiểm toán Phía Nam (AASCS)"
         cleaned = raw_name.split("\n")[0].strip()
         if "Digitally signed" in cleaned:
             cleaned = cleaned.split("Digitally signed")[0].strip()
@@ -594,14 +597,18 @@ def _extract_audit_snapshot(doc: OCRDocument) -> AuditSnapshot:
 
     # Try matching accented auditor name from original full_text first
     auditor_match = re.search(
-        r"(C[ôo]ng\s+ty\s+(?:TNHH\s+|Tr[áa]ch\s+nhi[ệe]m\s+H[ữu]u\s+H[ạa]n\s+)?Ki[ểe]m\s+to[áa]n[^\n]{0,120})",
+        r"(C[ôo]ng\s+ty\s+(?:TNHH\s+|Tr[áa]ch\s+nhi[ệe]m\s+H[ữu]u\s+H[ạa]n\s+)?(?:D[ịi]ch\s+v[ụu]\s+T[ưư]\s+v[ấá]n\s+T[àa]i\s+ch[íi]nh\s+K[ếe]\s+to[áa]n\s+v[àa]\s+)?Ki[ểe]m\s+to[áa]n[^\n]{0,120})",
         full_text,
         flags=re.IGNORECASE
     )
     if auditor_match:
         auditor = _clean_auditor_name(auditor_match.group(1))
     else:
-        auditor_match_norm = re.search(_normalize_for_match(r"(Cong ty TNHH Kiem toan[^\n]{0,120})"), normalized, flags=re.IGNORECASE)
+        auditor_match_norm = re.search(
+            _normalize_for_match(r"(Cong ty TNHH(?: Dich vu Tu van Tai chinh Ke toan va)? Kiem toan[^\n]{0,120})"),
+            normalized,
+            flags=re.IGNORECASE
+        )
         auditor = _clean_auditor_name(auditor_match_norm.group(1)) if auditor_match_norm else None
 
     opinion, severity_flag, opinion_page = _detect_audit_opinion(doc.pages)

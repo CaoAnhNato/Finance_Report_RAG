@@ -652,21 +652,32 @@ def render_intro_charts(
         )
         return _vega_base(item.title, item.subtitle) | {
             "data": {"values": values},
-            "mark": {"type": "line", "point": True, "strokeWidth": 3},
-            "encoding": {
-                "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                "y": {"field": "severity", "type": "quantitative", "title": "Mức cảnh báo"},
-                "color": {
-                    "field": "status",
-                    "type": "nominal",
-                    "scale": {
-                        "domain": ["Bình thường", "Cần theo dõi", "Cảnh báo cao", "Thiếu dữ liệu"],
-                        "range": ["#0f766e", "#d97706", "#dc2626", "#94a3b8"],
+            "layer": [
+                {
+                    "mark": {"type": "line", "strokeWidth": 3, "color": "#0f766e"},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
+                        "y": {"field": "severity", "type": "quantitative", "title": "Mức cảnh báo"},
                     },
-                    "legend": {"title": "Trạng thái"},
                 },
-                "tooltip": [{"field": "year"}, {"field": "opinion"}, {"field": "source_summary", "title": "Nguồn"}],
-            },
+                {
+                    "mark": {"type": "point", "filled": True, "size": 80},
+                    "encoding": {
+                        "x": {"field": "year", "type": "ordinal", "sort": "ascending"},
+                        "y": {"field": "severity", "type": "quantitative"},
+                        "color": {
+                            "field": "status",
+                            "type": "nominal",
+                            "scale": {
+                                "domain": ["Bình thường", "Cần theo dõi", "Cảnh báo cao", "Thiếu dữ liệu"],
+                                "range": ["#0f766e", "#d97706", "#dc2626", "#94a3b8"],
+                            },
+                            "legend": {"title": "Trạng thái"},
+                        },
+                        "tooltip": [{"field": "year"}, {"field": "opinion"}, {"field": "source_summary", "title": "Nguồn"}],
+                    },
+                },
+            ],
         }
 
     def profit_spec(item: ChartPlanItem) -> dict[str, Any] | None:
@@ -1021,16 +1032,26 @@ def render_intro_charts(
         )
         if not values:
             return None
-        return _vega_base(item.title, item.subtitle) | {
+        base = _vega_base(item.title, item.subtitle)
+        # Xoá height cứng từ base; dùng step-based height để Vega tự tính theo số rows
+        base.pop("height", None)
+        return base | {
+            "height": {"step": 44},
             "data": {"values": values},
             "mark": {"type": "rect", "cornerRadius": 4},
             "encoding": {
                 "x": {"field": "year", "type": "ordinal", "sort": "ascending", "title": "Năm"},
-                "y": {"field": "metric", "type": "nominal", "title": "Chỉ số"},
+                "y": {
+                    "field": "metric",
+                    "type": "nominal",
+                    "title": None,
+                    "axis": {"labelLimit": 280, "labelFontSize": 12, "labelPadding": 8},
+                },
                 "color": {
                     "field": "flag",
                     "type": "nominal",
                     "scale": {"domain": list(COLOR_SCALE), "range": ["#bbf7d0", "#fde68a", "#fecaca", "#e2e8f0"]},
+                    "legend": {"title": "Mức cảnh báo", "orient": "bottom"},
                 },
                 "tooltip": [{"field": "year"}, {"field": "metric"}, {"field": "flag"}, {"field": "source_summary", "title": "Nguồn"}],
             },

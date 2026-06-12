@@ -457,21 +457,21 @@ def build_fallback_intro_narrative(
     liquidity_signal = contract.key_signals[3]
     markdown = "\n\n".join(
         [
-            "### Câu trả lời nhanh",
+            "### Tóm tắt kết luận chính",
             f"**Kết luận chung:** {contract.executive_verdict.main_message} {source_signal.conclusion}",
-            "### Vì sao cần thận trọng với năm gần nhất?",
+            "### Các tín hiệu tài chính cần lưu ý",
             f"- {earnings_signal.conclusion}",
             f"- {receivables_signal.conclusion}",
             f"- {liquidity_signal.conclusion}",
-            "### Kết luận của phần này",
-            "Doanh nghiệp có thể dùng làm nguồn phân tích, nhưng phần tiếp theo cần kiểm tra kỹ dòng tiền hoạt động (CFO), khoản phải thu và khả năng duy trì đệm thanh khoản sau chi trả cổ tức.",
+            "### Kết luận chính",
+            "Mặc dù số liệu báo cáo có đủ độ tin cậy để làm cơ sở phân tích, độc giả cần lưu ý kiểm tra kỹ dòng tiền hoạt động (CFO), sự gia tăng của các khoản phải thu và khả năng duy trì đệm thanh khoản sau chi trả cổ tức trong các phần phân tích chuyên sâu tiếp theo.",
         ]
     )
-    audit_intro = "Trước khi phân tích sâu, cần xác nhận báo cáo có được kiểm toán và nguồn số liệu có đủ đáng tin cậy hay không."
+    audit_intro = f"Cơ sở số liệu tài chính của doanh nghiệp {evidence_pack.company_id} được đánh giá thông qua ý kiến kiểm toán, đơn vị kiểm toán thực hiện và mức độ đầy đủ của thông tin qua các năm tài chính."
     audit_conclusion = source_signal.conclusion
     return IntroNarrative(
         company_id=evidence_pack.company_id,
-        title=f"{evidence_pack.company_id}: Báo cáo tài chính có đáng tin cậy không?",
+        title=f"{evidence_pack.company_id}: Số liệu báo cáo tài chính có đủ tin cậy để phân tích không?",
         markdown=markdown,
         data_gaps=sorted(set(evidence_pack.data_gaps)),
         verdict=contract.executive_verdict.main_message,

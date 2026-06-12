@@ -17,6 +17,11 @@ from src.rag_report.report_vnext.models import (
     MetricRecord,
     SignalNumber,
 )
+from src.rag_report.report_vnext.glossary import (
+    GlossaryTerm,
+    get_signal_glossary_terms,
+    get_appendix_glossary_terms,
+)
 
 
 METRIC_NAME_VI = {
@@ -379,7 +384,11 @@ class VNextHTMLExporter:
         source_footer = "Nguồn: " + "; ".join(sources[:3]) if sources else "Nguồn: dữ liệu tài chính tổng hợp"
         dom_id = f"chart-{item.chart_id}"
         figure_id = f"figure-{item.chart_id}"
-        figure_style = "style='min-height: 520px;'"
+        # Heatmap cần full-width để các cột năm không bị chèn ép
+        if item.chart_id == "red_flag_heatmap":
+            figure_style = "style='min-height: 520px; grid-column: 1 / -1; width: 100%;'"
+        else:
+            figure_style = "style='min-height: 520px;'"
         spec_json = json.dumps(spec, ensure_ascii=False)
         figure_html = (
             f"<figure class='report-figure' id='{figure_id}' data-renderable='true' {figure_style}>"
@@ -478,13 +487,13 @@ class VNextHTMLExporter:
         focus_areas = "".join(f"<li>{self._escape(item)}</li>" for item in getattr(verdict, "focus_areas", []))
         return (
             "<div class='verdict-panel'>"
-            "<div class='verdict-header'>Kết luận nhanh cho người không chuyên</div>"
+            "<div class='verdict-header'>Tóm tắt kết luận chính</div>"
             f"<div class='verdict-text'>{self._escape(getattr(verdict, 'main_message', ''))}</div>"
             "<div class='verdict-grid'>"
             f"<div class='verdict-item'><strong>Nguồn số liệu:</strong> {self._escape(getattr(verdict, 'source_reliability', ''))}</div>"
             f"<div class='verdict-item'><strong>Trạng thái tài chính:</strong> {self._escape(getattr(verdict, 'financial_signal', ''))}</div>"
             "</div>"
-            f"<div class='verdict-focus'><div class='verdict-subhead'>Điểm cần kiểm tra tiếp theo</div><ul class='bullet-list'>{focus_areas}</ul></div>"
+            f"<div class='verdict-focus'><div class='verdict-subhead'>Mạch phân tích của báo cáo</div><ul class='bullet-list'>{focus_areas}</ul></div>"
             "</div>"
         )
 
@@ -492,8 +501,8 @@ class VNextHTMLExporter:
         intro_html = self._markdown_to_html(bundle.narrative.markdown)
         return (
             "<section class='report-page'>"
-            "<div class='section-kicker'>Tổng kết</div>"
-            "<h2 class='section-title'>Phần mở đầu / Kết luận nhanh</h2>"
+            "<div class='section-kicker'>Tóm tắt</div>"
+            "<h2 class='section-title'>Tóm tắt kết luận chính</h2>"
             f"{self._render_verdict_panel(contract)}"
             f"<div class='opening-copy'>{intro_html}</div>"
             "</section>"
@@ -510,12 +519,12 @@ class VNextHTMLExporter:
                 f"<td>{self._escape(snapshot.data_gap_reason or self._format_audit_source(snapshot))}</td>"
                 "</tr>"
             )
-        intro = self._escape(bundle.narrative.audit_intro or "Trước khi phân tích sâu, cần xác nhận báo cáo có được kiểm toán hay không.")
+        intro = self._escape(bundle.narrative.audit_intro or "Cơ sở số liệu tài chính được đánh giá qua các năm tài chính.")
         conclusion = self._escape(bundle.narrative.audit_conclusion or "")
         return (
             "<section class='report-page'>"
             "<div class='section-kicker'>Kiểm toán</div>"
-            "<h2 class='section-title'>Bước 1 - Nguồn số liệu có đáng dùng không?</h2>"
+            "<h2 class='section-title'>Cơ sở số liệu và kiểm toán</h2>"
             f"<div class='audit-intro'>{intro}</div>"
             "<div class='table-wrap'>"
             "<table class='audit-table'>"
@@ -553,6 +562,74 @@ class VNextHTMLExporter:
             )
         return pages
 
+    def _render_signal_glossary_box(self, contract: Any) -> str:
+        terms = get_signal_glossary_terms(contract)
+        if not terms:
+            return ""
+
+        rows = []
+        for term in terms:
+            rows.append(
+                "<tr>"
+                f"<td>{self._escape(term.abbreviation or term.term)}</td>"
+                f"<td>{self._escape(term.short_definition)}</td>"
+                f"<td>{self._escape(term.analytical_role)}</td>"
+                "</tr>"
+            )
+
+        return (
+            "<div class='term-box term-box-compact'>"
+            "<div class='term-box-title'>Thuật ngữ sử dụng trong phần tín hiệu</div>"
+            "<div class='table-wrap'>"
+            "<table class='term-table'>"
+            "<thead>"
+            "<tr>"
+            "<th>Thuật ngữ</th>"
+            "<th>Diễn giải ngắn</th>"
+            "<th>Vai trò trong phân tích</th>"
+            "</tr>"
+            "</thead>"
+            f"<tbody>{''.join(rows)}</tbody>"
+            "</table>"
+            "</div>"
+            "</div>"
+        )
+
+    def _render_appendix_glossary(self, metric_pack: IntroMetricPack, contract: Any) -> str:
+        terms = get_appendix_glossary_terms(metric_pack, contract)
+        if not terms:
+            return ""
+
+        rows = []
+        for term in terms:
+            rows.append(
+                "<tr>"
+                f"<td>{self._escape(term.term)}</td>"
+                f"<td>{self._escape(term.abbreviation or '—')}</td>"
+                f"<td>{self._escape(term.short_definition)}</td>"
+                f"<td>{self._escape(term.analytical_role)}</td>"
+                "</tr>"
+            )
+
+        return (
+            "<section class='report-section glossary-section'>"
+            "<h2>Bảng thuật ngữ tài chính sử dụng trong báo cáo</h2>"
+            "<div class='table-wrap'>"
+            "<table class='term-table term-table-full'>"
+            "<thead>"
+            "<tr>"
+            "<th>Thuật ngữ</th>"
+            "<th>Viết tắt</th>"
+            "<th>Diễn giải</th>"
+            "<th>Vai trò trong báo cáo</th>"
+            "</tr>"
+            "</thead>"
+            f"<tbody>{''.join(rows)}</tbody>"
+            "</table>"
+            "</div>"
+            "</section>"
+        )
+
     def _render_signals_page(self, contract: Any) -> str:
         cards = "".join(self._render_signal_card(signal) for signal in getattr(contract, "key_signals", []))
         legend = (
@@ -564,11 +641,13 @@ class VNextHTMLExporter:
             "<span class='badge badge-gray'>Thiếu dữ liệu</span>"
             "</div>"
         )
+        glossary_html = self._render_signal_glossary_box(contract)
         return (
             "<section class='report-page'>"
-            "<div class='section-kicker'>Tín hiệu</div>"
-            "<h2 class='section-title'>Các tín hiệu trọng yếu từ số liệu</h2>"
+            "<div class='section-kicker'>Tín hiệu tài chính</div>"
+            "<h2 class='section-title'>Các tín hiệu tài chính trọng yếu từ bộ số liệu</h2>"
             f"{legend}"
+            f"{glossary_html}"
             f"<div class='signal-grid'>{cards}</div>"
             "</section>"
         )
@@ -581,16 +660,17 @@ class VNextHTMLExporter:
         return (
             "<section class='report-page'>"
             "<div class='section-kicker'>Kết luận</div>"
-            "<h2 class='section-title'>Chốt lại phần mở đầu</h2>"
+            "<h2 class='section-title'>Kết luận mở đầu</h2>"
             "<div class='closing-block'>"
-            f"<div><strong>Kết luận chung:</strong> {self._escape(getattr(verdict, 'source_reliability', ''))}</div>"
-            f"<div><strong>Tuy nhiên:</strong> {self._escape(getattr(verdict, 'main_message', ''))}</div>"
-            f"<div><strong>Do đó:</strong><ul class='bullet-list'>{focus_areas}</ul></div>"
+            f"<div><strong>Độ tin cậy nguồn số liệu:</strong> {self._escape(getattr(verdict, 'source_reliability', ''))}</div>"
+            f"<div><strong>Thông điệp chính:</strong> {self._escape(getattr(verdict, 'main_message', ''))}</div>"
+            f"<div><strong>Mạch phân tích tiếp theo:</strong><ul class='bullet-list'>{focus_areas}</ul></div>"
             "</div>"
             "</section>"
         )
 
     def _render_appendix_metric_page(self, metric_pack: IntroMetricPack, contract: Any, data_gaps: list[str]) -> str:
+        glossary_html = self._render_appendix_glossary(metric_pack, contract)
         table_html = self._render_metric_table(metric_pack)
         indicator_cards = []
         for indicator in getattr(contract, "appendix_indicators", []):
@@ -622,7 +702,8 @@ class VNextHTMLExporter:
         return (
             "<section class='report-page'>"
             "<div class='section-kicker'>Phụ lục kỹ thuật</div>"
-            "<h2 class='section-title'>Phụ lục kỹ thuật - Công thức, số liệu đầu vào và nguồn kiểm chứng</h2>"
+            "<h2 class='section-title'>Phụ lục kỹ thuật - Thuật ngữ, công thức, số liệu đầu vào và nguồn kiểm chứng</h2>"
+            f"{glossary_html}"
             f"{table_html}"
             f"{gap_html}"
             f"<div class='appendix-indicator-grid'>{''.join(indicator_cards)}</div>"
@@ -721,9 +802,9 @@ class VNextHTMLExporter:
     .figure-subtitle { color: var(--muted); margin-bottom: 12px; font-size: .95rem; word-wrap: break-word; overflow-wrap: break-word; }
     .chart-mount {
       width: 100%;
-      height: 300px;
-      min-height: 300px;
-      flex: 0 0 300px;
+      height: auto;
+      min-height: 260px;
+      flex: none;
       margin-bottom: 8px;
     }
     .figure-caption { margin-top: 10px; color: var(--ink); font-size: .96rem; word-wrap: break-word; overflow-wrap: break-word; }
@@ -764,6 +845,56 @@ class VNextHTMLExporter:
       .report-shell { width: 100%; padding: 0; }
       .report-page { box-shadow: none; border: 0; margin: 0; }
     }
+    .term-box {
+      margin: 14px 0 18px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      background: #fbfaf7;
+    }
+    .term-box-title {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: .86rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .term-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+      background: #fff;
+    }
+    .term-table th,
+    .term-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    .term-table th {
+      background: #f7f3ec;
+      color: var(--accent);
+      font-size: .76rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .term-table td:first-child {
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .term-box-compact .term-table {
+      font-size: .84rem;
+    }
+    .glossary-section {
+      margin-bottom: 18px;
+    }
+    .term-table-full {
+      font-size: .86rem;
+    }
         """
 
     def compile_report(self, bundle: IntroRenderBundle, output_filename: str | None = None) -> str:
@@ -802,12 +933,12 @@ class VNextHTMLExporter:
             self._register_citation(ref)
 
         pages: list[str] = []
-        cover_title = bundle.narrative.title or f"{bundle.evidence_pack.company_id}: Báo cáo tài chính có đáng tin không?"
+        cover_title = bundle.narrative.title or f"{bundle.evidence_pack.company_id}: Số liệu báo cáo tài chính có đủ tin cậy để phân tích không?"
         pages.append(
             "<section class='report-page'>"
             f"<div class='section-kicker'>{self._escape(bundle.evidence_pack.company_id)}</div>"
             f"<h1 class='cover-title'>{self._escape(cover_title)}</h1>"
-            f"<p class='cover-subtitle'>Báo cáo này được lập cho doanh nghiệp {self._escape(bundle.evidence_pack.company_id)} và được cấu trúc theo các phần: mở đầu, ý kiến kiểm toán, tín hiệu trọng yếu, biểu đồ chính, kết luận nhanh và phụ lục kỹ thuật.</p>"
+            f"<p class='cover-subtitle'>Báo cáo này được lập cho doanh nghiệp {self._escape(bundle.evidence_pack.company_id)} và được cấu trúc theo các phần: tóm tắt kết luận chính, cơ sở số liệu và kiểm toán, các tín hiệu tài chính trọng yếu, biểu đồ chính, kết luận mở đầu và phụ lục kỹ thuật.</p>"
             "<div class='page-footer'>Bản xuất HTML vNext</div>"
             "</section>"
         )

@@ -101,6 +101,13 @@ class TestReportVNextExporter(unittest.TestCase):
         self.assertNotIn("Scope:", html_text)
         self.assertNotIn("View:", html_text)
         self.assertNotIn("figure-panel", html_text)
+        
+        # Glossary rendering checks
+        self.assertIn("Thuật ngữ sử dụng trong phần tín hiệu", html_text)
+        self.assertIn("Bảng thuật ngữ tài chính sử dụng trong báo cáo", html_text)
+        self.assertIn("CFO", html_text)
+        self.assertIn("LNST", html_text)
+        self.assertIn("Chất lượng lợi nhuận", html_text)
 
 
 if __name__ == "__main__":

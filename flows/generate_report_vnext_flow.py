@@ -59,7 +59,7 @@ from src.rag_report.report_vnext.feedback_log import (
 )
 from src.rag_report.report_vnext.pipeline import IntroReportVNextPipeline
 from src.rag_report.report_vnext.exporter import VNextHTMLExporter
-
+from src.rag_report.report_vnext.models import IntroRenderBundle
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ def generate_vnext_intro_html(
     use_llm_writer: bool = True,
     style_notes: list[str] | None = None,
     feedback_rules: list | None = None,
-) -> str:
+) -> tuple[str, IntroRenderBundle]:
     pipeline = IntroReportVNextPipeline(
         use_llm_extraction=use_llm_extraction,
         use_llm_chart_planning=use_llm_chart_planning,
@@ -82,7 +82,8 @@ def generate_vnext_intro_html(
         style_notes=style_notes,
         feedback_rules=feedback_rules,
     )
-    return VNextHTMLExporter().compile_report(bundle)
+    html_path = VNextHTMLExporter().compile_report(bundle)
+    return html_path, bundle
 
 
 @flow(name="Prefect Report Generation Flow vNext")
@@ -100,7 +101,7 @@ def run_report_vnext_flow(
     max_attempts = max(1, settings.VNEXT_MAX_ATTEMPTS)
     for attempt in range(1, max_attempts + 1):
         print(f"[vNext] attempt {attempt}/{settings.VNEXT_MAX_ATTEMPTS}: building bundle")
-        html_path = generate_vnext_intro_html(
+        html_path, bundle = generate_vnext_intro_html(
             use_llm_extraction=use_llm_extraction,
             use_llm_chart_planning=use_llm_chart_planning,
             use_llm_writer=use_llm_writer,
@@ -112,6 +113,7 @@ def run_report_vnext_flow(
             report_path=html_path,
             reference_path=reference_path,
             feedback_rules=feedback_rules,
+            narrative=bundle.narrative,
         )
         audit.attempt_index = attempt
         attempt_dir = Path(settings.REPORT_OUTPUT_DIR_ABS) / "eval_runs" / f"vnext_intro_{datetime.now().strftime('%Y%m%d_%H%M%S')}_attempt_{attempt}"

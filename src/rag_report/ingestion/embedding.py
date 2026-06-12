@@ -69,8 +69,15 @@ class FPTCloudEmbedding(BaseEmbedding):
 
     def _get_query_embedding(self, query: str) -> List[float]:
         """Get query embedding with input_type='query'."""
+        if not hasattr(self, "_query_cache"):
+            self._query_cache = {}
+        if query in self._query_cache:
+            return self._query_cache[query]
         embeddings = self._call_fpt_api([query], input_type="query")
-        return embeddings[0]
+        res = embeddings[0]
+        self._query_cache[query] = res
+        return res
+
 
     def _get_text_embedding(self, text: str) -> List[float]:
         """Get text embedding with input_type='passage'."""

@@ -245,16 +245,94 @@ class HTMLExporter:
             """
 
         # Section HTML compilation
-        sec_exec_summary = render_story_section("tổng-quan", "Tổng quan", "Tóm tắt Điều hành", "executive_summary")
-        sec_business_performance = render_story_section("kết-quả-kd", "Phần I", "Kết quả Hoạt động Kinh doanh", "business_performance", "chart-rev-prof")
-        sec_assets_structure = render_story_section("cơ-cấu-ts", "Phần II - A", "Cơ cấu và Biến động Tài sản", "assets_structure", "chart-asset")
-        sec_working_capital = render_story_section("vốn-lưu-động", "Phần II - B", "Khả năng Quản lý Vốn lưu động", "working_capital", "chart-working-capital")
-        sec_capital_structure = render_story_section("nguồn-vốn", "Phần III - A", "Cơ cấu Nguồn vốn & Nợ phải trả", "capital_structure", "chart-capital")
-        sec_liquidity_ratios = render_story_section("thanh-khoản", "Phần III - B", "Khả năng Thanh khoản & Hệ số Thanh toán", "liquidity_ratios", "chart-liquidity")
-        sec_cash_flow = render_story_section("dòng-tiền", "Phần IV", "Phân tích Lưu chuyển Tiền tệ (Dòng tiền)", "cash_flow", "chart-cash-flow")
-        
-        # Conclusions with Net Margin chart
-        sec_conclusions = render_story_section("kết-luận", "Phần V", "Kết luận chung & Khuyến nghị", "conclusions", "chart-net-margin")
+        sec_guide = """
+        <section id="huong-dan-doc" class="report-section">
+            <span class="section-tag">Hướng dẫn</span>
+            <h2>Cách đọc báo cáo này</h2>
+            <div class="section-block" style="padding: 1.5rem 2rem;">
+                <p>Báo cáo phân tích tài chính này được thiết kế theo mạch logic tuần tự từ kết quả kinh doanh đến cơ cấu vốn và khả năng thanh khoản, nhằm cung cấp bức tranh toàn cảnh về hoạt động của doanh nghiệp:</p>
+                <ul style="list-style: none; margin: 0; padding: 0;">
+                    <li style="margin-bottom: 8px; position: relative; padding-left: 1.4rem; color: var(--text-secondary); font-size: 0.97rem;">
+                        <span style="position: absolute; left: 0; color: var(--accent-blue); font-weight: bold;">▸</span>
+                        <strong>Tổng quan phân tích:</strong> Nhận định cốt lõi và các điểm lưu ý về phạm vi dữ liệu tài chính đầu vào.
+                    </li>
+                    <li style="margin-bottom: 8px; position: relative; padding-left: 1.4rem; color: var(--text-secondary); font-size: 0.97rem;">
+                        <span style="position: absolute; left: 0; color: var(--accent-blue); font-weight: bold;">▸</span>
+                        <strong>Kết quả kinh doanh:</strong> Phân tích xu hướng doanh thu thuần và lợi nhuận sau thuế, đánh giá chất lượng tăng trưởng.
+                    </li>
+                    <li style="margin-bottom: 8px; position: relative; padding-left: 1.4rem; color: var(--text-secondary); font-size: 0.97rem;">
+                        <span style="position: absolute; left: 0; color: var(--accent-blue); font-weight: bold;">▸</span>
+                        <strong>Cơ cấu tài sản & Vốn lưu động:</strong> Đánh giá tính cân đối trong phân bổ tài sản ngắn/dài hạn và hiệu quả quản lý hàng tồn kho, công nợ.
+                    </li>
+                    <li style="margin-bottom: 8px; position: relative; padding-left: 1.4rem; color: var(--text-secondary); font-size: 0.97rem;">
+                        <span style="position: absolute; left: 0; color: var(--accent-blue); font-weight: bold;">▸</span>
+                        <strong>Nguồn vốn & Thanh khoản:</strong> Phân tích đòn bẩy tài chính, áp lực trả nợ ngắn hạn và đệm an toàn thanh khoản.
+                    </li>
+                    <li style="margin-bottom: 8px; position: relative; padding-left: 1.4rem; color: var(--text-secondary); font-size: 0.97rem;">
+                        <span style="position: absolute; left: 0; color: var(--accent-blue); font-weight: bold;">▸</span>
+                        <strong>Dòng tiền & Nhận định tổng hợp:</strong> Đánh giá mức độ đóng góp của dòng tiền kinh doanh (CFO) vào hoạt động của doanh nghiệp và đưa ra kết luận tổng hợp.
+                    </li>
+                </ul>
+            </div>
+        </section>
+        """
+
+        sec_exec_summary = render_story_section("tổng-quan", "Tổng quan", "Tổng quan phân tích", "executive_summary")
+        sec_business_performance = render_story_section("kết-quả-kd", "Phần I", "Kết quả kinh doanh", "business_performance", "chart-rev-prof")
+        sec_assets_structure = render_story_section("cơ-cấu-ts", "Phần II - A", "Cơ cấu tài sản", "assets_structure", "chart-asset")
+        sec_working_capital = render_story_section("vốn-lưu-động", "Phần II - B", "Vốn lưu động", "working_capital", "chart-working-capital")
+        sec_capital_structure = render_story_section("nguồn-vốn", "Phần III - A", "Nguồn vốn và nợ phải trả", "capital_structure", "chart-capital")
+        sec_liquidity_ratios = render_story_section("thanh-khoản", "Phần III - B", "Thanh khoản", "liquidity_ratios", "chart-liquidity")
+        sec_cash_flow = render_story_section("dòng-tiền", "Phần IV", "Dòng tiền", "cash_flow", "chart-cash-flow")
+        sec_conclusions = render_story_section("kết-luận", "Phần V", "Nhận định tổng hợp về sức khỏe tài chính", "conclusions", "chart-net-margin")
+
+        sec_glossary = """
+        <section id="thuat-ngu-viet-tat" class="report-section">
+            <span class="section-tag">Thuật ngữ</span>
+            <h2>Danh mục chữ viết tắt và thuật ngữ tài chính</h2>
+            <div class="section-block" style="padding: 1.5rem 2rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text-primary); font-weight: 700; margin-bottom: 0.6rem; font-family: 'Outfit', sans-serif; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.25rem;">Các chữ viết tắt</h3>
+                        <table style="margin: 0.5rem 0;">
+                            <thead>
+                                <tr>
+                                    <th>Viết tắt</th>
+                                    <th>Thuật ngữ tiếng Việt</th>
+                                    <th>Thuật ngữ tiếng Anh</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>LNST</strong></td><td>Lợi nhuận sau thuế</td><td>Net Income</td></tr>
+                                <tr><td><strong>BCTC</strong></td><td>Báo cáo tài chính</td><td>Financial Statements</td></tr>
+                                <tr><td><strong>CFO</strong></td><td>Dòng tiền từ HĐKD</td><td>Cash Flow from Operations</td></tr>
+                                <tr><td><strong>CFI</strong></td><td>Dòng tiền từ HĐĐT</td><td>Cash Flow from Investing</td></tr>
+                                <tr><td><strong>CFF</strong></td><td>Dòng tiền từ HĐTC</td><td>Cash Flow from Financing</td></tr>
+                                <tr><td><strong>VCSH</strong></td><td>Vốn chủ sở hữu</td><td>Owner's Equity</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--text-primary); font-weight: 700; margin-bottom: 0.6rem; font-family: 'Outfit', sans-serif; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.25rem;">Thuật ngữ chính</h3>
+                        <table style="margin: 0.5rem 0;">
+                            <thead>
+                                <tr>
+                                    <th>Thuật ngữ</th>
+                                    <th>Định nghĩa / Diễn giải</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Vốn lưu động ròng</strong></td><td>Chênh lệch giữa tài sản ngắn hạn và nợ ngắn hạn, thể hiện đệm an toàn tài chính.</td></tr>
+                                <tr><td><strong>Hệ số thanh toán hiện thời</strong></td><td>Tài sản ngắn hạn chia cho nợ ngắn hạn, đo lường khả năng thanh toán nợ ngắn hạn.</td></tr>
+                                <tr><td><strong>Hệ số thanh toán nhanh</strong></td><td>(Tài sản ngắn hạn - Hàng tồn kho) chia cho nợ ngắn hạn, đo lường thanh khoản tức thời.</td></tr>
+                                <tr><td><strong>Biên lợi nhuận ròng</strong></td><td>Lợi nhuận sau thuế chia cho doanh thu thuần, đo lường hiệu suất sinh lời trên mỗi đồng doanh thu.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        """
 
         # Citations section
         if self.citations_map:
@@ -778,27 +856,28 @@ class HTMLExporter:
         <div>
             <div class="logo-section">
                 <div class="logo-badge">A32</div>
-                <div class="logo-title">RAG Platform</div>
+                <div class="logo-title">Phân tích Tài chính</div>
             </div>
             
             <nav>
                 <ul class="nav-list">
-                    <li class="nav-item"><a href="#tổng-quan">Tóm tắt Điều hành</a></li>
-                    <li class="nav-item"><a href="#kết-quả-kd">Doanh thu & LNST</a></li>
-                    <li class="nav-item"><a href="#cơ-cấu-ts">Cơ cấu Tài sản</a></li>
-                    <li class="nav-item"><a href="#vốn-lưu-động">Quản lý Vốn lưu động</a></li>
-                    <li class="nav-item"><a href="#nguồn-vốn">Cơ cấu Nguồn vốn</a></li>
-                    <li class="nav-item"><a href="#thanh-khoản">Khả năng Thanh khoản</a></li>
-                    <li class="nav-item"><a href="#dòng-tiền">Dòng tiền tệ</a></li>
-                    <li class="nav-item"><a href="#kết-luận">Kết luận & Khuyến nghị</a></li>
+                    <li class="nav-item"><a href="#huong-dan-doc">Hướng dẫn đọc</a></li>
+                    <li class="nav-item"><a href="#tổng-quan">Tổng quan phân tích</a></li>
+                    <li class="nav-item"><a href="#kết-quả-kd">Kết quả kinh doanh</a></li>
+                    <li class="nav-item"><a href="#cơ-cấu-ts">Cơ cấu tài sản</a></li>
+                    <li class="nav-item"><a href="#vốn-lưu-động">Vốn lưu động</a></li>
+                    <li class="nav-item"><a href="#nguồn-vốn">Nguồn vốn và nợ phải trả</a></li>
+                    <li class="nav-item"><a href="#thanh-khoản">Thanh khoản</a></li>
+                    <li class="nav-item"><a href="#dòng-tiền">Dòng tiền</a></li>
+                    <li class="nav-item"><a href="#kết-luận">Nhận định tổng hợp</a></li>
+                    <li class="nav-item"><a href="#thuat-ngu-viet-tat">Thuật ngữ & Viết tắt</a></li>
                     <li class="nav-item"><a href="#danh-muc-trich-dan">Danh mục Trích dẫn</a></li>
                 </ul>
             </nav>
         </div>
         
         <div class="sidebar-footer">
-            <p>Hệ thống RAG Financial</p>
-            <p>Version 1.2.0 (DeepSeek + FPT)</p>
+            <p>© 2026 Bộ phận Phân tích và Nghiên cứu</p>
         </div>
     </aside>
     
@@ -810,11 +889,11 @@ class HTMLExporter:
             <h1 class="report-title">Báo cáo Phân tích Tài chính Tổng hợp<br>Giai đoạn 2017 - 2025</h1>
             
             <div class="report-meta">
-                <span class="meta-item">Đối tượng phân tích: <strong>Báo cáo tài chính kiểm toán 8 năm</strong></span>
-                <span class="meta-item">Mô hình phân tích: <strong>GPT-5.5 (CSU Pro) + FPT BGE Reranker v2</strong></span>
+                <span class="meta-item">Đối tượng phân tích: <strong>Báo cáo tài chính kiểm toán giai đoạn 2017–2025</strong></span>
             </div>
         </header>
 
+        {sec_guide}
         {sec_exec_summary}
         {sec_business_performance}
         {sec_assets_structure}
@@ -823,6 +902,7 @@ class HTMLExporter:
         {sec_liquidity_ratios}
         {sec_cash_flow}
         {sec_conclusions}
+        {sec_glossary}
         {sec_citations}
     </main>
 </div>

@@ -59,6 +59,8 @@ structure:
         description: Original implementation spec for the RAG report system.
       framework_nhung_con_so_co_dang_tin_khong_A32.md:
         description: Source-of-truth framework for the vNext opening section refactor.
+      code_mapping_guide.md:
+        description: Developer guide mapping report sections to specific source code files and functions.
   src:
     description: Application source code.
     children:
@@ -77,10 +79,44 @@ structure:
             description: Automatic evaluation for retrieval and answer quality.
           exporter:
             description: Deterministic chart export and legacy HTML report assembly.
+            children:
+              charting.py:
+                description: Altair and matplotlib charting generators.
+              exporter.py:
+                description: HTML report templates and assembly layout.
+              report_text_editor.py:
+                description: Wording and heading normalizer for the v2 report.
           coding_workflow:
             description: Multi-agent coding workflow contracts, manifest loaders, and state routing helpers.
           report_vnext:
             description: Parallel vNext opening-section pipeline with evidence packs, metric provenance, chart planning, and bright HTML export.
+            children:
+              evidence.py:
+                description: Evidence pack builder and database extraction layer.
+              backfill.py:
+                description: Missing narrative and data gaps extraction layer.
+              metrics.py:
+                description: Financial metrics and formula provenance calculator.
+              charts.py:
+                description: Chart planning, specifications, and SVG/Vega rendering.
+              writer.py:
+                description: Initial narrative writer layer.
+              editor.py:
+                description: Narrative clean up and professional terminology editor.
+              exporter.py:
+                description: HTML report compilation and CSS grid presentation.
+              audit.py:
+                description: Automated compliance check, wording hygiene, and layout audit.
+              feedback_log.py:
+                description: Style guidelines and persistent audit findings log.
+              glossary.py:
+                description: Deterministic financial term definitions and selectors.
+              models.py:
+                description: Data structures and Pydantic schemas for the vNext pipeline.
+              pipeline.py:
+                description: Orchestrator pipeline that executes all vNext steps.
+              llm.py:
+                description: Provider-routing, LLM clients, and retry handlers.
   flows:
     description: Prefect orchestration flows.
     children:
@@ -115,6 +151,20 @@ structure:
         description: Unit tests for the vNext HTML exporter and hover tooltip provenance.
       test_report_vnext_charts.py:
         description: Unit tests for the vNext chart generation and rendering specifications.
+      test_report_vnext_editor.py:
+        description: Unit tests for the vNext narrative editor and wording hygiene audits.
+  scratch:
+    description: Scratch scripts and temporary analysis tools.
+    children:
+      check_assets_db.py:
+        description: Script to check and verify asset structure database records.
+      extract_summary_assets.py:
+        description: Script to extract and summarize key asset structure metrics across fiscal years from DuckDB chunks.
+  note:
+    description: Explanatory summaries, logs, and drafting notes.
+    children:
+      report_completion_summary.md:
+        description: Comparison summary and implementation report for v2 and vNext financial outputs.
   .env:
     description: Local environment variables and provider configuration.
   .gitignore:

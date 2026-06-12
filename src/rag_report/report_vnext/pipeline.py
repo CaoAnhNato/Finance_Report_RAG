@@ -9,6 +9,7 @@ from src.rag_report.report_vnext.exporter import VNextHTMLExporter
 from src.rag_report.report_vnext.metrics import calculate_intro_metrics
 from src.rag_report.report_vnext.models import IntroRenderBundle
 from src.rag_report.report_vnext.writer import IntroNarrativeWriter
+from src.rag_report.report_vnext.editor import IntroNarrativeEditor
 
 
 class IntroReportVNextPipeline:
@@ -18,10 +19,12 @@ class IntroReportVNextPipeline:
         use_llm_extraction: bool = True,
         use_llm_chart_planning: bool = True,
         use_llm_writer: bool = True,
+        use_llm_editor: bool = True,
     ) -> None:
         self.use_llm_extraction = use_llm_extraction
         self.use_llm_chart_planning = use_llm_chart_planning
         self.use_llm_writer = use_llm_writer
+        self.use_llm_editor = use_llm_editor
 
     def build_bundle(
         self,
@@ -50,6 +53,14 @@ class IntroReportVNextPipeline:
         charts = render_intro_charts(evidence_pack, metric_pack, chart_plan)
         print("[vNext]   writing narrative")
         narrative = IntroNarrativeWriter(use_llm=self.use_llm_writer).write(
+            evidence_pack,
+            metric_pack,
+            chart_plan,
+            style_notes=feedback_notes,
+        )
+        print("[vNext]   editing narrative")
+        narrative = IntroNarrativeEditor(use_llm=self.use_llm_editor).edit(
+            narrative,
             evidence_pack,
             metric_pack,
             chart_plan,

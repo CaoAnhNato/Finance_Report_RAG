@@ -64,6 +64,18 @@ def _default_rules() -> list[FeedbackRule]:
             source="manual",
         ),
         FeedbackRule(
+            rule_id="seed::signal_glossary_present",
+            check="signal_glossary_present",
+            message="Keep signal-specific glossary term definitions box present and complete.",
+            source="manual",
+        ),
+        FeedbackRule(
+            rule_id="seed::appendix_glossary_present",
+            check="appendix_glossary_present",
+            message="Keep appendix glossary section with full definitions present and complete.",
+            source="manual",
+        ),
+        FeedbackRule(
             rule_id="seed::screenshot_compare_manual",
             message="Screenshot comparison is not automated in code; record the gap and require manual review.",
             manual_gap=True,

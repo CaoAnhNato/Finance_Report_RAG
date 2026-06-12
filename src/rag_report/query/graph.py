@@ -105,13 +105,26 @@ class FinancialRAGGraph:
 
     def _extract_years_from_query(self, q: str) -> List[int]:
         import re
-        matches = re.findall(r'\b(20\d{2})\b', q)
-        years = []
-        for m in matches:
+        # First, search for ranges like 2017-2025 or 2017–2025
+        range_matches = re.findall(r'\b(20\d{2})\s*[-–]\s*(20\d{2})\b', q)
+        years = set()
+        for start_str, end_str in range_matches:
+            start, end = int(start_str), int(end_str)
+            if start > end:
+                start, end = end, start
+            for y in range(start, end + 1):
+                if y in [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]:
+                    years.add(y)
+                    
+        # Also find individual years
+        individual_matches = re.findall(r'\b(20\d{2})\b', q)
+        for m in individual_matches:
             y = int(m)
             if y in [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]:
-                years.append(y)
-        return list(set(years))
+                years.add(y)
+                
+        return sorted(list(years))
+
 
     def retrieve_node(self, state: GraphState) -> GraphState:
         """Retrieves contexts using RRF Hybrid search across sub-questions and target years."""
@@ -358,11 +371,11 @@ class FinancialRAGGraph:
             
         system_prompt = (
             "Bạn là một trợ lý tài chính cao cấp cực kỳ cẩn thận và chính xác của Công ty Cổ phần 32.\n"
-            "Hãy trả lời câu hỏi dưới đây một cách chi tiết, phân tích số liệu rõ ràng hoàn toàn dựa vào ngữ cảnh được cung cấp.\n\n"
+            "Hãy trả lời câu hỏi dưới đây một cách chi tiết, phân tích số liệu rõ ràng dựa vào ngữ cảnh được cung cấp.\n\n"
             "Các quy tắc bắt buộc:\n"
-            "1. Chỉ sử dụng thông tin trong phần 'Ngữ cảnh' được cung cấp để trả lời. Không giả định hay suy đoán số liệu nằm ngoài ngữ cảnh. Nếu không có dữ liệu để trả lời đầy đủ câu hỏi, bạn BẮT BUỘC phải trả lời duy nhất câu sau: 'Không tìm thấy số liệu để trả lời'.\n"
+            "1. Chỉ sử dụng thông tin trong phần 'Ngữ cảnh' được cung cấp để trả lời. Không giả định hay suy đoán số liệu nằm ngoài ngữ cảnh.\n"
             "2. Với mỗi số liệu, bảng biểu hay nhận định quan trọng trích dẫn được, bạn BẮT BUỘC phải dẫn nguồn ở cuối câu bằng định dạng [BCTC <năm>, trang <số trang>] (ví dụ: [BCTC 2018, trang 15]).\n"
-            "3. Nếu ngữ cảnh không có thông tin hoặc thông tin không đủ để tính toán/trả lời đầy đủ câu hỏi, bạn BẮT BUỘC phải trả lời duy nhất câu sau: 'Không tìm thấy số liệu để trả lời'. Tuyệt đối không tự suy luận, bịa đặt, giải thích phần thiếu hoặc thêm bất kỳ thông tin nào khác.\n"
+            "3. Nếu ngữ cảnh có dữ liệu cho một số năm trong giai đoạn được hỏi, hãy trả lời dựa trên các dữ liệu có sẵn đó, phân tích các xu hướng trong các năm có số liệu, và nêu rõ các năm/số liệu bị thiếu trong nội dung phân tích (đặc biệt lưu ý năm 2022 công ty không công bố báo cáo tài chính). Chỉ trả lời duy nhất câu sau: 'Không tìm thấy số liệu để trả lời' nếu hoàn toàn không có dữ liệu nào liên quan đến các chủ đề chính của câu hỏi trong ngữ cảnh. Tuyệt đối không tự suy luận hay bịa đặt số liệu không có trong ngữ cảnh.\n"
             "4. Câu trả lời viết bằng tiếng Việt, cấu trúc mạch lạc, sử dụng bảng biểu markdown nếu cần biểu diễn so sánh số liệu.\n"
             "5. ĐẶC BIỆT LƯU Ý đối với câu hỏi về dư nợ phải thu khách hàng từ các đơn vị không liên quan hoặc liên quan của các năm 2024 hoặc 2025:\n"
             "   Hãy trích xuất trực tiếp số liệu từ dòng 'Phải thu khách hàng' trong bảng 'Tổng giá trị các khoản phải thu quá hạn thanh toán' (Nợ xấu):\n"
@@ -384,21 +397,18 @@ class FinancialRAGGraph:
         
         # Enforce strict refusal format
         clean_ans = answer.strip().strip('.').strip('"').strip("'").lower()
-        refusal_keywords = [
-            "không tìm thấy số liệu", "không tìm thấy thông tin", "không tìm thấy dữ liệu",
-            "không có số liệu", "không có thông tin", "không có dữ liệu",
-            "chưa công bố", "chưa được công bố", "không được đề cập", "không được cung cấp",
-            "không thể trả lời", "không thể xác định", "không thể tìm thấy",
-            "không đề cập"
-        ]
         
         is_refusal = False
         if "không tìm thấy số liệu để trả lời" in clean_ans:
             is_refusal = True
-        else:
-            # If the response contains any of the refusal keywords and is relatively short (likely a refusal sentence)
+        elif len(clean_ans) < 80:
+            refusal_keywords = [
+                "không tìm thấy số liệu", "không tìm thấy thông tin", "không tìm thấy dữ liệu",
+                "không có số liệu", "không có thông tin", "không có dữ liệu",
+                "không thể trả lời", "không thể xác định", "không thể tìm thấy"
+            ]
             for kw in refusal_keywords:
-                if kw in clean_ans and len(clean_ans) < 150:
+                if kw in clean_ans:
                     is_refusal = True
                     break
                     
@@ -409,6 +419,7 @@ class FinancialRAGGraph:
             **state,
             "answer": answer
         }
+
 
     # --- Routing functions ---
     

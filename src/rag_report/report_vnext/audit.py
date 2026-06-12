@@ -8,8 +8,74 @@ from bs4 import BeautifulSoup
 
 from src.rag_report.config import settings
 from src.rag_report.coding_workflow.models import FindingSeverity, StyleAuditFinding, StyleAuditResult
-from src.rag_report.report_vnext.feedback_log import FeedbackRule
+from src.rag_report.report_vnext.feedback_log import FeedbackRule, feedback_rule_from_issue
 from src.rag_report.report_vnext.formatting import fold_text
+from src.rag_report.report_vnext.models import IntroNarrative
+
+
+BANNED_PATTERNS = [
+    (r"bước\s+\d+", "Bước + số thứ tự (ví dụ: Bước 1)"),
+    (r"câu\s+trả\s+lời\s+nhanh", "Câu trả lời nhanh"),
+    (r"kết\s+luận\s+nhanh\s+cho\s+người\s+không\s+chuyên", "Kết luận nhanh cho người không chuyên"),
+    (r"kết\s+luận\s+nhanh", "Kết luận nhanh"),
+    (r"người\s+không\s+chuyên", "người không chuyên"),
+    (r"người\s+ngoài\s+ngành", "người ngoài ngành"),
+    (r"tiền\s+thật", "tiền thật"),
+    (r"doanh\s+nghiệp\s+khỏe", "doanh nghiệp khỏe"),
+    (r"điểm\s+cần\s+kiểm\s+tra\s+tiếp\s+theo", "Điểm cần kiểm tra tiếp theo"),
+    (r"chốt\s+lại\s+phần\s+mở\s+đầu", "Chốt lại phần mở đầu"),
+]
+
+
+def narrative_wording_hygiene(narrative: IntroNarrative) -> list[FeedbackRule]:
+    """
+    Scans IntroNarrative fields to detect any banned/informal terms.
+    Returns a list of FeedbackRule objects if violations are found.
+    """
+    violations = []
+    
+    # Text fields to scan
+    text_fields = [
+        ("title", narrative.title),
+        ("markdown", narrative.markdown),
+        ("audit_intro", narrative.audit_intro),
+        ("audit_conclusion", narrative.audit_conclusion),
+        ("verdict", narrative.verdict),
+        ("verdict_source_reliability", narrative.verdict_source_reliability),
+        ("verdict_earnings_quality_2025", narrative.verdict_earnings_quality_2025),
+        ("verdict_liquidity_short_term", narrative.verdict_liquidity_short_term),
+        ("verdict_needs_deep_check", narrative.verdict_needs_deep_check),
+    ]
+    
+    # Contract details to scan if present
+    if narrative.report_contract:
+        contract = narrative.report_contract
+        if contract.executive_verdict:
+            verdict = contract.executive_verdict
+            text_fields.append(("executive_verdict.source_reliability", verdict.source_reliability))
+            text_fields.append(("executive_verdict.financial_signal", verdict.financial_signal))
+            text_fields.append(("executive_verdict.main_message", verdict.main_message))
+            for i, area in enumerate(verdict.focus_areas):
+                text_fields.append((f"executive_verdict.focus_areas[{i}]", area))
+        for i, sig in enumerate(contract.key_signals):
+            text_fields.append((f"key_signals[{i}].question", sig.question))
+            text_fields.append((f"key_signals[{i}].conclusion", sig.conclusion))
+            text_fields.append((f"key_signals[{i}].plain_explanation", sig.plain_explanation))
+            
+    for field_name, value in text_fields:
+        if not value:
+            continue
+        for pattern, name in BANNED_PATTERNS:
+            if re.search(pattern, value, re.IGNORECASE):
+                msg = f"Trường '{field_name}' chứa từ ngữ không chuẩn mực: '{name}'"
+                rule = feedback_rule_from_issue(
+                    check="narrative_wording_hygiene",
+                    message=msg,
+                    source="audit",
+                )
+                violations.append(rule)
+                
+    return violations
 
 
 LOCAL_PATH_PATTERNS = [
@@ -108,6 +174,7 @@ def audit_report_html(
     report_path: str,
     reference_path: str | None = None,
     feedback_rules: list[FeedbackRule] | None = None,
+    narrative: IntroNarrative | None = None,
 ) -> StyleAuditResult:
     soup = BeautifulSoup(html_text, "html.parser")
     findings: list[StyleAuditFinding] = []
@@ -165,6 +232,82 @@ def audit_report_html(
         severity="high",
         penalty=0.16,
     )
+
+    # Check signal glossary presence and coverage
+    signal_glossary_box = soup.select_one(".term-box")
+    signal_glossary_ok = False
+    signal_glossary_msg = "Thiếu bảng thuật ngữ tín hiệu tài chính."
+    if signal_glossary_box:
+        box_text = fold_text(signal_glossary_box.get_text(" ", strip=True))
+        missing_terms = [t for t in ["CFO", "LNST"] if fold_text(t) not in box_text]
+        if missing_terms:
+            signal_glossary_msg = f"Bảng thuật ngữ tín hiệu thiếu các từ bắt buộc: {', '.join(missing_terms)}"
+        else:
+            signal_glossary_ok = True
+            signal_glossary_msg = "Bảng thuật ngữ tín hiệu tài chính đầy đủ."
+
+    add_find(
+        "signal_glossary_present",
+        signal_glossary_ok,
+        signal_glossary_msg,
+        severity="high",
+        penalty=0.15,
+    )
+
+    # Check appendix glossary presence and coverage
+    appendix_glossary_section = soup.select_one(".glossary-section")
+    appendix_glossary_ok = False
+    appendix_glossary_msg = "Thiếu bảng thuật ngữ phụ lục kỹ thuật."
+    if appendix_glossary_section:
+        sec_text = fold_text(appendix_glossary_section.get_text(" ", strip=True))
+        required_appendix_terms = ["Lợi nhuận sau thuế", "Dòng tiền từ hoạt động kinh doanh"]
+        missing_appendix_terms = [t for t in required_appendix_terms if fold_text(t) not in sec_text]
+        if missing_appendix_terms:
+            appendix_glossary_msg = f"Bảng thuật ngữ phụ lục thiếu các từ bắt buộc: {', '.join(missing_appendix_terms)}"
+        else:
+            appendix_glossary_ok = True
+            appendix_glossary_msg = "Bảng thuật ngữ phụ lục kỹ thuật đầy đủ."
+
+    add_find(
+        "appendix_glossary_present",
+        appendix_glossary_ok,
+        appendix_glossary_msg,
+        severity="high",
+        penalty=0.15,
+    )
+
+    # Narrative hygiene check
+    banned_violations = []
+    if narrative:
+        banned_violations = narrative_wording_hygiene(narrative)
+    else:
+        # Fallback to check raw HTML text for banned patterns
+        for pattern, name in BANNED_PATTERNS:
+            if re.search(pattern, html_text, re.IGNORECASE):
+                banned_violations.append(
+                    feedback_rule_from_issue(
+                        check="narrative_wording_hygiene",
+                        message=f"Báo cáo chứa từ ngữ không chuẩn mực: '{name}'",
+                        source="audit"
+                    )
+                )
+
+    add_find(
+        "narrative_wording_hygiene",
+        len(banned_violations) == 0,
+        "Văn phong báo cáo không được chứa các từ ngữ không chuẩn mực (Bước X, câu trả lời nhanh, tiền thật, người không chuyên, etc.)." if banned_violations else "Văn phong báo cáo chuẩn mực.",
+        severity="high",
+        penalty=0.15,
+    )
+
+    for i, violation in enumerate(banned_violations):
+        add_find(
+            f"hygiene_violation_{i}",
+            False,
+            violation.message,
+            severity="high",
+            penalty=0.05,
+        )
 
     if soup.select_one(".report-page") is None:
         benchmark_gap_notes.append("Thiếu cấu trúc A4 theo trang.")
