@@ -34,8 +34,10 @@ data/reports/*
 !data/reports/html/
 data/reports/html/*
 !data/reports/html/A32_Financial_Report_vNext.html
+!data/reports/eval_runs/
 *.duckdb
 *.json
+!data/reports/eval_runs/**/*.json
 
 !.agents/
 .agents/*

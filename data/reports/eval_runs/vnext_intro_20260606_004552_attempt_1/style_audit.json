@@ -1,0 +1,52 @@
+{
+  "report_path": "C:\\Users\\Admin\\HUIT - Học Tập\\Năm 3\\Semester_2\\Class\\RAG_Report\\data\\reports\\html\\A32_Financial_Report_vNext.html",
+  "reference_path": "data/reports/A32_Financial_Report_v2.html",
+  "overall_pass": true,
+  "score": 1.0,
+  "findings": [
+    {
+      "check": "paged_layout",
+      "passed": true,
+      "severity": "high",
+      "message": "Report should use an A4 paged layout with explicit page sections."
+    },
+    {
+      "check": "citation_numbering",
+      "passed": true,
+      "severity": "high",
+      "message": "Citations should be numbered consecutively and rendered as hoverable refs."
+    },
+    {
+      "check": "hover_source",
+      "passed": true,
+      "severity": "high",
+      "message": "Inline citations must expose hover source popovers."
+    },
+    {
+      "check": "path_hygiene",
+      "passed": true,
+      "severity": "critical",
+      "message": "HTML must not expose local filesystem paths or internal field names."
+    },
+    {
+      "check": "chart_readability",
+      "passed": true,
+      "severity": "high",
+      "message": "Charts must either render cleanly or be omitted entirely."
+    },
+    {
+      "check": "narrative_wording_hygiene",
+      "passed": true,
+      "severity": "high",
+      "message": "Văn phong báo cáo chuẩn mực."
+    }
+  ],
+  "benchmark_gap_notes": [
+    "Screenshot comparison is not automated in code; record the gap and require manual review."
+  ],
+  "browser_ready": true,
+  "browser_notes": [
+    "Screenshot comparison is not automated in code; record the gap and require manual review."
+  ],
+  "attempt_index": 1
+}

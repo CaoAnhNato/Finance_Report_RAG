@@ -1,0 +1,68 @@
+{
+  "report_path": "C:\\Users\\Admin\\HUIT - Học Tập\\Năm 3\\Semester_2\\Class\\RAG_Report\\data\\reports\\html\\A32_Financial_Report_vNext.html",
+  "reference_path": "data/reports/A32_Financial_Report_v2.html",
+  "overall_pass": true,
+  "score": 1.0,
+  "findings": [
+    {
+      "check": "layout_shell",
+      "passed": true,
+      "severity": "high",
+      "message": "Report shell should use a research-note layout with summary table and figure grid."
+    },
+    {
+      "check": "tone_and_labels",
+      "passed": true,
+      "severity": "high",
+      "message": "Report must not use chatbot-style labels or question-style framing."
+    },
+    {
+      "check": "path_hygiene",
+      "passed": true,
+      "severity": "critical",
+      "message": "HTML must not expose local filesystem paths or internal field names."
+    },
+    {
+      "check": "formula_visibility",
+      "passed": true,
+      "severity": "high",
+      "message": "Visible formulas should use math-style markup and remain readable without opening the tooltip."
+    },
+    {
+      "check": "hover_provenance",
+      "passed": true,
+      "severity": "high",
+      "message": "Metric cards/table rows should expose formula and provenance in hover content."
+    },
+    {
+      "check": "source_footers",
+      "passed": true,
+      "severity": "medium",
+      "message": "Figures and summary tables need readable source footers."
+    },
+    {
+      "check": "report_language",
+      "passed": true,
+      "severity": "medium",
+      "message": "Report should begin with a formal summary block."
+    },
+    {
+      "check": "chart_presence",
+      "passed": true,
+      "severity": "medium",
+      "message": "Opening section should contain multiple report figures, not isolated dashboard cards."
+    },
+    {
+      "check": "citation_integrity",
+      "passed": true,
+      "severity": "medium",
+      "message": "Report should include inline citations or public-report labels."
+    }
+  ],
+  "benchmark_gap_notes": [
+    "Bố cục bảng còn mỏng hơn đáng kể so với report v2/reference."
+  ],
+  "browser_ready": true,
+  "browser_notes": [],
+  "attempt_index": 1
+}
